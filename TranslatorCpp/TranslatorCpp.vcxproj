@@ -90,9 +90,9 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="English.h" />
     <ClInclude Include="language.h" />
-    <ClInclude Include="Serbian.h" />
+    <ClInclude Include="Languages\English.h" />
+    <ClInclude Include="Languages\Serbian.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

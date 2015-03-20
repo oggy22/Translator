@@ -3,8 +3,8 @@
 #include <vector>
 #include <string>
 #include "language.h"
-#include "Serbian.h"
-#include "English.h"
+#include "Languages\English.h"
+#include "Languages\Serbian.h"
 
 int main2()
 {
