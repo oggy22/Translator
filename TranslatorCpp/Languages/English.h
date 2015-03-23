@@ -1,24 +1,31 @@
-﻿#include <map>
+﻿#include "language.h"
+#include <unordered_map>
 
 struct English
 {
 	using letter = char;
-	using letters = std::basic_string < letter >;
+	using string_t = std::basic_string < letter >;
 
-	enum word_type { noun, verb, pronoun, adjective, adverb, article, NP, VP };
+	enum class word_type { noun, verb, pronoun, adjective, adverb, article, NP, VP };
 
-	enum attribute_categories { gender, plurality, person };
+	enum class attribute_categories { gender, plurality, person };
 
-	enum attributes
-	{ present, past, future, continous, perfect,
+	enum class attributes
+	{
+		present, past, future, continous, perfect,
 		per1, per2, per3,
 		sing, plur,
 		posses, refl, accus
 	};
 
-	std::map<attributes, attribute_categories> belongs_to_category;
+	const std::unordered_map<attributes, attribute_categories> belongs_to_category = std::unordered_map<attributes, attribute_categories>
+	{
+		{ attributes::per1, attribute_categories::person },
+		{ attributes::per2, attribute_categories::person },
+		{ attributes::per3, attribute_categories::person },
+	};
 
-	std::vector<translator::dictionary_word<English>> dictWords;
+	const std::vector<translator::dictionary_word<English>> dictWords;
 
 	English()
 		: dictWords(
@@ -27,7 +34,7 @@ struct English
 		{
 			{ "me", { attributes::accus } },
 			{ "my", { attributes::posses } },
-			{ "mine", { attributes::posses } },
+			{ "mine", { attributes::posses, attributes::refl } },
 			{ "myself", { attributes::refl } },
 		} },
 		{ "you", word_type::pronoun, { attributes::per2, attributes::sing },
@@ -41,28 +48,26 @@ struct English
 		{ "we", word_type::pronoun, { attributes::per1, attributes::plur } },
 		{ "you", word_type::pronoun, { attributes::per2, attributes::plur } },
 		{ "they", word_type::pronoun, { attributes::per3, attributes::plur } }
-	}
-		)
+	})
 	{
-		std::vector<translator::word_rule<English>> word_rules //=
+		std::vector<translator::word_rule<English>> word_rules
 		{
 			// Nouns
 			{ "%", "%", word_type::noun, { attributes::sing } },
 			{ "%", "%s", word_type::noun, { attributes::plur } },
+			
 			// Verbs
-			{ "%", "%", word_type::verb, { attributes::sing, attributes::per1 } },
-			{ "%", "%", word_type::verb, { attributes::sing, attributes::per2 } },
-			{ "%o", "%s", word_type::verb, { attributes::sing, attributes::per3 } },
-			{ "%o", "%oes", word_type::verb, { attributes::sing, attributes::per3 } },
-			{ "%", "%", word_type::verb, { attributes::plur } },
+			{ "%",	"%",	word_type::verb, { attributes::sing, attributes::per1 } },
+			{ "%",	"%",	word_type::verb, { attributes::sing, attributes::per2 } },
+			{ "%",	"%s",	word_type::verb, { attributes::sing, attributes::per3 } },
+			{ "%o", "%oes",	word_type::verb, { attributes::sing, attributes::per3 } },	//goes, does
+			{ "%", "%",		word_type::verb, { attributes::plur } },
+			
 			// Pronouns
 			{ "%", "%", word_type::noun, { } },
 		};
 
-		for (auto& w : dictWords)
-		{
-
-		}
+		translator::populate_words(dictWords, word_rules);
 	}
 	//struct word dictionary_words = { { "Ja", "ja" } };
 };

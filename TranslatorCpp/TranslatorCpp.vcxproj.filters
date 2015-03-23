@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="proba.cpp" />
+    <ClCompile Include="Source.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="language.h" />
+    <ClInclude Include="Languages\English.h">
+      <Filter>Languages</Filter>
+    </ClInclude>
+    <ClInclude Include="Languages\Serbian.h">
+      <Filter>Languages</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Languages">
+      <UniqueIdentifier>{3cfec299-8719-4692-a027-75dd8c024a2a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

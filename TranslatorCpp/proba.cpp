@@ -1,52 +1,82 @@
-#include <set>
-#include <unordered_set>
-#include <string>
-#include <unordered_map>
 #include <iostream>
+#include <string>
 #include <vector>
+#include <utility>
+#include <set>
 
 using namespace std;
 
-struct Serbian
+#define WIDE2
+
+#ifdef WIDE
+#define Char wchar_t
+#define T(x) L##x
+#define COUT wcout
+#else
+#define Char char
+#define T(x) x
+#define COUT cout
+#endif
+
+enum class attributes : char { per1, per2, per3, sing, plur };
+
+struct word_t
 {
-	Serbian()
-	{
-	}
-
-	enum class attributes
-	{
-		nom, gen, dat, akuz, vokat, instr, lok
-	};
-
-	enum class categories
-	{
-		padez, broj, lice
-	};
+	std::basic_string<Char> word;
+	std::set<attributes> attrs;
 };
 
-class match
+struct dictionary_word
 {
-	std::set<Serbian::attributes> attrs;
-	std::set<Serbian::categories> cats;
+	std::basic_string<Char> word;
+	std::set<attributes> attrs;
+	std::vector<word_t> words;
+};
 
-	//using Serbian;
+struct two_numbers
+{
+	int x, y;
+};
 
-public:
-	match()
+struct FakeLang
+{
+	std::vector<dictionary_word> words;
+	FakeLang() :
+		words(
 	{
+		{ T("abc"), { attributes::per1, attributes::sing }, { { T("abc"), {} } } },
+		{ T("xyz"), { attributes::per2 }, { { T("abc") } } },
+		{ T("a"), {}, {} }
 	}
-
-	match(const std::set<Serbian::attributes> &attrs, const std::set<Serbian::categories> &cats = std::set<Serbian::categories>())
-		: attrs(attrs), cats(cats)
+	)
 	{
+
 	}
 };
 
-int main()
+int main2()
 {
-	std::set<Serbian::attributes> ats({ Serbian::attributes::akuz, Serbian::attributes::instr });
-	match m1{ { Serbian::attributes::akuz, Serbian::attributes::instr } };
-	match m2{ { Serbian::attributes::akuz, Serbian::attributes::instr }, {Serbian::categories::broj} };
+	std::vector<dictionary_word> words
+	{
+		{ T("abc"), { attributes::per1, attributes::sing }, { { T("abc") } } },
+		{ T("xyz"), { attributes::per2 }, { { T("abc") } } },
+		{ T("a"), {}, {} }
+	};
+
+	FakeLang fake_lang;
+
+	vector<two_numbers> numbers;
+	numbers.emplace_back(two_numbers{ 42, 13 });
+
+	for (const dictionary_word& dw : words)
+	{
+		COUT << dw.word;
+		for (auto x : dw.attrs)
+			cout << int(x) << " ";
+		cout << endl;
+	}
+
+	cout << sizeof(bool) << endl;
 
 	return 0;
 }

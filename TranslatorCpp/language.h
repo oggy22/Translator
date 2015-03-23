@@ -1,21 +1,45 @@
 #pragma once
 
-#include <string>
+#include <algorithm>
+#include <cassert>
 #include <set>
+#include <string>
 #include <vector>
 #include <utility>
-#include <cassert>
 
 namespace translator
 {
+	using namespace std;
+
 	template <typename Char>
 	class pattern
 	{
-		using string_t = std::basic_string < Char >;
-		std::basic_string<Char> pre, post;
+		using string_t = basic_string < Char >;
+		string_t pre, post;
+
+		int length() const
+		{
+			return pre.length() + post.length();
+		}
+
+		static bool starts_with(const string_t& str, const string_t& prefix)
+		{
+			if (prefix.length() > str.length())
+				return false;
+
+			return equal(prefix.cbegin(), prefix.end(), str.cbegin());
+		}
+
+		static bool ends_with(const string_t& str, const string_t& sufix)
+		{
+			if (sufix.length() > str.length())
+				return false;
+
+			return equal(sufix.cbegin(), sufix.end(), str.cbegin() + str.size() - sufix.size());
+		}
 
 	public:
-		pattern(const std::basic_string<Char>& s)
+		pattern(const string_t& s)
 		{
 			const Char joker = Char('%');
 			const string_t::size_type pos = s.find(joker);
@@ -25,7 +49,12 @@ namespace translator
 			post = s.substr(pos + 1);
 		}
 
-		bool match(const std::basic_string<Char>& s)
+		bool operator>(const pattern& other)
+		{
+			return starts_with(pre, other.pre) && ends_with(post, other.post);
+		}
+
+		bool match(const basic_string<Char>& s) const
 		{
 			if (s.compare(0, pre.length(), pre))
 				return false;
@@ -33,47 +62,37 @@ namespace translator
 			if (s.compare(s.length() - post.length(), post.length(), post))
 				return false;
 
+			if (pre.length() + post.length() >= s.length())
+				return false;
+
 			return true;
+		}
+
+		string_t match_and_transform(const string_t& input, const pattern& to) const
+		{
+			if (!match(input))
+				return string_t();
+
+			int core_len = input.length() - length();
+
+			return to.pre + input.substr(pre.length(), core_len) + to.post;
 		}
 	};
 
 	template <class Language>
 	struct word_t
 	{
-		/*const*/ std::string _word;
-		/*const */std::set<typename Language::attributes> attrs;
+		typename Language::string_t _word;
+		set<typename Language::attributes> attrs;
 	};
 
 	template <class Language>
 	struct dictionary_word
-	{
-		/*const*/ typename Language::letters word;
+	{	//todo: these should be const. VS update 5 probably has this bug fixed.
+		/*const*/ typename Language::string_t word;
 		/*const*/ typename Language::word_type wordtype;
-		/*const*/ std::set<typename Language::attributes> attrs;
-		std::vector<word_t<Language>> words;
-
-		dictionary_word(
-			const typename Language::letters word,
-			typename Language::word_type wt,
-			const std::set<typename Language::attributes>& attrs,
-			const std::vector<std::pair<typename Language::letters, std::set<typename Language::attributes>>>& s =
-				  std::vector<std::pair<typename Language::letters, std::set<typename Language::attributes>>>()
-				  )
-			: word(word), wordtype(wt), attrs(attrs)
-		{
-			for (const auto& p : s)
-			{ }
-		}
-
-		dictionary_word(const dictionary_word& dw) : word(dw.word), wordtype(dw.wordtype)
-		{
-		}
-
-		const dictionary_word& operator=(const dictionary_word& dw)
-		{
-			word = dw.word;
-			return *this;
-		}
+		/*const*/ set<typename Language::attributes> attrs;
+		mutable vector<word_t<Language>> words;	//todo: this is a hack
 	};
 
 	template <class Language>
@@ -82,8 +101,45 @@ namespace translator
 		pattern<typename Language::letter> source;
 		pattern<typename Language::letter> destination;
 		typename Language::word_type wt;
-		std::set<typename Language::attributes> attrs;
+		set<typename Language::attributes> attrs;
 	};
+
+	template<typename Language>
+	void populate_words(const vector<dictionary_word<Language>>& words, const vector<word_rule<Language>> word_rules)
+	{
+		for (auto& w : words)
+		{
+			using namespace std;
+			vector<word_t<Language>> new_words;
+
+			for (auto& r : word_rules)
+			{
+				if (r.wt != w.wordtype)
+					continue;
+
+				if (any_of(w.words.begin(), w.words.end(), [&](const word_t<Language>)
+				{	return r.attrs == w.attrs;	}))
+				continue;
+
+				if (!r.source.match(w.word))
+					continue;
+
+				auto iter = find_if(new_words.begin(), new_words.end(),
+					[&](const word_t<Language>& w)
+				{
+					return r.attrs == w.attrs;
+				});
+
+				Language::string_t word = r.source.match_and_transform(w.word, r.destination);
+				assert(word.length() != 0);
+				if (iter == new_words.end())
+					new_words.emplace_back(word_t<Language> { word, r.attrs });
+				else
+					iter->_word = word;
+			}
+			w.words.insert(w.words.end(), new_words.begin(), new_words.end());
+		}
+	}
 
 	template <class SourceLanguage, class DestinationLanguage>
 	class translator
@@ -96,16 +152,15 @@ namespace translator
 			: source(source), destination(destination)
 		{ }
 
-		typename DestinationLanguage::letters translate(const typename SourceLanguage::letters text)
+		typename DestinationLanguage::string_t translate(const typename SourceLanguage::string_t text)
 		{
-			std::wcout << "Trying to translate : " << text << std::endl;
-			return DestinationLanguage::letters();
+			wcout << "Trying to translate : " << text << endl;
+			return DestinationLanguage::string_t();
 		}
 
 	private:
-		typename DestinationLanguage::letters translate(const std::vector<const typename SourceLanguage::letters> text)
+		typename DestinationLanguage::string_t translate(const vector<const typename SourceLanguage::string_t> text)
 		{
-
 		}
 	};
 }
