@@ -1,12 +1,13 @@
-﻿#include "language.h"
-#include <unordered_map>
+﻿#include <unordered_map>
+#include <sstream>
+#include "..\language.h"
 
 struct English
 {
 	using letter = char;
 	using string_t = std::basic_string < letter >;
 
-	enum class word_type { noun, verb, pronoun, adjective, adverb, article, NP, VP };
+	enum class word_type { noun, verb, pronoun, adjective, adverb, article, NP, VP, Sent };
 
 	enum class attribute_categories { gender, plurality, person };
 
@@ -26,6 +27,10 @@ struct English
 	};
 
 	const std::vector<translator::dictionary_word<English>> dictWords;
+
+	const std::vector<translator::node<English>> nodes;
+
+	const std::vector<translator::rule<English>> rules;
 
 	English()
 		: dictWords(
@@ -48,26 +53,48 @@ struct English
 		{ "we", word_type::pronoun, { attributes::per1, attributes::plur } },
 		{ "you", word_type::pronoun, { attributes::per2, attributes::plur } },
 		{ "they", word_type::pronoun, { attributes::per3, attributes::plur } }
-	})
+	}),
+	rules(
+			{
+				{
+					{ word_type::Sent},
+					{ word_type::pronoun }, {word_type::verb}
+				}
+			}
+	)
 	{
-		std::vector<translator::word_rule<English>> word_rules
+		translator::pattern<char> pttr{ "%s" };
+
+		translator::word_rule<English> rule{ { "%s" }, { "%s" }, word_type::noun, {} };
+
+		std::vector<translator::word_rule<English>> word_rules =
 		{
 			// Nouns
-			{ "%", "%", word_type::noun, { attributes::sing } },
-			{ "%", "%s", word_type::noun, { attributes::plur } },
+			{ {"%"}, {"%"}, word_type::noun, { attributes::sing } },
+			{ {"%"}, {"%s"}, word_type::noun, { attributes::plur } },
+
+			//// Verbs
+			{ { "%" }, { "%" }, word_type::verb, { attributes::sing, attributes::per1 } },
+			{ { "%" }, { "%" }, word_type::verb, { attributes::sing, attributes::per2 } },
+			{ { "%" }, { "%s" }, word_type::verb, { attributes::sing, attributes::per3 } },
+			{ { "%o" }, { "%oes" }, word_type::verb, { attributes::sing, attributes::per3 } },	//goes, does
+			{ { "%" }, { "%" }, word_type::verb, { attributes::plur } },
 			
-			// Verbs
-			{ "%",	"%",	word_type::verb, { attributes::sing, attributes::per1 } },
-			{ "%",	"%",	word_type::verb, { attributes::sing, attributes::per2 } },
-			{ "%",	"%s",	word_type::verb, { attributes::sing, attributes::per3 } },
-			{ "%o", "%oes",	word_type::verb, { attributes::sing, attributes::per3 } },	//goes, does
-			{ "%", "%",		word_type::verb, { attributes::plur } },
-			
-			// Pronouns
-			{ "%", "%", word_type::noun, { } },
+			//// Pronouns
+			{ { "%" }, { "%" }, word_type::noun, {} },
 		};
 
-		translator::populate_words(dictWords, word_rules);
+		//translator::populate_words(dictWords, word_rules);
 	}
-	//struct word dictionary_words = { { "Ja", "ja" } };
+
+	void parse(string_t s)
+	{
+		// construct a stream from the string
+		std::basic_stringstream<letter> strstr(s);
+
+		// use stream iterators to copy the stream to the vector as whitespace separated strings
+		std::istream_iterator<string_t> it(strstr);
+		std::istream_iterator<string_t> end;
+		std::vector<string_t> results(it, end);
+	}
 };

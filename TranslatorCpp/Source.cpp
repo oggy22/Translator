@@ -2,11 +2,10 @@
 #include <cstdio>
 #include <vector>
 #include <string>
-#include "language.h"
 #include "Languages\English.h"
 #include "Languages\Serbian.h"
 
-int main()
+int main5()
 {
 	using SourceLanguage = Serbian;
 	using DestinationLanguage = English;

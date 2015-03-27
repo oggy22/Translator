@@ -3,6 +3,7 @@
   <ItemGroup>
     <ClCompile Include="proba.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="proba2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="language.h" />
@@ -12,6 +13,7 @@
     <ClInclude Include="Languages\Serbian.h">
       <Filter>Languages</Filter>
     </ClInclude>
+    <ClInclude Include="matrix.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Languages">

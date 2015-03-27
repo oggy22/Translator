@@ -2,12 +2,12 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace UnitTest1
-{		
+namespace TranslatorTest
+{
 	TEST_CLASS(UnitTest1)
 	{
 	public:
-		
+
 		TEST_METHOD(pattern_match_test_narrow)
 		{
 			translator::pattern<char> p1("%s");
