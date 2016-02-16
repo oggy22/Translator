@@ -16,6 +16,7 @@ void process(const vector<string> vec)
 
 int main()
 {
+
 	const vector<string> v
 	{
 		"abc", "xyz", "12345"
