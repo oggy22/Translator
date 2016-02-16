@@ -35,7 +35,7 @@ struct E
 	}
 };
 
-void main2()
+int main()
 {
 	E e;
 }
