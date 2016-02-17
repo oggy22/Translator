@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <iterator>
 
 namespace translator
 {
