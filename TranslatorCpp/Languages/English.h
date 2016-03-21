@@ -7,7 +7,16 @@ struct English
 	using letter = char;
 	using string_t = std::basic_string < letter >;
 
-	enum class word_type { noun, verb, pronoun, adjective, adverb, article, NP, VP, Sent };
+	enum class word_type { noun, verb, pronoun, adjective, adverb, article, NP, VP, Sentence };
+#define noun	word_type::noun
+#define verb	word_type::verb
+#define pron	word_type::pronoun
+#define adj		word_type::adjective
+#define adv		word_type::adverb
+#define art		word_type::article
+#define NP		word_type::NP
+#define VP		word_type::VP
+#define Sent	word_type::Sentence
 
 	enum class attribute_categories { gender, plurality, person };
 
@@ -57,31 +66,31 @@ struct English
 	rules(
 			{
 				{
-					{ word_type::Sent},
-					{ word_type::pronoun }, {word_type::verb}
+					{ Sent},
+					{ word_type::pronoun }, {verb}
 				}
 			}
 	)
 	{
 		translator::pattern<char> pttr{ "%s" };
 
-		translator::word_rule<English> rule{ { "%s" }, { "%s" }, word_type::noun, {} };
+		translator::word_rule<English> rule{ { "%s" }, { "%s" }, noun, {} };
 
 		std::vector<translator::word_rule<English>> word_rules =
 		{
 			// Nouns
-			{ {"%"}, {"%"}, word_type::noun, { attributes::sing } },
-			{ {"%"}, {"%s"}, word_type::noun, { attributes::plur } },
+			{ {"%"}, {"%"}, noun, { attributes::sing } },
+			{ {"%"}, {"%s"}, noun, { attributes::plur } },
 
 			//// Verbs
-			{ { "%" }, { "%" }, word_type::verb, { attributes::sing, attributes::per1 } },
-			{ { "%" }, { "%" }, word_type::verb, { attributes::sing, attributes::per2 } },
-			{ { "%" }, { "%s" }, word_type::verb, { attributes::sing, attributes::per3 } },
-			{ { "%o" }, { "%oes" }, word_type::verb, { attributes::sing, attributes::per3 } },	//goes, does
-			{ { "%" }, { "%" }, word_type::verb, { attributes::plur } },
+			{ { "%" }, { "%" }, verb, { attributes::sing, attributes::per1 } },
+			{ { "%" }, { "%" }, verb, { attributes::sing, attributes::per2 } },
+			{ { "%" }, { "%s" }, verb, { attributes::sing, attributes::per3 } },
+			{ { "%o" }, { "%oes" }, verb, { attributes::sing, attributes::per3 } },	//goes, does
+			{ { "%" }, { "%" }, verb, { attributes::plur } },
 			
 			//// Pronouns
-			{ { "%" }, { "%" }, word_type::noun, {} },
+			{ { "%" }, { "%" }, noun, {} },
 		};
 
 		//translator::populate_words(dictWords, word_rules);

@@ -126,6 +126,10 @@ namespace translator
 
 	public:
 		node(
+			typename Language::string_t word
+			) : word(word), wordtype(wordtype) {}
+
+		node(
 			typename Language::string_t word,
 			typename Language::word_type wordtype
 			) : word(word), wordtype(wordtype) {}
@@ -178,8 +182,9 @@ namespace translator
 	};
 
 	template <class Language>
-	struct rule
+	class rule
 	{
+	public:
 		using node_t = node<Language>;
 		using right_type = vector<node_t>;
 		using size_type = typename right_type::size_type;
