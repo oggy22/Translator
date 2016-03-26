@@ -127,7 +127,7 @@ namespace translator
 	public:
 		node(
 			typename Language::string_t word
-			) : word(word), wordtype(wordtype) {}
+			) : word(word) {}
 
 		node(
 			typename Language::string_t word,
@@ -212,6 +212,7 @@ namespace translator
 		set<typename Language::attributes> attrs;
 	};
 
+	// Creates all the words given dictionary word list and word rules.
 	template<typename Language>
 	void populate_words(/*const*/ vector<dictionary_word<Language>>& words, const vector<word_rule<Language>> word_rules)
 	{
