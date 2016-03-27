@@ -8,7 +8,22 @@ using namespace std;
 
 enum class word_type { noun, verb, pron };
 enum class categories { gender, person, plurality };
-enum class attributes { per1, per2, per3, male, female, neutral, sing, plur };
+enum class attributes { person1, person2, person3, male, female, neutral, singular, plural };
+
+#define noun word_type::noun
+#define verb word_type::verb
+#define pron word_type::pron
+#define gen categories::gender
+#define per categories::person
+#define plrt categories::plurality
+#define per1 attributes::person1
+#define per2 attributes::person2
+#define per3 attributes::person3
+#define mal attributes::male
+#define fem attributes::female
+#define neut attributes::neutral
+#define sign attributes::singular
+#define plur attributes::plural
 
 class node
 {
@@ -56,14 +71,11 @@ public:
 	{
 		return right.size();
 	}
-
 };
 
 int main()
 {
-	//Foo foo;
-	node n1(word_type::noun, categories::gender);
-	node n2(word_type::noun, attributes::per1, attributes::female, categories::plurality);
-	node n3{ word_type::pron, attributes::sing };
-
+	node n1(noun, categories::gender);
+	node n2(noun, attributes::person1, attributes::female, categories::plurality);
+	node n3{pron, attributes::singular };
 }
