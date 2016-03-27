@@ -3,7 +3,7 @@
   <ItemGroup>
     <ClCompile Include="proba.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="proba2.cpp" />
+    <ClCompile Include="prototype.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="language.h" />

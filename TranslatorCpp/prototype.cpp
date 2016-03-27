@@ -49,8 +49,6 @@ public:
 		attrs.clear();
 	}
 
-
-
 	node left;
 	vector<node> right;
 

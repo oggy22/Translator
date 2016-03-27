@@ -91,7 +91,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="proba.cpp" />
-    <ClCompile Include="proba2.cpp" />
+    <ClCompile Include="prototype.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
