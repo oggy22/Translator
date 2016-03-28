@@ -19,6 +19,7 @@ struct Serbian
 #define зам word_type::заменица
 #define глаг word_type::глагол
 #define прид word_type::придев
+#define прил word_type::прилог
 #define РЕЧН word_type::РЕЧЕНИЦА
 #define ИС word_type::ИменичкаСинтагма
 #define Одр word_type::ПрилошкаОдредба
@@ -26,6 +27,7 @@ struct Serbian
 	enum class attribute_categories { падеж, број, род, лице };
 #define пад attribute_categories::падеж
 #define бр	attribute_categories::број
+#define род	attribute_categories::род
 #define лиц attribute_categories::лице
 
 	enum class attributes
@@ -35,20 +37,22 @@ struct Serbian
 		једнина, множина,
 		мушки, женски, средњи
 	};
-#define акуз attributes::акузатив
-#define вок attributes::вокатив
+#define ном attributes::номинатив
 #define ген attributes::генитив
 #define дат attributes::датив
-#define жен attributes::женски
+#define акуз attributes::акузатив
+#define вок attributes::вокатив
 #define инстр attributes::инструментал
-#define једн attributes::једнина
+#define лок attributes::локатив
+
+#define муш attributes::мушки
+#define жен attributes::женски
+#define сред attributes::средњи
 #define лиц1 attributes::лице1
 #define лиц2 attributes::лице2
 #define лиц3 attributes::лице3
-#define лок attributes::локатив
+#define једн attributes::једнина
 #define множ attributes::множина
-#define ном attributes::номинатив
-#define сред attributes::средњи
 
 	using wt = word_type;
 	using attrs = attributes;
@@ -105,7 +109,8 @@ struct Serbian
 		{ L"радити", глаг,{} },
 
 			// Именице:
-		{ L"кућа", word_type::именица,{ attrs::женски } }
+		{ L"кућа", имен, { жен} },
+		{ L"школа", имен, { жен } }
 	}),
 		rules(
 	{
@@ -115,12 +120,13 @@ struct Serbian
 		{ { РЕЧН },
 		{ { имен, бр, лиц3 },{ глаг, бр, лиц } } },
 		{ { Одр },
-		{ { L"у" },{ имен, лок } } },
+		{ { L"у" }, { имен, лок } } },
 		{ { Одр },
-		{ { L"у" },{ имен, акуз } } },
-		{ { РЕЧН },{ РЕЧН, Одр } },
+		{ { L"у" }, { имен, акуз } } },
+		{ { РЕЧН },
+		{ РЕЧН, Одр } },
 		{ { ИС },
-		{ { прид, бр, пад },{ имен, бр, пад } } }
+		{ { прид, бр, пад }, { имен, бр, пад } } }
 	})
 	{
 		const std::vector<translator::word_rule<Serbian>> word_rules

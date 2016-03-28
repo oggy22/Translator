@@ -1,5 +1,4 @@
 ﻿#include "stdafx.h"
-#include <initializer_list>
 #include "../TranslatorCpp/Languages/Serbian.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -8,37 +7,38 @@ namespace TranslatorTest
 {
 	TEST_CLASS(SerbianTest)
 	{
-	public:
-
-		void test(const std::initializer_list<std::wstring>& ss, bool expected=true)
+		void test(const std::wstring& st, bool expected=true)
 		{
 			Serbian serbian;
-			for (const auto& s : ss)
+			if (expected)
+				Assert::IsTrue(translator::parse<Serbian>(st, serbian));
+			else
+				Assert::IsFalse(translator::parse<Serbian>(st, serbian));
+		}
+		Serbian serbian;
+
+	public:
+		TEST_METHOD(every_noun_has_gender)
+		{
+			for (const auto& word : serbian.dictWords)
 			{
-				if (expected)
-					Assert::IsTrue(translator::parse<Serbian>(s, serbian));
-				else
-					Assert::IsFalse(translator::parse<Serbian>(s, serbian));
+				if (word.wordtype == Serbian::word_type::именица)
+				{
+					Assert::IsTrue(
+						word.attrs.count(Serbian::attributes::мушки) ||
+						word.attrs.count(Serbian::attributes::женски) ||
+						word.attrs.count(Serbian::attributes::средњи));
+				}
 			}
 		}
 
-		TEST_METHOD(serbian_positive_tests)
+		TEST_METHOD(serbian_rules)
 		{
-			test(
-			{
-				L"ја гледам",
-				L"ти радиш",
-				L"он пева",
-			});
-		}
-
-		TEST_METHOD(serbian_negative_tests)
-		{
-			test(
-			{
-				L"ја радиш",
-				L"он певам",
-			}, false);
+			test(L"ја гледам");
+			test(L"ја радиш", false);
+			test(L"ти радиш");
+			test(L"он пева");
+			test(L"он певам", false);
 		}
 	};
 }
