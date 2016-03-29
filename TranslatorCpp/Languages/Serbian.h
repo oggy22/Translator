@@ -58,7 +58,7 @@ struct Serbian
 	using attrs = attributes;
 	using cats = attribute_categories;
 
-	const std::unordered_map<attrs, cats> belongs_to_category = std::unordered_map<attrs, cats>
+	const std::unordered_map<attrs, cats> belongs_to_category
 	{
 		// Падежи
 		{ ном, cats::падеж },

@@ -3,7 +3,9 @@
 #include <algorithm>
 #include <cassert>
 #include <set>
+#include <unordered_set>
 #include <map>
+#include <unordered_map>
 #include <string>
 #include <vector>
 #include <utility>
@@ -12,6 +14,35 @@
 namespace translator
 {
 	using namespace std;
+
+	template <typename Language>
+	class cat_attr_holder
+	{
+		template <class T, class U> using umap = typename std::unordered_map<T, U>;
+		template <class T> using uset = std::unordered_set<T>;
+		using attr_t = typename Language::attributes;
+		using cat_t = typename Language::categories;
+		umap<cat_t, attr_t> mapping;
+		set<cat_t> free_cat;
+		uset<attr_t> free_attr;
+
+	public:
+		template <typename... Values>
+		cat_attr_holder(attr_t attr, Values... values) : cat_attr_holder(values...)
+		{
+			if (free_attr.count(attr))
+				throw "Attribute already contained";
+			free_attr.emplace(attr)
+		}
+
+		template <typename... Values>
+		cat_attr_holder(cat_t cat, Values... values) : cat_attr_holder(values...)
+		{
+			if (free_cat.count(cat))
+				throw "Category already contained";
+			free_cat.emplace(cat)
+		}
+	};
 
 	template <typename Char>
 	class pattern
@@ -260,7 +291,7 @@ namespace translator
 		// construct a stream from the string
 		std::basic_stringstream<typename Language::letter> strstr(s);
 
-		// use stream iterators to copy the stream to the vector as whitespace separated strings
+		// use stream iterators to copy the stream to the vector as whitespaces separate strings
 		std::istream_iterator<typename Language::string_t, typename Language::letter> it(strstr);
 		std::istream_iterator<typename Language::string_t, typename Language::letter> end;
 		std::vector<typename Language::string_t> vs(it, end);
