@@ -1,42 +1,18 @@
-#include <initializer_list>
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include "windows.h"
 
-template <class T>
-class  V {
-public:
+using namespace std;
 
-	V(){}
-	V(const V<T>&& v){}
-        V(const std::initializer_list<T> &v) {}
-        ~V() {}
-};
-
-template <class L>
-struct n
+int main()
 {
-	n(
-		V<int> attrs = V<int>()
-		) {}
-};
-
-template <class L>
-struct r
-{
-	n<L> l;
-};
-
-struct E
-{
-	V<r<E>> s;
-
-	E()
-		: 
-	s({{ }})
+	while (true)
 	{
+		string s;
+		cin >> s;
+		reverse(s.begin(), s.end());
+		cout << s << endl;
+		//Sleep(1000);
 	}
-};
-
-int main1()
-{
-	E e;
-	return 0;
 }

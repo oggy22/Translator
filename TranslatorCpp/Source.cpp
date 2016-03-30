@@ -1,9 +1,20 @@
-#include <iostream>
+﻿#include <iostream>
 #include <cstdio>
 #include <vector>
 #include <string>
 #include "Languages\English.h"
 #include "Languages\Serbian.h"
+
+void testConio() {
+	wchar_t buffer[0x1000];
+	std::size_t numRead = 0;
+	if (_cgetws_s(buffer, &numRead)) return;
+	const std::wstring first(buffer, numRead);
+	if (_cgetws_s(buffer, &numRead)) return;
+	const std::wstring second(buffer, numRead);
+	const std::wstring result = first + second + L'\n';
+	_cputws(result.c_str());
+}
 
 int main5()
 {

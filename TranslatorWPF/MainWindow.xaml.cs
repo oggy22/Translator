@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using System.Diagnostics;
+
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace TranslatorWPF
 {
@@ -20,14 +12,48 @@ namespace TranslatorWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        Process proc;
+        System.IO.StreamWriter processInput;
+
         public MainWindow()
         {
             InitializeComponent();
+            InitTranslatorProcess();
+        }
+
+        private void InitTranslatorProcess()
+        {
+            proc = new Process();
+            proc.StartInfo.FileName = @"D:\Solutions\Translator\Release\TranslatorCpp.exe";
+
+            // set up output redirection
+            proc.StartInfo.RedirectStandardOutput = true;
+            proc.StartInfo.RedirectStandardError = true;
+            proc.StartInfo.RedirectStandardInput = true;
+            proc.EnableRaisingEvents = true;
+            proc.StartInfo.CreateNoWindow = true;
+            proc.StartInfo.UseShellExecute = false;
+
+            // see below for output handler
+            proc.ErrorDataReceived += proc_DataReceived;
+            proc.OutputDataReceived += proc_DataReceived;
+
+            proc.Start();
+
+            proc.BeginErrorReadLine();
+            proc.BeginOutputReadLine();
+            processInput = proc.StandardInput;
+        }
+
+        void proc_DataReceived(object sender, DataReceivedEventArgs e)
+        {
+            TxtDst.Dispatcher.Invoke(
+                () => { TxtDst.Text = e.Data + "\n"; });
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            TxtDst.Text = TxtSrc.Text;
+            processInput.WriteLine(TxtSrc.Text + "\n");
         }
     }
 }

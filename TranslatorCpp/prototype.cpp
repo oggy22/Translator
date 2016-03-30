@@ -116,7 +116,7 @@ public:
 	}
 };
 
-int main()
+int main2()
 {
 	node n1(noun, categories::gender);
 	node n2(noun, attributes::person1, attributes::female, categories::plurality);
@@ -126,4 +126,5 @@ int main()
 	rule r2{ {Sent}, {{pron, per3}, {verb, per3, sing}} };
 
 	//cout << attributes::female << endl;
+	return 0;
 }
