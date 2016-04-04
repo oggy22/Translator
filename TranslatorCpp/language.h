@@ -113,7 +113,7 @@ namespace translator
 	};
 
 	template <class Language>
-	struct word_t;
+	struct word_form;
 
 	template <class Language>
 	struct dictionary_word
@@ -121,11 +121,11 @@ namespace translator
 		/*const*/ typename Language::string_t word;
 		/*const*/ typename Language::word_type wordtype;
 		/*const*/ set<typename Language::attributes> attrs;
-		mutable vector<word_t<Language>> words;	//todo: this is a hack
+		mutable vector<word_form<Language>> words;	//todo: this is a hack
 	};
 
 	template <class Language>
-	struct word_t
+	struct word_form
 	{
 		typename Language::string_t _word;
 		set<typename Language::attributes> attrs;
@@ -181,7 +181,7 @@ namespace translator
 			cats.insert(c);
 		}
 
-		bool accept(const word_t<Language>& w, std::map<cats_t, attrs_t>& values) const
+		bool accept(const word_form<Language>& w, std::map<cats_t, attrs_t>& values) const
 		{
 			if (!word.empty() && word != w._word)
 				return false;
@@ -235,6 +235,31 @@ namespace translator
 	};
 
 	template <class Language>
+	class rule_application
+	{
+		rule *p_rule;
+		const std::string st;
+
+	public:
+		rule_application(const std::string& st) : st(st), p_rule(nullptr)
+		{
+
+		}
+
+		rule_application(const rule& r) : p_rule(&r)
+		{
+
+		}
+
+		int size() const
+		{
+			if (p_rule == nullptr)
+				return 0;
+			return p_rule->size();
+		}
+	};
+
+	template <class Language>
 	struct word_rule
 	{
 		pattern<typename Language::letter> source;
@@ -250,14 +275,14 @@ namespace translator
 		for (auto& w : words)
 		{
 			using namespace std;
-			vector<word_t<Language>> new_words;
+			vector<word_form<Language>> new_words;
 
 			for (auto& r : word_rules)
 			{
 				if (r.wt != w.wordtype)
 					continue;
 
-				if (any_of(w.words.begin(), w.words.end(), [&](const word_t<Language>)
+				if (any_of(w.words.begin(), w.words.end(), [&](const word_form<Language>)
 				{	return r.attrs == w.attrs;	}))
 					continue;
 
@@ -265,7 +290,7 @@ namespace translator
 					continue;
 
 				auto iter = find_if(new_words.begin(), new_words.end(),
-					[&](const word_t<Language>& w)
+					[&](const word_form<Language>& w)
 				{
 					return r.attrs == w.attrs;
 				});
@@ -273,12 +298,12 @@ namespace translator
 				typename Language::string_t word = r.source.match_and_transform(w.word, r.destination);
 				assert(word.length() != 0);
 				if (iter == new_words.end())
-					new_words.emplace_back(word_t<Language> { word, r.attrs});
+					new_words.emplace_back(word_form<Language> { word, r.attrs});
 				else
 					iter->_word = word;
 			}
 			w.words.insert(w.words.end(), new_words.begin(), new_words.end()); 
-			std::for_each(w.words.begin(), w.words.end(), [&](word_t<Language>& dw)
+			std::for_each(w.words.begin(), w.words.end(), [&](word_form<Language>& dw)
 			{
 				dw.p_dw = &w;
 			});
@@ -296,13 +321,13 @@ namespace translator
 		std::istream_iterator<typename Language::string_t, typename Language::letter> end;
 		std::vector<typename Language::string_t> vs(it, end);
 
-		std::vector<std::set<word_t<Language>*>> words(vs.size());
+		std::vector<std::set<word_form<Language>*>> words(vs.size());
 
 		// Lexical analysis
 		for (unsigned int i = 0; i < vs.size(); i++)
 		{
 			getWords<Language>(language.dictWords,
-				[&](word_t<Language>& w)
+				[&](word_form<Language>& w)
 			{
 				if (w._word == vs[i])
 					words[i].insert(&w);
