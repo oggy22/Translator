@@ -117,10 +117,10 @@ namespace translator
 
 	template <class Language>
 	struct dictionary_word
-	{	//todo: these should be const. VS update 5 probably has this bug fixed.
-		/*const*/ typename Language::string_t word;
-		/*const*/ typename Language::word_type wordtype;
-		/*const*/ set<typename Language::attributes> attrs;
+	{
+		const typename Language::string_t word;
+		const typename Language::word_type wordtype;
+		const set<typename Language::attributes> attrs;
 		mutable vector<word_form<Language>> words;	//todo: this is a hack
 	};
 
