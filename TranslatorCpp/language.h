@@ -339,27 +339,26 @@ namespace translator
 					: w.word;
 
 				// Rule matches the source?
-				if (!r.source.match(w.word))
+				if (!r.source.match(stBase))
 					continue;
 
-				auto iter = find_if(new_words.begin(), new_words.end(),
-					[&](const word_form<Language>& w)
-				{
-					return r.attrs == w.attrs;
-				});
+				// New word form to insert
+				string_t word = r.source.match_and_transform(stBase, r.destination);
 
-				string_t word = r.source.match_and_transform(w.word, r.destination);
-				assert(word.length() != 0);
-				if (iter == new_words.end())
-					new_words.emplace_back(word_form<Language> { word, r.attrs});
-				else
-					iter->_word = word;
+				w.words.emplace_back(word_form<Language> { word, r.attrs});
 			}
-			w.words.insert(w.words.end(), new_words.begin(), new_words.end()); 
 			std::for_each(w.words.begin(), w.words.end(), [&](word_form<Language>& dw)
 			{
 				dw.p_dw = &w;
 			});
+			w.words.erase(std::remove_if(
+				w.words.begin(), w.words.end(),
+				[](const auto& w)
+			{
+				if (w.attrs.size() != 1)
+					return false;
+				return true;
+			}), w.words.end());
 		}
 	}
 
