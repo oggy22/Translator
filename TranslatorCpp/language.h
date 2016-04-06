@@ -122,14 +122,26 @@ namespace translator
 		const typename Language::word_type wordtype;
 		const set<typename Language::attributes> attrs;
 		mutable vector<word_form<Language>> words;	//todo: this is a hack
+		const word_form<Language>& find_word_form(const set<typename Language::attributes>& attrs) const
+		{
+			for (const auto& w : words)
+				if (w.attrs == attrs)
+					return w;
+			assert(false);
+			return words[0];
+		}
 	};
 
 	template <class Language>
 	struct word_form
 	{
-		typename Language::string_t _word;
+		using string_t = typename Language::string_t;
+		string_t _word;
 		set<typename Language::attributes> attrs;
 		dictionary_word<Language> *p_dw;
+
+		//word_form(typename Language::string_t _word) : _word(_word), attrs(), p_dw(nullptr){}
+		//word_form(int x) {}
 
 		bool contains(typename Language::attributes a) const
 		{
@@ -259,6 +271,35 @@ namespace translator
 		}
 	};
 
+	
+	template <class Language>
+	class type
+	{
+		union
+		{
+			int n;
+			typename Language::attributes attr;
+		} data;
+
+	public:
+		type()
+		{
+			data.n = -1;
+		}
+		type(typename Language::attributes attr)
+		{
+			data.attr = attr;
+		}
+		bool is_set() const
+		{
+			return data.n != -1;
+		}
+		typename Language::attributes get() const
+		{
+			return data.attr;
+		}
+	};
+
 	template <class Language>
 	struct word_rule
 	{
@@ -266,10 +307,15 @@ namespace translator
 		pattern<typename Language::letter> destination;
 		typename Language::word_type wt;
 		set<typename Language::attributes> attrs;
+		type<Language> f;
+		bool is_set() const
+		{
+			return f.is_set();
+		}
 	};
 
 	// Creates all the words given dictionary word list and word rules.
-	template<typename Language>
+	template<typename Language, typename string_t = Language::string_t>
 	void populate_words(/*const*/ vector<dictionary_word<Language>>& words, const vector<word_rule<Language>> word_rules)
 	{
 		for (auto& w : words)
@@ -279,13 +325,20 @@ namespace translator
 
 			for (auto& r : word_rules)
 			{
+				// Word type matches?
 				if (r.wt != w.wordtype)
 					continue;
 
-				if (any_of(w.words.begin(), w.words.end(), [&](const word_form<Language>)
-				{	return r.attrs == w.attrs;	}))
+				// Attribute combination already exists?
+				if (any_of(w.words.begin(), w.words.end(), [&](const word_form<Language> wf)
+				{	return r.attrs == wf.attrs;	}))
 					continue;
 
+				const string_t stBase = r.is_set()
+					? w.find_word_form({ r.f.get() })._word
+					: w.word;
+
+				// Rule matches the source?
 				if (!r.source.match(w.word))
 					continue;
 
@@ -295,7 +348,7 @@ namespace translator
 					return r.attrs == w.attrs;
 				});
 
-				typename Language::string_t word = r.source.match_and_transform(w.word, r.destination);
+				string_t word = r.source.match_and_transform(w.word, r.destination);
 				assert(word.length() != 0);
 				if (iter == new_words.end())
 					new_words.emplace_back(word_form<Language> { word, r.attrs});
