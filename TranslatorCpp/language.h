@@ -118,17 +118,35 @@ namespace translator
 	template <class Language>
 	struct dictionary_word
 	{
+		using attr_t = typename Language::attributes;
 		const typename Language::string_t word;
 		const typename Language::word_type wordtype;
 		const set<typename Language::attributes> attrs;
 		mutable vector<word_form<Language>> words;	//todo: this is a hack
-		const word_form<Language>& find_word_form(const set<typename Language::attributes>& attrs) const
+		const word_form<Language>& find_word_form(const set<attr_t>& attrs) const
 		{
 			for (const auto& w : words)
 				if (w.attrs == attrs)
 					return w;
 			assert(false);
 			return words[0];
+		}
+		bool operator()(attr_t a) const
+		{
+			for (const auto& w : words)
+				if (w.attrs.size() == 1 && *w.attrs.begin() == a)
+					return true;
+			return false;
+		}
+
+		bool operator()(attr_t a1, attr_t a2) const
+		{
+			for (const auto& w : words)
+				if (w.attrs.size() == 2
+					&& w.attrs.find(a1) != w.attrs.end()
+					&& w.attrs.find(a2) != w.attrs.end())
+					return true;
+			return false;
 		}
 	};
 
