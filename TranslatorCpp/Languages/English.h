@@ -72,6 +72,11 @@ struct English
 		{ { "%o" },{ "%oes" }, verb,{ sing, per3 } },	//goes, does
 		{ { "%" },{ "%s" }, verb,{ sing, per3 } },
 		{ { "%" },{ "%" }, verb,{ plur } },
+		
+		{ { "%e" },{ "%ed" }, verb,{ past } },
+		{ { "%" },{ "%ed" }, verb,{ past } },
+		{ { "%e" },{ "%ed" }, verb,{ perf } },
+		{ { "%" },{ "%ed" }, verb,{ perf } },
 
 		//// Pronouns
 		{ { "%" },{ "%" }, pron,{} },
@@ -120,7 +125,7 @@ struct English
 		{ "go", verb,{},{ { "went",{ past } },{ "gone",{ perf } } } },
 		{ "have", verb,{},
 		{
-			{ "has",{ sing, per1 } },
+			{ "has",{ sing, per3 } },
 			{ "had",{ past } },
 			{ "had",{ perf } }
 		} },
@@ -134,7 +139,7 @@ struct English
 		//Nouns
 		{ "house", noun },
 		{ "wife", noun },
-		{ "woman", noun },
+		{ "woman", noun, {}, {{"women",{plur}} }},
 	}),
 	rules(
 			{
