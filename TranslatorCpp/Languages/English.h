@@ -28,40 +28,108 @@ struct English
 		posses, refl, accus
 	};
 
+#define past attributes::past
+#define perf attributes::perfect
+#define per1 attributes::per1
+#define per2 attributes::per2
+#define per3 attributes::per3
+#define sing attributes::sing
+#define plur attributes::plur
+
+	const std::set<attributes> phony_attrs{ };
+
 	const std::unordered_map<attributes, attribute_categories> belongs_to_category = std::unordered_map<attributes, attribute_categories>
 	{
-		{ attributes::per1, attribute_categories::person },
-		{ attributes::per2, attribute_categories::person },
-		{ attributes::per3, attribute_categories::person },
+		{ per1, attribute_categories::person },
+		{ per2, attribute_categories::person },
+		{ per3, attribute_categories::person },
 	};
 
-	const std::vector<translator::dictionary_word<English>> dictWords;
+	const std::vector<translator::word_rule<English>> wordRules;
+
+	/*const*/ std::vector<translator::dictionary_word<English>> dictWords;
 
 	const std::vector<translator::node<English>> nodes;
 
 	const std::vector<translator::rule<English>> rules;
 
 	English()
-		: dictWords(
+		:
+	wordRules(
 	{
-		{ "I", word_type::pronoun, { attributes::per1, attributes::sing },
+		// Nouns
+		{ { "%" },{ "%" }, noun, { sing } },
+		{ { "%" },{ "%s" }, noun, { plur } },
+
+		//// Verbs
+		{ { "%" },{ "%" }, verb,{ sing, per1 } },
+		{ { "%" },{ "%" }, verb,{ sing, per2 } },
+		{ { "%o" },{ "%oes" }, verb,{ sing, per3 } },	//goes, does
+		{ { "%" },{ "%s" }, verb,{ sing, per3 } },
+		{ { "%" },{ "%" }, verb,{ plur } },
+
+		//// Pronouns
+		{ { "%" },{ "%" }, pron,{} },
+	}),
+	dictWords(
+	{
+		{ "I", pron, { sing, per1 },
 		{
 			{ "me", { attributes::accus } },
 			{ "my", { attributes::posses } },
 			{ "mine", { attributes::posses, attributes::refl } },
 			{ "myself", { attributes::refl } },
 		} },
-		{ "you", word_type::pronoun, { attributes::per2, attributes::sing },
+		{ "you", pron, { sing, per2 },
 		{
 			{ "you", { attributes::accus } },
 			{ "your", { attributes::posses } },
 			{ "yours", { attributes::posses } },
 			{ "yourself", { attributes::refl } },
 		} },
-		{ "he", word_type::pronoun, { attributes::per3, attributes::sing } },
-		{ "we", word_type::pronoun, { attributes::per1, attributes::plur } },
-		{ "you", word_type::pronoun, { attributes::per2, attributes::plur } },
-		{ "they", word_type::pronoun, { attributes::per3, attributes::plur } }
+		{ "he", pron, { sing, per3 } },
+		{ "we", pron, { plur, per1 } },
+		{ "you", pron, { plur, per2 } },
+		{ "they", pron,{ plur, per3 } },
+			
+		//Verbs:
+		{ "be", verb,{},
+		{
+			{ "am",{ sing, per1 } },
+			{ "are",{ sing, per2 } },
+			{ "is",{ sing, per3 } },
+			{ "are",{ plur } },
+			{ "was",{ past, sing, per1 } },
+			{ "were",{ past, sing, per2 } },
+			{ "was",{ past, sing, per3 } },
+			{ "were",{ past, plur } },
+			{ "been",{ perf } } }
+		},
+		{ "can", verb,{},
+		{
+			{ "can",{ sing, per3 } },
+			{ "could",{ past } },
+			{ "could", { perf } } }
+		},
+		{ "do", verb,{},{ { "did",{ past } },{ "done",{ perf } } } },
+		{ "go", verb,{},{ { "went",{ past } },{ "gone",{ perf } } } },
+		{ "have", verb,{},
+		{
+			{ "has",{ sing, per1 } },
+			{ "had",{ past } },
+			{ "had",{ perf } }
+		} },
+		{ "hear", verb,{},{ { "heard",{ past } },{ "heard",{ perf } } } },
+		{ "say", verb,{},{ { "said",{ past } },{ "said",{ perf } } } },
+		{ "see", verb,{},{ { "saw",{ past } },{ "seen",{ perf } } } },
+		{ "talk", verb },
+		{ "walk", verb },
+		{ "want", verb },
+
+		//Nouns
+		{ "house", noun },
+		{ "wife", noun },
+		{ "woman", noun },
 	}),
 	rules(
 			{
@@ -72,28 +140,9 @@ struct English
 			}
 	)
 	{
-		translator::pattern<char> pttr{ "%s" };
 
-		translator::word_rule<English> rule{ { "%s" }, { "%s" }, noun, {} };
 
-		std::vector<translator::word_rule<English>> word_rules =
-		{
-			// Nouns
-			{ {"%"}, {"%"}, noun, { attributes::sing } },
-			{ {"%"}, {"%s"}, noun, { attributes::plur } },
-
-			//// Verbs
-			{ { "%" }, { "%" }, verb, { attributes::sing, attributes::per1 } },
-			{ { "%" }, { "%" }, verb, { attributes::sing, attributes::per2 } },
-			{ { "%" }, { "%s" }, verb, { attributes::sing, attributes::per3 } },
-			{ { "%o" }, { "%oes" }, verb, { attributes::sing, attributes::per3 } },	//goes, does
-			{ { "%" }, { "%" }, verb, { attributes::plur } },
-			
-			//// Pronouns
-			{ { "%" }, { "%" }, noun, {} },
-		};
-
-		//translator::populate_words(dictWords, word_rules);
+		translator::populate_words(dictWords, wordRules);
 	}
 
 	void parse(string_t s)
@@ -105,5 +154,15 @@ struct English
 		std::istream_iterator<string_t> it(strstr);
 		std::istream_iterator<string_t> end;
 		std::vector<string_t> results(it, end);
+	}
+
+	template <typename Lambda>
+	void traverse_words(Lambda fun) const
+	{
+		for (const auto& w : dictWords)
+		{
+			for (const auto& word : w.words)
+				fun(word);
+		}
 	}
 };
