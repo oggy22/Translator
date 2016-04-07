@@ -373,9 +373,7 @@ namespace translator
 				w.words.begin(), w.words.end(),
 				[](const auto& w)
 			{
-				if (w.attrs.size() != 1)
-					return false;
-				return true;
+				return w.attrs.size() == 1 && Language::is_phony_attribute(*w.attrs.begin());
 			}), w.words.end());
 		}
 	}

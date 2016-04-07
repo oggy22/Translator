@@ -44,6 +44,11 @@ struct English
 		{ per2, attribute_categories::person },
 		{ per3, attribute_categories::person },
 	};
+	
+	static bool is_phony_attribute(attributes a)
+	{
+		return false;
+	}
 
 	const std::vector<translator::word_rule<English>> wordRules;
 
