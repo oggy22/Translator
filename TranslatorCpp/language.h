@@ -1,7 +1,6 @@
 #pragma once
 
 #include <algorithm>
-#include <cassert>
 #include <set>
 #include <unordered_set>
 #include <map>
@@ -10,6 +9,8 @@
 #include <vector>
 #include <utility>
 #include <iterator>
+
+#include "Assert.h"
 
 namespace translator
 {
@@ -76,8 +77,8 @@ namespace translator
 		{
 			const Char joker = Char('%');
 			const typename string_t::size_type pos = s.find(joker);
-			assert(0 <= pos && pos < s.length());
-			assert(s.find(joker, pos + 1) == string_t::npos);
+			ASSERT(0 <= pos && pos < s.length());
+			ASSERT(s.find(joker, pos + 1) == string_t::npos);
 			pre = s.substr(0, pos);
 			post = s.substr(pos + 1);
 		}
@@ -128,8 +129,7 @@ namespace translator
 			for (const auto& w : words)
 				if (w.attrs == attrs)
 					return w;
-			assert(false);
-			return words[0];
+			ASSERT(false);
 		}
 		bool operator()(attr_t a) const
 		{

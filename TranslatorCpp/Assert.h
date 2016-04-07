@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef DEBUG
-	#define Assert(x) { if (!(x)) throw std::exception(#x);}
+	#define ASSERT(x) { if (!(x)) throw std::exception(#x);}
 #else
-	#define __assume (x)
+	#define ASSERT(x) (__assume (x))
 #endif

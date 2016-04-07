@@ -1,5 +1,3 @@
-#include <cassert>
-
 template <typename T>
 class matrix
 {
@@ -18,8 +16,8 @@ public:
 
 	T& operator()(int i, int j)
 	{
-		assert(0 <= i && i < rows);
-		assert(0 <= j && j < columns);
+		ASSERT(0 <= i && i < rows);
+		ASSERT(0 <= j && j < columns);
 		return data[i*columns + j];
 	}
 };
