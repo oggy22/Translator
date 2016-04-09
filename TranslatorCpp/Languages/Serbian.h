@@ -90,6 +90,7 @@ struct Serbian
 		{ лиц2, cats::лице },
 		{ лиц3, cats::лице }
 	};
+
 	static bool is_phony_attribute(attributes a)
 	{
 		return a == оснмнож || a == перфосн || a == презосн;

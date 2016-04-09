@@ -10,10 +10,7 @@ namespace TranslatorTest
 		void test(const std::wstring& st, bool expected=true)
 		{
 			Serbian serbian;
-			if (expected)
-				Assert::IsTrue(translator::parse<Serbian>(st, serbian));
-			else
-				Assert::IsFalse(translator::parse<Serbian>(st, serbian));
+			Assert::AreEqual(expected, translator::parse(serbian, st));
 		}
 		Serbian serbian;
 
@@ -117,7 +114,7 @@ namespace TranslatorTest
 		{
 			for (const auto& word : serbian.dictWords)
 			{
-				if (word.wordtype == Serbian::word_type::придев)
+				if (word.wordtype == Serbian::word_type::прилог)
 				{
 					Assert::AreEqual<int>(3, word.words.size(), (word.word + L" doesn't have 3 forms").c_str());
 					test_word_forms(word,
