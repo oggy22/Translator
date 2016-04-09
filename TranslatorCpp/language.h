@@ -156,7 +156,7 @@ namespace translator
 		using string_t = typename Language::string_t;
 		string_t _word;
 		set<typename Language::attributes> attrs;
-		dictionary_word<Language> *p_dw;
+		const dictionary_word<Language> *p_dw;
 
 		//word_form(typename Language::string_t _word) : _word(_word), attrs(), p_dw(nullptr){}
 		//word_form(int x) {}
@@ -334,7 +334,7 @@ namespace translator
 
 	// Creates all the words given dictionary word list and word rules.
 	template<typename Language, typename string_t = Language::string_t>
-	void populate_words(/*const*/ vector<dictionary_word<Language>>& words, const vector<word_rule<Language>> word_rules)
+	void populate_words(const vector<dictionary_word<Language>>& words, const vector<word_rule<Language>> word_rules)
 	{
 		for (auto& w : words)
 		{
