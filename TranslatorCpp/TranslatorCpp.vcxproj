@@ -169,6 +169,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Parse.cpp" />
     <ClCompile Include="proba.cpp" />
     <ClCompile Include="prototype.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -180,7 +181,7 @@
     <ClInclude Include="Languages\Serbian.h" />
     <ClInclude Include="Languages\Serbian_rules.h" />
     <ClInclude Include="Languages\Serbian_words.h" />
-    <ClInclude Include="matrix.h" />
+    <ClInclude Include="parsing_triangle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

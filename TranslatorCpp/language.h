@@ -10,6 +10,7 @@
 #include <utility>
 #include <iterator>
 
+#include "parsing_triangle.h"
 #include "Assert.h"
 
 namespace translator
@@ -17,19 +18,19 @@ namespace translator
 	using namespace std;
 
 	template <typename Language>
-	class cat_attr_holder
+	class attribute_manager
 	{
 		template <class T, class U> using umap = typename std::unordered_map<T, U>;
 		template <class T> using uset = std::unordered_set<T>;
 		using attr_t = typename Language::attributes;
 		using cat_t = typename Language::categories;
 		umap<cat_t, attr_t> mapping;
-		set<cat_t> free_cat;
+		uset<cat_t> free_cat;
 		uset<attr_t> free_attr;
 
 	public:
 		template <typename... Values>
-		cat_attr_holder(attr_t attr, Values... values) : cat_attr_holder(values...)
+		attribute_manager(attr_t attr, Values... values) : attribute_manager(values...)
 		{
 			if (free_attr.count(attr))
 				throw "Attribute already contained";
@@ -37,11 +38,35 @@ namespace translator
 		}
 
 		template <typename... Values>
-		cat_attr_holder(cat_t cat, Values... values) : cat_attr_holder(values...)
+		attribute_manager(cat_t cat, Values... values) : attribute_manager(values...)
 		{
 			if (free_cat.count(cat))
 				throw "Category already contained";
 			free_cat.emplace(cat)
+		}
+
+		bool operator()(cat_t c) const
+		{
+			return mapping.count(c) > 0;
+		}
+
+		bool operator()(attr_t a) const
+		{
+			if (free_attr.count(a) > 0)
+				return true;
+
+			for (const auto& pair : mapping)
+				if (pair.second == a)
+					return true;
+
+			return false;
+		}
+
+		bool operator[](cat_t c) const
+		{
+			auto iter = mapping.find(c);
+			ASSERT(iter != mapping.end());
+			return *iter;
 		}
 	};
 
@@ -175,7 +200,7 @@ namespace translator
 	};
 
 	template <class Language>
-	class node
+	class rule_node
 	{
 		using attrs_t = typename Language::attributes;
 		using cats_t = typename Language::attribute_categories;
@@ -186,27 +211,27 @@ namespace translator
 		set<attrs_t> attrs;
 
 	public:
-		node(
+		rule_node(
 			typename Language::string_t word
 			) : word(word) {}
 
-		node(
+		rule_node(
 			typename Language::string_t word,
 			typename Language::word_type wordtype
 			) : word(word), wordtype(wordtype) {}
 
-		node(
+		rule_node(
 			typename Language::word_type wordtype
 			) : wordtype(wordtype) {}
 
 		template <typename... Values>
-		node(typename Language::word_type wordtype, attrs_t a, Values... values) : node(wordtype, values...)
+		rule_node(typename Language::word_type wordtype, attrs_t a, Values... values) : rule_node(wordtype, values...)
 		{
 			attrs.insert(a);
 		}
 
 		template <typename... Values>
-		node(typename Language::word_type wordtype, cats_t c, Values... values) : node(wordtype, values...)
+		rule_node(typename Language::word_type wordtype, cats_t c, Values... values) : rule_node(wordtype, values...)
 		{
 			cats.insert(c);
 		}
@@ -240,13 +265,14 @@ namespace translator
 
 			return true;
 		}
+
 	};
 
 	template <class Language>
 	class rule
 	{
 	public:
-		using node_t = node<Language>;
+		using node_t = rule_node<Language>;
 		using right_type = vector<node_t>;
 		using size_type = typename right_type::size_type;
 		
@@ -265,20 +291,60 @@ namespace translator
 	};
 
 	template <class Language>
-	class rule_application
+	class parsing_node
 	{
-		rule *p_rule;
-		const std::string st;
+		using string_t = typename Language::string_t;
+		const string_t st;
+		const word_form<Language>* const p_wf;
+		const rule<Language> * const p_rule;
+		const std::vector<const parsing_node*> children;
 
 	public:
-		rule_application(const std::string& st) : st(st), p_rule(nullptr)
-		{
 
+		#pragma region Constructors
+		// Literal
+		parsing_node(const string_t& st) : st(st), p_rule(nullptr), p_wf(nullptr)
+		{
+			ASSERT(is_literal() && !is_word_form() && !is_rule_application());
 		}
 
-		rule_application(const rule& r) : p_rule(&r)
+		// Word Form
+		parsing_node(const word_form<Language>& wf) : st(), p_wf(&wf), p_rule(nullptr)
 		{
+			ASSERT(!is_literal() && is_word_form() && !is_rule_application());
+		}
 
+		// Rule Application
+		template <typename...PN>
+		parsing_node(const rule<Language>& r, const PN*... pn) : st(), p_wf(nullptr), p_rule(&r), children({ pn... })
+		{
+			//check_parameters(pn...);
+			ASSERT(!is_literal() && !is_word_form() && is_rule_application());
+		}
+
+		template <typename...PN>
+		inline void check_parameters(parsing_node<Language>* pn, const PN* const ... pns)
+		{
+			static_assert(std::is_same<int,int>::value, "Must be parsing_node<Language>");
+			check_parameters(pns...);
+		}
+
+		inline void check_parameters() {}
+		#pragma endregion
+
+		bool is_literal() const
+		{
+			return st.size() > 0;
+		}
+
+		bool is_word_form() const
+		{
+			return p_wf != nullptr;
+		}
+
+		bool is_rule_application() const
+		{
+			return p_rule != nullptr;
 		}
 
 		int size() const
@@ -287,9 +353,14 @@ namespace translator
 				return 0;
 			return p_rule->size();
 		}
+
+		bool accept(const rule_node<Language>& nd) const
+		{
+			//todo: Here should be attribute arithmetic
+			return true;
+		}
 	};
 
-	
 	template <class Language>
 	class type
 	{
@@ -339,7 +410,6 @@ namespace translator
 		for (auto& w : words)
 		{
 			using namespace std;
-			vector<word_form<Language>> new_words;
 
 			for (auto& r : word_rules)
 			{
@@ -378,52 +448,77 @@ namespace translator
 		}
 	}
 
-	template <typename Language>
-	bool parse(typename Language::string_t s, const Language& language)
+	template <typename Language, typename letter = Language::letter, typename string_t = Language::string_t>
+	bool parse(const Language& language, typename Language::string_t s)
 	{
 		// construct a stream from the string
 		std::basic_stringstream<typename Language::letter> strstr(s);
 
 		// use stream iterators to copy the stream to the vector as whitespaces separate strings
-		std::istream_iterator<typename Language::string_t, typename Language::letter> it(strstr);
-		std::istream_iterator<typename Language::string_t, typename Language::letter> end;
-		std::vector<typename Language::string_t> vs(it, end);
+		std::istream_iterator<string_t, letter> it(strstr);
+		std::istream_iterator<string_t, letter> end;
+		std::vector<string_t> vs(it, end);
 
-		std::vector<std::set<word_form<Language>*>> words(vs.size());
+		parsing_triangle<std::vector<parsing_node<Language>>> pt(vs.size());
 
 		// Lexical analysis
 		for (unsigned int i = 0; i < vs.size(); i++)
 		{
+			pt(i, i).emplace_back(parsing_node<Language>(vs[i]));
+
 			getWords<Language>(language.dictWords,
-				[&](word_form<Language>& w)
+				[&](const word_form<Language>& w)
 			{
 				if (w._word == vs[i])
-					words[i].insert(&w);
+					pt(i,i).emplace_back(parsing_node<Language>(w));
 			});
-			if (words[i].size() == 0)
-				return false;
 		}
 
 		// Syntax analysis
-		for (const auto& rule : language.rules)
-		{
-			if (rule.size() != vs.size())
-				continue;
+		for (unsigned int len = 1; len <= vs.size(); len++)
+			for (int first = 0; first + len <= vs.size(); first++)
+				for (const auto& rule : language.rules)
+				{
+					int end = first + len - 1;
+					if (rule.size() > len)
+						continue;
+					
+					switch (rule.size())
+					{
+					case 1:
+						for (const parsing_node<Language>& pn : pt(first, end))
+						{
+							if (pn.accept(rule[0]))
+								pt(first, end).emplace_back(parsing_node<Language>(rule, &pn));
+						}
+						break;
+					case 2:
+						for (int second = first + 1; second <= end; second++)
+						{
+							for (const parsing_node<Language>& pn1 : pt(first, second - 1))
+							{
+								if (!pn1.accept(rule[0]))
+									continue;
 
-			using attrs_t = typename Language::attributes;
-			using cats_t = typename Language::attribute_categories;
+								for (const parsing_node<Language>& pn2 : pt(second, end))
+								{
+									if (!pn2.accept(rule[1]))
+										continue;
 
-			std::map<cats_t, attrs_t> values;
-			for (unsigned int i = 0; i < rule.size(); i++)
-			{
-				if (!rule[i].accept(**words[i].begin(), values))
-					return false;
-			}
+									pt(first, end).emplace_back(parsing_node<Language>(rule, &pn1, &pn2));
+								}
+							}
+						}
+						break;
+					case 3:
+						break;
+					default:
+						break;
+					}
+					return true;
+				}
 
-			return true;
-		}
-
-		return false;
+		return pt(0, vs.size() - 1).size() > 0;
 	}
 
 	template<typename Language, typename Lambda>
