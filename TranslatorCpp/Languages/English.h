@@ -52,7 +52,7 @@ struct English
 
 	const std::vector<translator::word_rule<English>> wordRules;
 
-	/*const*/ std::vector<translator::dictionary_word<English>> dictWords;
+	const std::vector<translator::dictionary_word<English>> dictWords;
 
 	const std::vector<translator::rule_node<English>> nodes;
 

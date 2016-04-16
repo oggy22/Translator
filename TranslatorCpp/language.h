@@ -23,12 +23,14 @@ namespace translator
 		template <class T, class U> using umap = typename std::unordered_map<T, U>;
 		template <class T> using uset = std::unordered_set<T>;
 		using attr_t = typename Language::attributes;
-		using cat_t = typename Language::categories;
+		using cat_t = typename Language::attribute_categories;
 		umap<cat_t, attr_t> mapping;
 		uset<cat_t> free_cat;
 		uset<attr_t> free_attr;
 
 	public:
+		attribute_manager() {}
+
 		template <typename... Values>
 		attribute_manager(attr_t attr, Values... values) : attribute_manager(values...)
 		{
@@ -354,7 +356,7 @@ namespace translator
 			return p_rule->size();
 		}
 
-		bool accept(const rule_node<Language>& nd) const
+		bool accept(const rule_node<Language>& nd, attribute_manager<Language>& am) const
 		{
 			//todo: Here should be attribute arithmetic
 			return true;
@@ -488,7 +490,8 @@ namespace translator
 					case 1:
 						for (const parsing_node<Language>& pn : pt(first, end))
 						{
-							if (pn.accept(rule[0]))
+							attribute_manager<Language> am;
+							if (pn.accept(rule[0], am))
 								pt(first, end).emplace_back(parsing_node<Language>(rule, &pn));
 						}
 						break;
@@ -497,12 +500,13 @@ namespace translator
 						{
 							for (const parsing_node<Language>& pn1 : pt(first, second - 1))
 							{
-								if (!pn1.accept(rule[0]))
+								attribute_manager<Language> am;
+								if (!pn1.accept(rule[0], am))
 									continue;
 
 								for (const parsing_node<Language>& pn2 : pt(second, end))
 								{
-									if (!pn2.accept(rule[1]))
+									if (!pn2.accept(rule[1], am))
 										continue;
 
 									pt(first, end).emplace_back(parsing_node<Language>(rule, &pn1, &pn2));
