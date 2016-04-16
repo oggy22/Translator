@@ -78,7 +78,7 @@ namespace translator
 		using string_t = basic_string < Char >;
 		string_t pre, post;
 
-		int length() const
+		size_t length() const
 		{
 			return pre.length() + post.length();
 		}
@@ -134,7 +134,7 @@ namespace translator
 			if (!match(input))
 				return string_t();
 
-			int core_len = input.length() - length();
+			size_t core_len = input.length() - length();
 
 			return to.pre + input.substr(pre.length(), core_len) + to.post;
 		}

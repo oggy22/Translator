@@ -72,7 +72,7 @@ namespace TranslatorTest
 			{
 				if (word.wordtype == Serbian::word_type::именица)
 				{
-					Assert::AreEqual<int>(7 * 2, word.words.size(), (word.word + L" doesn't have 14 forms").c_str());
+					Assert::AreEqual<size_t>(7 * 2, word.words.size(), (word.word + L" doesn't have 14 forms").c_str());
 					test_word_forms(word,
 					{ attr_t::номинатив, attr_t::генитив, attr_t::датив, attr_t::акузатив, attr_t::вокатив, attr_t::инструментал, attr_t::локатив },
 					{ attr_t::једнина, attr_t::множина });
@@ -86,7 +86,7 @@ namespace TranslatorTest
 			{
 				if (word.wordtype == Serbian::word_type::глагол)
 				{
-					Assert::AreEqual<int>(3 * 2, word.words.size(), (word.word + L" doesn't have 6 forms").c_str());
+					Assert::AreEqual<size_t>(3 * 2, word.words.size(), (word.word + L" doesn't have 6 forms").c_str());
 					test_word_forms(word,
 					{ attr_t::једнина, attr_t::множина },
 					{ attr_t::лице1, attr_t::лице2, attr_t::лице3 });
@@ -100,7 +100,7 @@ namespace TranslatorTest
 			{
 				if (word.wordtype == Serbian::word_type::придев)
 				{
-					Assert::AreEqual<int>(3 * 2 * 7, word.words.size(), (word.word + L" doesn't have 42 forms").c_str());
+					Assert::AreEqual<size_t>(3 * 2 * 7, word.words.size(), (word.word + L" doesn't have 42 forms").c_str());
 					test_word_forms(word,
 					{ attr_t::мушки, attr_t::женски, attr_t::средњи },
 					{ attr_t::једнина, attr_t::множина },
@@ -116,7 +116,7 @@ namespace TranslatorTest
 			{
 				if (word.wordtype == Serbian::word_type::прилог)
 				{
-					Assert::AreEqual<int>(3, word.words.size(), (word.word + L" doesn't have 3 forms").c_str());
+					Assert::AreEqual<size_t>(3, word.words.size(), (word.word + L" doesn't have 3 forms").c_str());
 					test_word_forms(word,
 					{ attr_t::позитив, attr_t::компаратив, attr_t::суперлатив }
 					);

@@ -4,10 +4,10 @@ template <typename T>
 class parsing_triangle
 {
 	T *data;
-	int n;
+	size_t n;
 
 public:
-	parsing_triangle(int n)
+	parsing_triangle(size_t n)
 		: n(n), data(new T[n*n])
 	{}
 
@@ -16,7 +16,7 @@ public:
 		delete[] data;
 	}
 
-	T& operator()(int i, int j)
+	T& operator()(size_t i, size_t j)
 	{
 		ASSERT(0 <= i && i <=j && j<n);
 		return data[i*n + j];
