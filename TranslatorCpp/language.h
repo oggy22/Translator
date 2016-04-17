@@ -413,8 +413,9 @@ namespace translator
 		{
 			using namespace std;
 
-			for (auto& r : word_rules)
+			for (auto p_r = word_rules.crbegin(); p_r != word_rules.crend(); p_r++)
 			{
+				auto& r = *p_r;
 				// Word type matches?
 				if (r.wt != w.wordtype)
 					continue;
