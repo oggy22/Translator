@@ -5,6 +5,9 @@
     <ClCompile Include="proba.cpp" />
     <ClCompile Include="prototype.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Serbian.cpp">
+      <Filter>Languages</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assert.h" />

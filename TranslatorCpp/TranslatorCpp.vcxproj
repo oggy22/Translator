@@ -172,6 +172,9 @@
     <ClCompile Include="Parse.cpp" />
     <ClCompile Include="proba.cpp" />
     <ClCompile Include="prototype.cpp" />
+    <ClCompile Include="Serbian.cpp">
+      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</WholeProgramOptimization>
+    </ClCompile>
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>

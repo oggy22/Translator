@@ -7,7 +7,7 @@ struct Serbian
 	using letter = wchar_t;
 	using string_t = std::basic_string < letter >;
 	
-	const Serbian::string_t Serbian::stAlphabet;
+	static const Serbian::string_t Serbian::stAlphabet;
 
 	enum class word_type {
 		именица, заменица, глагол, придев, прилог,
@@ -106,7 +106,6 @@ struct Serbian
 
 	Serbian()
 		:
-		stAlphabet(L"абвгдђежзијклљмнњопрстћуфхцчџш"),
 		wordRules(
 	{
 #include "Serbian_rules.h"
