@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Parse.cpp" />
+    <ClCompile Include="proba.cpp" />
+    <ClCompile Include="prototype.cpp" />
+    <ClCompile Include="Source.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Assert.h" />
+    <ClInclude Include="language.h" />
+    <ClInclude Include="parsing_triangle.h" />
+    <ClInclude Include="Languages\Serbian.h">
+      <Filter>Languages</Filter>
+    </ClInclude>
+    <ClInclude Include="Languages\Serbian_rules.h">
+      <Filter>Languages</Filter>
+    </ClInclude>
+    <ClInclude Include="Languages\Serbian_words.h">
+      <Filter>Languages</Filter>
+    </ClInclude>
+    <ClInclude Include="Languages\English.h">
+      <Filter>Languages</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Languages">
+      <UniqueIdentifier>{5b4c63a2-0aeb-43a6-93f5-cbba7d1e65f4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

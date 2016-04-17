@@ -1,11 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TranslatorCpp", "TranslatorCpp\TranslatorCpp.vcxproj", "{5710F855-51CF-4B1E-A57F-B45C98541958}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestTranslatorCpp", "TestTranslatorCpp\TestTranslatorCpp.vcxproj", "{0698982B-4168-40CC-A69B-CF62BD63F524}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5710F855-51CF-4B1E-A57F-B45C98541958} = {5710F855-51CF-4B1E-A57F-B45C98541958}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranslatorWPF", "TranslatorWPF\TranslatorWPF.csproj", "{02186399-DE51-4DFA-BFA4-A09E97A7863E}"
 	ProjectSection(ProjectDependencies) = postProject
