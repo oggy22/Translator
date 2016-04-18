@@ -44,52 +44,36 @@ struct Serbian
 		презентскаа_основа, перфектна_основа,
 		основа_множине
 	};
-#define ном attributes::номинатив
-#define ген attributes::генитив
-#define дат attributes::датив
-#define акуз attributes::акузатив
-#define вок attributes::вокатив
-#define инстр attributes::инструментал
-#define лок attributes::локатив
-
-#define муш attributes::мушки
-#define жен attributes::женски
-#define сред attributes::средњи
-#define лиц1 attributes::лице1
-#define лиц2 attributes::лице2
-#define лиц3 attributes::лице3
-#define једн attributes::једнина
-#define множ attributes::множина
-#define поз	attributes::позитив
-#define комп attributes::компаратив
-#define суп	attributes::суперлатив
-
-#define презосн attributes::презентскаа_основа
-#define перфосн attributes::перфектна_основа
-#define оснмнож attributes::основа_множине
 
 	using wt = word_type;
 	using attrs = attributes;
 	using cats = attribute_categories;
 
-	const std::set<attrs> phony_attrs{ презосн, перфосн, оснмнож };
+#define ном attrs::номинатив
+#define ген attrs::генитив
+#define дат attrs::датив
+#define акуз attrs::акузатив
+#define вок attrs::вокатив
+#define инстр attrs::инструментал
+#define лок attrs::локатив
 
-	const std::unordered_map<attrs, cats> belongs_to_category
-	{
-		// Падежи
-		{ ном, cats::падеж },
-		{ ген, cats::падеж },
-		{ дат, cats::падеж },
-		{ акуз, cats::падеж },
-		{ вок, cats::падеж },
-		{ инстр, cats::падеж },
-		{ лок, cats::падеж },
+#define муш attrs::мушки
+#define жен attrs::женски
+#define сред attrs::средњи
+#define лиц1 attrs::лице1
+#define лиц2 attrs::лице2
+#define лиц3 attrs::лице3
+#define једн attrs::једнина
+#define множ attrs::множина
+#define поз	attrs::позитив
+#define комп attrs::компаратив
+#define суп	attrs::суперлатив
 
-		// Лица
-		{ лиц1, cats::лице },
-		{ лиц2, cats::лице },
-		{ лиц3, cats::лице }
-	};
+#define презосн attrs::презентскаа_основа
+#define перфосн attrs::перфектна_основа
+#define оснмнож attrs::основа_множине
+
+	static const std::unordered_map<attrs, cats> belongs_to_category;
 
 	static bool is_phony_attribute(attributes a)
 	{
@@ -98,17 +82,15 @@ struct Serbian
 
 	const std::vector<translator::word_rule<Serbian>> wordRules;
 
-	/*const*/ std::vector<translator::dictionary_word<Serbian>> dictWords;
+	const std::vector<translator::dictionary_word<Serbian>> dictWords;
 
-	/*const*/ std::vector<translator::rule<Serbian>> rules;
-
-	/*const*/ std::vector<string_t> tests;
+	const std::vector<translator::rule<Serbian>> rules;
 
 	Serbian()
 		:
 		wordRules(
 	{
-#include "Serbian_rules.h"
+#include "Serbian_word_rules.h"
 	}
 			),
 
@@ -136,7 +118,7 @@ struct Serbian
 		translator::populate_words(dictWords, wordRules);
 	}
 
-	bool has_word(const string_t& st) const
+	bool has_word_form(const string_t& st) const
 	{
 		for (const auto& w : dictWords)
 		{

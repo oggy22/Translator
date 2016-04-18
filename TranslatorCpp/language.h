@@ -47,6 +47,19 @@ namespace translator
 			free_cat.emplace(cat)
 		}
 
+		template <typename... Args>
+		attribute_manager(const std::set<attr_t>& attrs, Args... args) : attribute_manager(args...)
+		{
+			for (attr_t a : attrs)
+			{
+				auto pair = Language::belongs_to_category.find(a);
+				if (pair == Language::belongs_to_category.end())
+					free_attr.insert(a);
+				else
+					mapping[pair->second] = a;
+			}
+		}
+
 		bool operator()(cat_t c) const
 		{
 			return mapping.count(c) > 0;
@@ -69,6 +82,36 @@ namespace translator
 			auto iter = mapping.find(c);
 			ASSERT(iter != mapping.end());
 			return *iter;
+		}
+
+		bool operator+=(const attribute_manager<Language>& am)
+		{
+			for (const auto& pair : am.mapping)
+				if (mapping.count(pair.first) > 0 && mapping[pair.first] != pair.second)
+					return false;
+
+			free_cat.insert(am.free_cat.begin(), am.free_cat.end());
+
+			for (const auto& pair : am.mapping)
+				mapping[pair.first] = pair.second;
+
+			for (const auto& pair : mapping)
+				free_cat.erase(pair.first);
+			
+			free_attr.insert(am.free_attr.begin(), am.free_attr.end());
+			
+			check_consistency();
+			
+			return true;
+		}
+
+		void check_consistency()
+		{
+			for (auto attr : free_attr)
+				ASSERT(Language::belongs_to_category.count(attr) == 0);
+			
+			for (auto cat : free_cat)
+				ASSERT(mapping.count(cat) == 0);
 		}
 	};
 
@@ -140,6 +183,8 @@ namespace translator
 		}
 	};
 
+#pragma region Words
+
 	template <class Language>
 	struct word_form;
 
@@ -202,29 +247,78 @@ namespace translator
 	};
 
 	template <class Language>
+	class nullable_attr
+	{
+		union
+		{
+			int n;
+			typename Language::attributes attr;
+		} data;
+
+	public:
+		nullable_attr()
+		{
+			data.n = -1;
+		}
+		nullable_attr(typename Language::attributes attr)
+		{
+			data.attr = attr;
+		}
+		bool is_set() const
+		{
+			return data.n != -1;
+		}
+		typename Language::attributes get() const
+		{
+			return data.attr;
+		}
+	};
+
+	template <class Language>
+	struct word_rule
+	{
+		pattern<typename Language::letter> source;
+		pattern<typename Language::letter> destination;
+		typename Language::word_type wt;
+		set<typename Language::attributes> attrs;
+		nullable_attr<Language> f;
+		bool is_set() const
+		{
+			return f.is_set();
+		}
+	};
+
+#pragma endregion
+
+#pragma region Rules
+
+	/// <summary>A single node in a rule, either left node, or any node on the right side</summary>
+	template <class Language>
 	class rule_node
 	{
 		using attrs_t = typename Language::attributes;
 		using cats_t = typename Language::attribute_categories;
 
-		typename Language::string_t word;
+	public:
+		const typename Language::string_t word;
 		typename Language::word_type wordtype;
 		set<cats_t> cats;
 		set<attrs_t> attrs;
 
-	public:
+		const enum node_type_t { LITERAL, TOKEN } node_type;
+
 		rule_node(
 			typename Language::string_t word
-			) : word(word) {}
+			) : word(word), node_type(LITERAL) {}
+
+		//rule_node(
+		//	typename Language::string_t word,
+		//	typename Language::word_type wordtype
+		//	) : word(word), wordtype(wordtype) {}
 
 		rule_node(
-			typename Language::string_t word,
 			typename Language::word_type wordtype
-			) : word(word), wordtype(wordtype) {}
-
-		rule_node(
-			typename Language::word_type wordtype
-			) : wordtype(wordtype) {}
+			) : wordtype(wordtype), node_type(TOKEN) {}
 
 		template <typename... Values>
 		rule_node(typename Language::word_type wordtype, attrs_t a, Values... values) : rule_node(wordtype, values...)
@@ -267,19 +361,18 @@ namespace translator
 
 			return true;
 		}
-
 	};
 
+	/// <summmary>Contains left node and right nodes of the rule.</summary>
 	template <class Language>
 	class rule
 	{
 	public:
 		using node_t = rule_node<Language>;
-		using right_type = vector<node_t>;
-		using size_type = typename right_type::size_type;
+		using size_type = typename vector<node_t>::size_type;
 		
 		node_t left;
-		right_type right;
+		vector<node_t> right;
 		
 		size_type size() const
 		{
@@ -298,11 +391,11 @@ namespace translator
 		using string_t = typename Language::string_t;
 		const string_t st;
 		const word_form<Language>* const p_wf;
-		const rule<Language> * const p_rule;
+		const rule<Language>* const p_rule;
 		const std::vector<const parsing_node*> children;
+		const attribute_manager<Language> am;
 
 	public:
-
 		#pragma region Constructors
 		// Literal
 		parsing_node(const string_t& st) : st(st), p_rule(nullptr), p_wf(nullptr)
@@ -311,7 +404,7 @@ namespace translator
 		}
 
 		// Word Form
-		parsing_node(const word_form<Language>& wf) : st(), p_wf(&wf), p_rule(nullptr)
+		parsing_node(const word_form<Language>& wf) : st(), p_wf(&wf), p_rule(nullptr), am(wf.attrs, wf.p_dw->attrs)
 		{
 			ASSERT(!is_literal() && is_word_form() && !is_rule_application());
 		}
@@ -320,14 +413,13 @@ namespace translator
 		template <typename...PN>
 		parsing_node(const rule<Language>& r, const PN*... pn) : st(), p_wf(nullptr), p_rule(&r), children({ pn... })
 		{
-			//check_parameters(pn...);
+			check_parameters(pn...);
 			ASSERT(!is_literal() && !is_word_form() && is_rule_application());
 		}
 
 		template <typename...PN>
-		inline void check_parameters(parsing_node<Language>* pn, const PN* const ... pns)
+		inline void check_parameters(const parsing_node<Language>* const pn, const PN* const ... pns)
 		{
-			static_assert(std::is_same<int,int>::value, "Must be parsing_node<Language>");
 			check_parameters(pns...);
 		}
 
@@ -356,54 +448,19 @@ namespace translator
 			return p_rule->size();
 		}
 
+		/// <summary>Checks if attribute_manager can accept this parsing_node.
+		/// Returns true iff attribute_manager has been updated</summary>
 		bool accept(const rule_node<Language>& nd, attribute_manager<Language>& am) const
 		{
+			if (is_literal())
+				return nd.node_type == nd.LITERAL && nd.word == this->st;
+
 			//todo: Here should be attribute arithmetic
-			return true;
+			return am += this->am;
 		}
 	};
 
-	template <class Language>
-	class type
-	{
-		union
-		{
-			int n;
-			typename Language::attributes attr;
-		} data;
-
-	public:
-		type()
-		{
-			data.n = -1;
-		}
-		type(typename Language::attributes attr)
-		{
-			data.attr = attr;
-		}
-		bool is_set() const
-		{
-			return data.n != -1;
-		}
-		typename Language::attributes get() const
-		{
-			return data.attr;
-		}
-	};
-
-	template <class Language>
-	struct word_rule
-	{
-		pattern<typename Language::letter> source;
-		pattern<typename Language::letter> destination;
-		typename Language::word_type wt;
-		set<typename Language::attributes> attrs;
-		type<Language> f;
-		bool is_set() const
-		{
-			return f.is_set();
-		}
-	};
+#pragma endregion
 
 	// Creates all the words given dictionary word list and word rules.
 	template<typename Language, typename string_t = Language::string_t>
@@ -501,13 +558,14 @@ namespace translator
 						{
 							for (const parsing_node<Language>& pn1 : pt(first, second - 1))
 							{
-								attribute_manager<Language> am;
-								if (!pn1.accept(rule[0], am))
+								attribute_manager<Language> am1;
+								if (!pn1.accept(rule[0], am1))
 									continue;
 
 								for (const parsing_node<Language>& pn2 : pt(second, end))
 								{
-									if (!pn2.accept(rule[1], am))
+									attribute_manager<Language> am2 = am1;
+									if (!pn2.accept(rule[1], am2))
 										continue;
 
 									pt(first, end).emplace_back(parsing_node<Language>(rule, &pn1, &pn2));
@@ -520,7 +578,7 @@ namespace translator
 					default:
 						break;
 					}
-					return true;
+					//return true;
 				}
 
 		return pt(0, vs.size() - 1).size() > 0;

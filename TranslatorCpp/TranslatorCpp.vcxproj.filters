@@ -16,13 +16,13 @@
     <ClInclude Include="Languages\Serbian.h">
       <Filter>Languages</Filter>
     </ClInclude>
-    <ClInclude Include="Languages\Serbian_rules.h">
-      <Filter>Languages</Filter>
-    </ClInclude>
     <ClInclude Include="Languages\Serbian_words.h">
       <Filter>Languages</Filter>
     </ClInclude>
     <ClInclude Include="Languages\English.h">
+      <Filter>Languages</Filter>
+    </ClInclude>
+    <ClInclude Include="Languages\Serbian_word_rules.h">
       <Filter>Languages</Filter>
     </ClInclude>
   </ItemGroup>

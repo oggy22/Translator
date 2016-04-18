@@ -182,7 +182,7 @@
     <ClInclude Include="language.h" />
     <ClInclude Include="Languages\English.h" />
     <ClInclude Include="Languages\Serbian.h" />
-    <ClInclude Include="Languages\Serbian_rules.h" />
+    <ClInclude Include="Languages\Serbian_word_rules.h" />
     <ClInclude Include="Languages\Serbian_words.h" />
     <ClInclude Include="parsing_triangle.h" />
   </ItemGroup>
