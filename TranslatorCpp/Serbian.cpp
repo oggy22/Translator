@@ -21,7 +21,7 @@ const std::unordered_map<attrs, cats> Serbian::belongs_to_category
 	{ лиц2, лиц },
 	{ лиц3, лиц },
 
-	// Лица
+	// Број
 	{ једн, бр },
 	{ множ, бр },
 };
