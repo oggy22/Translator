@@ -124,6 +124,43 @@ namespace TranslatorTest
 			}
 		}
 
+		TEST_METHOD(check_some_noun_forms)
+		{
+			//check(L"коња",	L"коњ", attr_t::једнина, attr_t::акузатив);
+			check(L"ораси", L"орах", attr_t::множина, attr_t::номинатив);
+			check(L"орахе", L"орах", attr_t::множина, attr_t::акузатив);
+			check(L"мишеви", L"миш", attr_t::множина, attr_t::номинатив);
+			check(L"човече", L"човек", attr_t::једнина, attr_t::вокатив);
+		}
+
+		TEST_METHOD(check_some_verb_forms)
+		{
+			check(L"сам", L"бити", attr_t::једнина, attr_t::лице1);
+			check(L"идем", L"ићи", attr_t::једнина, attr_t::лице1);
+			check(L"једем", L"јести", attr_t::једнина, attr_t::лице1);
+			check(L"могу", L"моћи", attr_t::једнина, attr_t::лице1);
+			check(L"можемо", L"моћи", attr_t::множина, attr_t::лице1);
+			check(L"пишемо", L"писати", attr_t::множина, attr_t::лице1);
+			check(L"хоћемо", L"хтети", attr_t::множина, attr_t::лице1);
+		}
+
+		template <class... Attributes>
+		void check(const std::wstring& stExpected, const std::wstring& stDicWord, Attributes... attributes)
+		{
+			Assert::AreEqual<const std::wstring&>(stExpected, get_dictionary_word(stDicWord, attributes...));
+		}
+
+		template <class... Attributes>
+		const std::wstring get_dictionary_word(const std::wstring& st, Attributes... attributes)
+		{
+			for (const auto& word : serbian.dictWords)
+				if (word.word == st)
+				{
+					return word[{ attributes... }]._word;
+				}
+			ASSERT(false);
+		}
+
 		TEST_METHOD(serbian_rules)
 		{
 			test(L"ја гледам");

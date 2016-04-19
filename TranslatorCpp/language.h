@@ -220,6 +220,22 @@ namespace translator
 					return true;
 			return false;
 		}
+
+		const word_form<Language>& operator[](attr_t a) const
+		{
+			for (const auto& w : words)
+				if (w.attrs.size() == 1 && *w.attr.begin() == a)
+					return w;
+			ASSERT(false);
+		}
+
+		const word_form<Language>& operator[](const std::set<attr_t>& attrs) const
+		{
+			for (const auto& w : words)
+				if (w.attrs == attrs)
+					return w;
+			ASSERT(false);
+		}
 	};
 
 	template <class Language>
