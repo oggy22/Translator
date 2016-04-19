@@ -63,29 +63,29 @@ struct English
 	wordRules(
 	{
 		// Nouns
-		{ { "%" },{ "%" }, noun, { sing } },
-		{ { "%" },{ "%s" }, noun,{ plur } },
-		{ { "%y" },{ "%ies" }, noun,{ plur } },
-		{ { "%o" },{ "%oes" }, noun,{ plur } },
-		{ { "%s" },{ "%ses" }, noun,{ plur } },
-		{ { "%sis" },{ "%ses" }, noun,{ plur } },	// basis, crisis, diagnosis
-		{ { "%man" },{ "%men" }, noun,{ plur } },	// man, woman, policeman
+		{ { "*" },{ "*" }, noun, { sing } },
+		{ { "*" },{ "*s" }, noun,{ plur } },
+		{ { "*y" },{ "*ies" }, noun,{ plur } },
+		{ { "*o" },{ "*oes" }, noun,{ plur } },
+		{ { "*s" },{ "*ses" }, noun,{ plur } },
+		{ { "*sis" },{ "*ses" }, noun,{ plur } },	// basis, crisis, diagnosis
+		{ { "*man" },{ "*men" }, noun,{ plur } },	// man, woman, policeman
 
 		//// Verbs
-		{ { "%" },{ "%" }, verb,{ sing, per1 } },
-		{ { "%" },{ "%" }, verb,{ sing, per2 } },
-		{ { "%" },{ "%s" }, verb,{ sing, per3 } },
-		{ { "%o" },{ "%oes" }, verb,{ sing, per3 } },	//goes, does
+		{ { "*" },{ "*" }, verb,{ sing, per1 } },
+		{ { "*" },{ "*" }, verb,{ sing, per2 } },
+		{ { "*" },{ "*s" }, verb,{ sing, per3 } },
+		{ { "*o" },{ "*oes" }, verb,{ sing, per3 } },	//goes, does
 		
-		{ { "%" },{ "%" }, verb,{ plur } },
+		{ { "*" },{ "*" }, verb,{ plur } },
 		
-		{ { "%e" },{ "%ed" }, verb,{ past } },
-		{ { "%" },{ "%ed" }, verb,{ past } },
-		{ { "%e" },{ "%ed" }, verb,{ perf } },
-		{ { "%" },{ "%ed" }, verb,{ perf } },
+		{ { "*e" },{ "*ed" }, verb,{ past } },
+		{ { "*" },{ "*ed" }, verb,{ past } },
+		{ { "*e" },{ "*ed" }, verb,{ perf } },
+		{ { "*" },{ "*ed" }, verb,{ perf } },
 
 		//// Pronouns
-		{ { "%" },{ "%" }, pron,{} },
+		{ { "*" },{ "*" }, pron,{} },
 	}),
 	dictWords(
 	{

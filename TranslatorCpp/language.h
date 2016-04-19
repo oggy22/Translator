@@ -145,7 +145,7 @@ namespace translator
 	public:
 		pattern(const string_t& s)
 		{
-			const Char joker = Char('%');
+			const Char joker = Char('*');
 			const typename string_t::size_type pos = s.find(joker);
 			ASSERT(0 <= pos && pos < s.length());
 			ASSERT(s.find(joker, pos + 1) == string_t::npos);
