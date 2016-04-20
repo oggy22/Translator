@@ -34,16 +34,14 @@ namespace translator
 		template <typename... Values>
 		attribute_manager(attr_t attr, Values... values) : attribute_manager(values...)
 		{
-			if (free_attr.count(attr))
-				throw "Attribute already contained";
+			ASSERT_WITH_MSG(!free_attr.count(attr), "Attribute already contained");
 			free_attr.emplace(attr)
 		}
 
 		template <typename... Values>
 		attribute_manager(cat_t cat, Values... values) : attribute_manager(values...)
 		{
-			if (free_cat.count(cat))
-				throw "Category already contained";
+			ASSERT_WITH_MSG(free_cat.count(cat), "Category already contained");
 			free_cat.emplace(cat)
 		}
 
@@ -589,12 +587,10 @@ namespace translator
 							}
 						}
 						break;
-					case 3:
-						break;
 					default:
+						ASSERT(false);
 						break;
 					}
-					//return true;
 				}
 
 		return pt(0, vs.size() - 1).size() > 0;

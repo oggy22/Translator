@@ -156,8 +156,6 @@ struct English
 			}
 	)
 	{
-
-
 		translator::populate_words(dictWords, wordRules);
 	}
 

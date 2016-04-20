@@ -6,6 +6,8 @@
 #include <map>
 #include <unordered_map>
 
+#include "Assert.h"
+
 using namespace std;
 
 enum class word_type { noun, verb, pron, NounPhrase, VerbPhrase, Preposition, Sentence };
@@ -69,14 +71,12 @@ public:
 		if (p_cat != belongs.end())
 		{
 			auto cat = p_cat->second;
-			if (mapping.count(cat) > 0)
-				throw "The attribute from the same category set already";
+			ASSERT_WITH_MSG(mapping.count(cat) == 0, "The attribute from the same category set already");
 			mapping[cat] = attr;
 		}
 		else
 		{
-			if (free_attrs.count(attr) > 0)
-				throw "The attribute already added";
+			ASSERT_WITH_MSG(free_attrs.count(attr) == 0, "The attribute already added");
 			free_attrs.insert(attr);
 		}
 	}
@@ -86,8 +86,7 @@ public:
 	{
 		cout << "node(word_type, cat, ...)" << endl;
 		auto p_cat = mapping.find(cat);
-		if (p_cat != mapping.end())
-			throw "The category alreay mapped";
+		ASSERT_WITH_MSG(p_cat == mapping.end(), "The category alreay mapped");
 
 		free_cats.insert(cat);
 	}
