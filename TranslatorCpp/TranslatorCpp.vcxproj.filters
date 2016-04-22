@@ -8,6 +8,9 @@
     <ClCompile Include="Serbian.cpp">
       <Filter>Languages</Filter>
     </ClCompile>
+    <ClCompile Include="English.cpp">
+      <Filter>Languages</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assert.h" />

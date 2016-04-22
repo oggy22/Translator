@@ -4,7 +4,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace TranslatorTest
 {
-	TEST_CLASS(UnitTest1)
+	TEST_CLASS(LanguageTests)
 	{
 	public:
 

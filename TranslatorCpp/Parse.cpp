@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <vector>
 #include <string>
+#include "Languages\English.h"
 #include "Languages\Serbian.h"
 
 void set_wide();

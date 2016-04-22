@@ -5,7 +5,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace TranslatorTest
 {
-	TEST_CLASS(SerbianTest)
+	TEST_CLASS(SerbianTests)
 	{
 		void test(const std::wstring& st, bool expected=true)
 		{
@@ -22,7 +22,7 @@ namespace TranslatorTest
 				for (const auto& w : word.words)
 				{
 					for (wchar_t c : w._word)
-						Assert::AreNotEqual(std::wstring::npos, serbian.stAlphabet.find(c));
+						Assert::AreNotEqual(std::wstring::npos, Serbian::stAlphabet.find(c));
 				}
 			}
 		}

@@ -7,6 +7,8 @@ struct English
 	using letter = char;
 	using string_t = std::basic_string < letter >;
 
+	static const English::string_t English::stAlphabet;
+
 	enum class word_type { noun, verb, pronoun, adjective, adverb, article, NP, VP, Sentence };
 #define noun	word_type::noun
 #define verb	word_type::verb
@@ -38,13 +40,8 @@ struct English
 
 	const std::set<attributes> phony_attrs{ };
 
-	const std::unordered_map<attributes, attribute_categories> belongs_to_category = std::unordered_map<attributes, attribute_categories>
-	{
-		{ per1, attribute_categories::person },
-		{ per2, attribute_categories::person },
-		{ per3, attribute_categories::person },
-	};
-	
+	static const std::unordered_map<attributes, attribute_categories> belongs_to_category;
+
 	static bool is_phony_attribute(attributes a)
 	{
 		return false;
@@ -89,7 +86,7 @@ struct English
 	}),
 	dictWords(
 	{
-		{ "I", pron, { sing, per1 },
+		{ "i", pron, { sing, per1 },
 		{
 			{ "me", { attributes::accus } },
 			{ "my", { attributes::posses } },
