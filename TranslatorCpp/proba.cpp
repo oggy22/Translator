@@ -30,15 +30,15 @@ int main1(void)
 		set_wide();
 	English::traverse_words([&](const translator::word_form<language_t>& word)
 	{
-		words.insert(word._word);
-		//wcout << word._word << " ";
+		words.insert(word.word);
+		//wcout << word.word << " ";
 	});
 	
 	for (const auto& dw : English::dictWords)
 	{
 		out << dw.word << " (";
 		for (const auto& wf : dw.words)
-			out << wf._word << " ";
+			out << wf.word << " ";
 		out << ")" << endl;
 	}
 

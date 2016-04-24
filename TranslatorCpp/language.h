@@ -222,7 +222,7 @@ namespace translator
 		const word_form<Language>& operator[](attr_t a) const
 		{
 			for (const auto& w : words)
-				if (w.attrs.size() == 1 && *w.attr.begin() == a)
+				if (w.attrs.size() == 1 && *w.attrs.begin() == a)
 					return w;
 			ASSERT(false);
 		}
@@ -240,12 +240,9 @@ namespace translator
 	struct word_form
 	{
 		using string_t = typename Language::string_t;
-		string_t _word;
+		string_t word;
 		set<typename Language::attributes> attrs;
 		const dictionary_word<Language> *p_dw;
-
-		//word_form(typename Language::string_t _word) : _word(_word), attrs(), p_dw(nullptr){}
-		//word_form(int x) {}
 
 		bool contains(typename Language::attributes a) const
 		{
@@ -348,7 +345,7 @@ namespace translator
 
 		bool accept(const word_form<Language>& w, std::map<cats_t, attrs_t>& values) const
 		{
-			if (!word.empty() && word != w._word)
+			if (!word.empty() && word != w.word)
 				return false;
 
 			if (this->wordtype != w.p_dw->wordtype)
@@ -497,7 +494,7 @@ namespace translator
 					continue;
 
 				const string_t stBase = r.is_set()
-					? w.find_word_form({ r.f.get() })._word
+					? w.find_word_form({ r.f.get() }).word
 					: w.word;
 
 				// Rule matches the source?
@@ -543,7 +540,7 @@ namespace translator
 			getWords<Language>(Language::dictWords,
 				[&](const word_form<Language>& w)
 			{
-				if (w._word == vs[i])
+				if (w.word == vs[i])
 					pt(i,i).emplace_back(parsing_node<Language>(w));
 			});
 		}

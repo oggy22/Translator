@@ -67,8 +67,10 @@ const std::vector<translator::dictionary_word<English>> English::dictWords
 
 	//Nouns
 	{ "house", noun },
+	{ "man", noun },
+	{ "policeman", noun },
 	{ "wife", noun },
-	{ "woman", noun,{},{ { "women",{ plur } } } },
+	{ "woman", noun },
 };
 
 const std::vector<translator::rule<English>> English::grammar_rules

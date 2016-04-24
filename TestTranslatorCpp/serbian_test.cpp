@@ -1,5 +1,6 @@
 ﻿#include "stdafx.h"
 #include "../TranslatorCpp/Languages/Serbian.h"
+#include "common.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -20,7 +21,7 @@ namespace TranslatorTest
 			{
 				for (const auto& w : word.words)
 				{
-					for (wchar_t c : w._word)
+					for (wchar_t c : w.word)
 						Assert::AreNotEqual(std::wstring::npos, Serbian::stAlphabet.find(c));
 				}
 			}
@@ -123,41 +124,26 @@ namespace TranslatorTest
 			}
 		}
 
+#define CHECK check<Serbian>
+
 		TEST_METHOD(check_some_noun_forms)
 		{
-			//check(L"коња",	L"коњ", attr_t::једнина, attr_t::акузатив);
-			check(L"ораси", L"орах", attr_t::множина, attr_t::номинатив);
-			check(L"орахе", L"орах", attr_t::множина, attr_t::акузатив);
-			check(L"мишеви", L"миш", attr_t::множина, attr_t::номинатив);
-			check(L"човече", L"човек", attr_t::једнина, attr_t::вокатив);
+			//CHECK(L"коња",	L"коњ", attr_t::једнина, attr_t::акузатив);
+			CHECK(L"ораси", L"орах", attr_t::множина, attr_t::номинатив);
+			CHECK(L"орахе", L"орах", attr_t::множина, attr_t::акузатив);
+			CHECK(L"мишеви", L"миш", attr_t::множина, attr_t::номинатив);
+			CHECK(L"човече", L"човек", attr_t::једнина, attr_t::вокатив);
 		}
 
 		TEST_METHOD(check_some_verb_forms)
 		{
-			check(L"сам", L"бити", attr_t::једнина, attr_t::лице1);
-			check(L"идем", L"ићи", attr_t::једнина, attr_t::лице1);
-			check(L"једем", L"јести", attr_t::једнина, attr_t::лице1);
-			check(L"могу", L"моћи", attr_t::једнина, attr_t::лице1);
-			check(L"можемо", L"моћи", attr_t::множина, attr_t::лице1);
-			check(L"пишемо", L"писати", attr_t::множина, attr_t::лице1);
-			check(L"хоћемо", L"хтети", attr_t::множина, attr_t::лице1);
-		}
-
-		template <class... Attributes>
-		void check(const std::wstring& stExpected, const std::wstring& stDicWord, Attributes... attributes)
-		{
-			Assert::AreEqual<const std::wstring&>(stExpected, get_dictionary_word(stDicWord, attributes...));
-		}
-
-		template <class... Attributes>
-		const std::wstring get_dictionary_word(const std::wstring& st, Attributes... attributes)
-		{
-			for (const auto& word : Serbian::dictWords)
-				if (word.word == st)
-				{
-					return word[{ attributes... }]._word;
-				}
-			ASSERT(false);
+			CHECK(L"сам", L"бити", attr_t::једнина, attr_t::лице1);
+			CHECK(L"идем", L"ићи", attr_t::једнина, attr_t::лице1);
+			CHECK(L"једем", L"јести", attr_t::једнина, attr_t::лице1);
+			CHECK(L"могу", L"моћи", attr_t::једнина, attr_t::лице1);
+			CHECK(L"можемо", L"моћи", attr_t::множина, attr_t::лице1);
+			CHECK(L"пишемо", L"писати", attr_t::множина, attr_t::лице1);
+			CHECK(L"хоћемо", L"хтети", attr_t::множина, attr_t::лице1);
 		}
 
 		TEST_METHOD(serbian_grammar_rules)

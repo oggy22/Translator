@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "../TranslatorCpp/Languages/English.h"
+#include "common.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -19,8 +20,8 @@ namespace TranslatorTest
 			{
 				for (const auto& w : word.words)
 				{
-					for (char c : w._word)
-						Assert::IsTrue(English::stAlphabet.find(c) != std::wstring::npos, ToString(w._word).c_str());
+					for (char c : w.word)
+						Assert::IsTrue(English::stAlphabet.find(c) != std::wstring::npos, ToString(w.word).c_str());
 				}
 			}
 		}
@@ -62,6 +63,11 @@ namespace TranslatorTest
 		TEST_METHOD(english_grammar_rules)
 		{
 			//TODO
+		}
+
+		TEST_METHOD(check_some_noun_forms)
+		{
+			check<English>("women", "woman", attr_t::plur);
 		}
 	};
 }
