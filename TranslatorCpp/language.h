@@ -523,7 +523,7 @@ namespace translator
 	}
 
 	template <typename Language, typename letter = Language::letter, typename string_t = Language::string_t>
-	bool parse(const Language& language, typename Language::string_t s)
+	bool parse(typename Language::string_t s)
 	{
 		// construct a stream from the string
 		std::basic_stringstream<typename Language::letter> strstr(s);
@@ -540,7 +540,7 @@ namespace translator
 		{
 			pt(i, i).emplace_back(parsing_node<Language>(vs[i]));
 
-			getWords<Language>(language.dictWords,
+			getWords<Language>(Language::dictWords,
 				[&](const word_form<Language>& w)
 			{
 				if (w._word == vs[i])
@@ -551,7 +551,7 @@ namespace translator
 		// Syntax analysis
 		for (unsigned int len = 1; len <= vs.size(); len++)
 			for (int first = 0; first + len <= vs.size(); first++)
-				for (const auto& rule : language.rules)
+				for (const auto& rule : Language::grammar_rules)
 				{
 					int end = first + len - 1;
 					if (rule.size() > len)

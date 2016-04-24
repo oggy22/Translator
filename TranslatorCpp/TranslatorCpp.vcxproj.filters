@@ -5,10 +5,10 @@
     <ClCompile Include="proba.cpp" />
     <ClCompile Include="prototype.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="Serbian.cpp">
+    <ClCompile Include="Languages\Serbian.cpp">
       <Filter>Languages</Filter>
     </ClCompile>
-    <ClCompile Include="English.cpp">
+    <ClCompile Include="Languages\English.cpp">
       <Filter>Languages</Filter>
     </ClCompile>
   </ItemGroup>

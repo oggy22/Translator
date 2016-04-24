@@ -9,15 +9,13 @@ namespace TranslatorTest
 	{
 		void test(const std::string& st, bool expected = true)
 		{
-			English english;
-			Assert::AreEqual(expected, translator::parse(english, st));
+			Assert::AreEqual(expected, translator::parse<English>(st));
 		}
-		English english;
 
 	public:
 		TEST_METHOD(every_word_composed_of_english_letters)
 		{
-			for (const auto& word : english.dictWords)
+			for (const auto& word : English::dictWords)
 			{
 				for (const auto& w : word.words)
 				{
@@ -49,7 +47,7 @@ namespace TranslatorTest
 
 		TEST_METHOD(each_noun_singular_and_plural)
 		{
-			for (const auto& word : english.dictWords)
+			for (const auto& word : English::dictWords)
 			{
 				if (word.wordtype == English::word_type::noun)
 				{
@@ -61,7 +59,7 @@ namespace TranslatorTest
 			}
 		}
 
-		TEST_METHOD(english_rules)
+		TEST_METHOD(english_grammar_rules)
 		{
 			//TODO
 		}

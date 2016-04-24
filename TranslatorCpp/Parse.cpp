@@ -19,7 +19,7 @@ int main()
 	cout << "Input a sentence:" << endl;
 	SourceLanguage::string_t text = L"ја читам";
 	set_wide();
-	bool success = translator::parse(source, text);
+	bool success = translator::parse<SourceLanguage>(text);
 	wcout << text << endl;
 	wcout << (success ? "Success" : "Fail") << endl;
 	return 0;

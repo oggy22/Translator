@@ -10,14 +10,13 @@ namespace TranslatorTest
 		void test(const std::wstring& st, bool expected=true)
 		{
 			Serbian serbian;
-			Assert::AreEqual(expected, translator::parse(serbian, st));
+			Assert::AreEqual(expected, translator::parse<Serbian>(st));
 		}
-		Serbian serbian;
 
 	public:
 		TEST_METHOD(every_word_composed_of_serbian_letters)
 		{
-			for (const auto& word : serbian.dictWords)
+			for (const auto& word : Serbian::dictWords)
 			{
 				for (const auto& w : word.words)
 				{
@@ -29,7 +28,7 @@ namespace TranslatorTest
 
 		TEST_METHOD(every_noun_has_gender)
 		{
-			for (const auto& word : serbian.dictWords)
+			for (const auto& word : Serbian::dictWords)
 			{
 				if (word.wordtype == Serbian::word_type::именица)
 				{
@@ -68,7 +67,7 @@ namespace TranslatorTest
 
 		TEST_METHOD(each_noun_has_7cases_2numbers)
 		{
-			for (const auto& word : serbian.dictWords)
+			for (const auto& word : Serbian::dictWords)
 			{
 				if (word.wordtype == Serbian::word_type::именица)
 				{
@@ -82,7 +81,7 @@ namespace TranslatorTest
 
 		TEST_METHOD(each_verb_has_2plurals_3persons_present_forms)
 		{
-			for (const auto& word : serbian.dictWords)
+			for (const auto& word : Serbian::dictWords)
 			{
 				if (word.wordtype == Serbian::word_type::глагол)
 				{
@@ -96,7 +95,7 @@ namespace TranslatorTest
 
 		TEST_METHOD(each_adjective_has_3genders_2plurals_7cases)
 		{
-			for (const auto& word : serbian.dictWords)
+			for (const auto& word : Serbian::dictWords)
 			{
 				if (word.wordtype == Serbian::word_type::придев)
 				{
@@ -112,7 +111,7 @@ namespace TranslatorTest
 
 		TEST_METHOD(each_adverb_has_3comparatives)
 		{
-			for (const auto& word : serbian.dictWords)
+			for (const auto& word : Serbian::dictWords)
 			{
 				if (word.wordtype == Serbian::word_type::прилог)
 				{
@@ -153,7 +152,7 @@ namespace TranslatorTest
 		template <class... Attributes>
 		const std::wstring get_dictionary_word(const std::wstring& st, Attributes... attributes)
 		{
-			for (const auto& word : serbian.dictWords)
+			for (const auto& word : Serbian::dictWords)
 				if (word.word == st)
 				{
 					return word[{ attributes... }]._word;
@@ -161,7 +160,7 @@ namespace TranslatorTest
 			ASSERT(false);
 		}
 
-		TEST_METHOD(serbian_rules)
+		TEST_METHOD(serbian_grammar_rules)
 		{
 			test(L"ја гледам");
 			test(L"ја радиш", false);

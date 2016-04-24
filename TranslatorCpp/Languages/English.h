@@ -7,7 +7,7 @@ struct English
 	using letter = char;
 	using string_t = std::basic_string < letter >;
 
-	static const English::string_t English::stAlphabet;
+	static const string_t stAlphabet;
 
 	enum class word_type { noun, verb, pronoun, adjective, adverb, article, NP, VP, Sentence };
 #define noun	word_type::noun
@@ -47,128 +47,19 @@ struct English
 		return false;
 	}
 
-	const std::vector<translator::word_rule<English>> wordRules;
+	static const std::vector<translator::dictionary_word<English>> dictWords;
 
-	const std::vector<translator::dictionary_word<English>> dictWords;
+	static const std::vector<translator::word_rule<English>> word_rules;
 
-	const std::vector<translator::rule_node<English>> nodes;
-
-	const std::vector<translator::rule<English>> rules;
+	static const std::vector<translator::rule<English>> grammar_rules;
 
 	English()
-		:
-	wordRules(
 	{
-		// Nouns
-		{ { "*" },{ "*" }, noun, { sing } },
-		{ { "*" },{ "*s" }, noun,{ plur } },
-		{ { "*y" },{ "*ies" }, noun,{ plur } },
-		{ { "*o" },{ "*oes" }, noun,{ plur } },
-		{ { "*s" },{ "*ses" }, noun,{ plur } },
-		{ { "*sis" },{ "*ses" }, noun,{ plur } },	// basis, crisis, diagnosis
-		{ { "*man" },{ "*men" }, noun,{ plur } },	// man, woman, policeman
-
-		//// Verbs
-		{ { "*" },{ "*" }, verb,{ sing, per1 } },
-		{ { "*" },{ "*" }, verb,{ sing, per2 } },
-		{ { "*" },{ "*s" }, verb,{ sing, per3 } },
-		{ { "*o" },{ "*oes" }, verb,{ sing, per3 } },	//goes, does
-		
-		{ { "*" },{ "*" }, verb,{ plur } },
-		
-		{ { "*e" },{ "*ed" }, verb,{ past } },
-		{ { "*" },{ "*ed" }, verb,{ past } },
-		{ { "*e" },{ "*ed" }, verb,{ perf } },
-		{ { "*" },{ "*ed" }, verb,{ perf } },
-
-		//// Pronouns
-		{ { "*" },{ "*" }, pron,{} },
-	}),
-	dictWords(
-	{
-		{ "i", pron, { sing, per1 },
-		{
-			{ "me", { attributes::accus } },
-			{ "my", { attributes::posses } },
-			{ "mine", { attributes::posses, attributes::refl } },
-			{ "myself", { attributes::refl } },
-		} },
-		{ "you", pron, { sing, per2 },
-		{
-			{ "you", { attributes::accus } },
-			{ "your", { attributes::posses } },
-			{ "yours", { attributes::posses } },
-			{ "yourself", { attributes::refl } },
-		} },
-		{ "he", pron, { sing, per3 } },
-		{ "we", pron, { plur, per1 } },
-		{ "you", pron, { plur, per2 } },
-		{ "they", pron,{ plur, per3 } },
-			
-		//Verbs:
-		{ "be", verb,{},
-		{
-			{ "am",{ sing, per1 } },
-			{ "are",{ sing, per2 } },
-			{ "is",{ sing, per3 } },
-			{ "are",{ plur } },
-			{ "was",{ past, sing, per1 } },
-			{ "were",{ past, sing, per2 } },
-			{ "was",{ past, sing, per3 } },
-			{ "were",{ past, plur } },
-			{ "been",{ perf } } }
-		},
-		{ "can", verb,{},
-		{
-			{ "can",{ sing, per3 } },
-			{ "could",{ past } },
-			{ "could", { perf } } }
-		},
-		{ "do", verb,{},{ { "did",{ past } },{ "done",{ perf } } } },
-		{ "go", verb,{},{ { "went",{ past } },{ "gone",{ perf } } } },
-		{ "have", verb,{},
-		{
-			{ "has",{ sing, per3 } },
-			{ "had",{ past } },
-			{ "had",{ perf } }
-		} },
-		{ "hear", verb,{},{ { "heard",{ past } },{ "heard",{ perf } } } },
-		{ "say", verb,{},{ { "said",{ past } },{ "said",{ perf } } } },
-		{ "see", verb,{},{ { "saw",{ past } },{ "seen",{ perf } } } },
-		{ "talk", verb },
-		{ "walk", verb },
-		{ "want", verb },
-
-		//Nouns
-		{ "house", noun },
-		{ "wife", noun },
-		{ "woman", noun, {}, {{"women",{plur}} }},
-	}),
-	rules(
-			{
-				{
-					{ Sent},
-					{ word_type::pronoun }, {verb}
-				}
-			}
-	)
-	{
-		translator::populate_words(dictWords, wordRules);
-	}
-
-	void parse(string_t s)
-	{
-		// construct a stream from the string
-		std::basic_stringstream<letter> strstr(s);
-
-		// use stream iterators to copy the stream to the vector as whitespace separated strings
-		std::istream_iterator<string_t> it(strstr);
-		std::istream_iterator<string_t> end;
-		std::vector<string_t> results(it, end);
+		translator::populate_words(dictWords, word_rules);
 	}
 
 	template <typename Lambda>
-	void traverse_words(Lambda fun) const
+	static void traverse_words(Lambda fun)
 	{
 		for (const auto& w : dictWords)
 		{

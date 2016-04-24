@@ -80,54 +80,17 @@ struct Serbian
 		return a == оснмнож || a == перфосн || a == презосн;
 	}
 
-	const std::vector<translator::word_rule<Serbian>> wordRules;
+	static const std::vector<translator::dictionary_word<Serbian>> dictWords;
 
-	const std::vector<translator::dictionary_word<Serbian>> dictWords;
+	static const std::vector<translator::word_rule<Serbian>> word_rules;
 
-	const std::vector<translator::rule<Serbian>> rules;
+	static const std::vector<translator::rule<Serbian>> grammar_rules;
 
 	Serbian()
-		:
-		wordRules(
 	{
-#include "Serbian_word_rules.h"
-	}
-			),
-
-		dictWords(
-	{
-#include "Serbian_words.h"
-	}),
-		rules(
-	{
-
-		{ { РЕЧН },
-		{ { зам, бр, лиц },{ глаг, бр, лиц } } },
-		{ { РЕЧН },
-		{ { имен, бр, лиц3 },{ глаг, бр, лиц } } },
-		{ { Одр },
-		{ { L"у" }, { имен, лок } } },
-		{ { Одр },
-		{ { L"у" }, { имен, акуз } } },
-		{ { РЕЧН },
-		{ РЕЧН, Одр } },
-		{ { ИС },
-		{ { прид, бр, пад }, { имен, бр, пад } } }
-	})
-	{
-		translator::populate_words(dictWords, wordRules);
+		translator::populate_words(dictWords, word_rules);
 	}
 
-	bool has_word_form(const string_t& st) const
-	{
-		for (const auto& w : dictWords)
-		{
-			for (const auto& word : w.words)
-				if (word._word == st)
-					return true;
-		}
-		return false;
-	}
 
 	template <typename Lambda>
 	void traverse_words(Lambda fun) const

@@ -23,21 +23,18 @@ int main1(void)
 		cout << s << endl;
 		//Sleep(1000);
 	}
-	Serbian serbian;
-	English english;
-	auto& language = english;
 	auto& out = cout;
 	using language_t = English;
 	std::set<language_t::string_t> words;
 	if (std::is_same<language_t::letter, wchar_t>::value)
 		set_wide();
-	language.traverse_words([&](const translator::word_form<language_t>& word)
+	English::traverse_words([&](const translator::word_form<language_t>& word)
 	{
 		words.insert(word._word);
 		//wcout << word._word << " ";
 	});
 	
-	for (const auto& dw : language.dictWords)
+	for (const auto& dw : English::dictWords)
 	{
 		out << dw.word << " (";
 		for (const auto& wf : dw.words)
