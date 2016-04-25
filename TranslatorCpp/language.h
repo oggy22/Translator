@@ -297,6 +297,9 @@ namespace translator
 		typename Language::word_type wt;
 		set<typename Language::attributes> attrs;
 		nullable_attr<Language> f;
+#ifdef _DEBUG
+		mutable bool used;
+#endif
 		bool is_set() const
 		{
 			return f.is_set();
@@ -479,13 +482,13 @@ namespace translator
 
 	// Creates all the words given dictionary word list and word rules.
 	template<typename Language, typename string_t = Language::string_t>
-	void populate_words(const vector<dictionary_word<Language>>& words, const vector<word_rule<Language>> word_rules)
+	void populate_words()
 	{
-		for (auto& w : words)
+		for (auto& w : Language::dictWords)
 		{
 			using namespace std;
 
-			for (auto p_r = word_rules.crbegin(); p_r != word_rules.crend(); p_r++)
+			for (auto p_r = Language::word_rules.crbegin(); p_r != Language::word_rules.crend(); p_r++)
 			{
 				auto& r = *p_r;
 				// Word type matches?
@@ -512,6 +515,10 @@ namespace translator
 				// Rule matches the source?
 				if (!r.source.match(stBase))
 					continue;
+
+#ifdef _DEBUG
+				r.used = true;
+#endif
 
 				// New word form to insert
 				string_t word = r.source.match_and_transform(stBase, r.destination);

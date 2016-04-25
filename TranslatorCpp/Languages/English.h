@@ -55,7 +55,11 @@ struct English
 
 	English()
 	{
-		translator::populate_words(dictWords, word_rules);
+#ifdef _DEBUG
+		for (auto& rule : word_rules)
+			rule.used = false;
+#endif
+		translator::populate_words<English>();
 	}
 
 	template <typename Lambda>

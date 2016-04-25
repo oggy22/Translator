@@ -15,6 +15,17 @@ namespace TranslatorTest
 		}
 
 	public:
+
+#ifdef _DEBUG
+		TEST_METHOD(every_rule_used)
+		{
+			for (auto& rule : Serbian::word_rules)
+			{
+				Assert::IsTrue(rule.used/*, (std::wstring)(rule.destination)*/);
+			}
+		}
+#endif
+
 		TEST_METHOD(every_word_composed_of_serbian_letters)
 		{
 			for (const auto& word : Serbian::dictWords)

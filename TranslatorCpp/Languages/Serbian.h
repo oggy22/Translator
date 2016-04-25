@@ -42,7 +42,7 @@ struct Serbian
 		живо,
 
 		//not real attributes as they are used for basis
-		презентскаа_основа, перфектна_основа,
+		презентска_основа, перфектна_основа,
 		основа_множине
 	};
 
@@ -72,7 +72,7 @@ struct Serbian
 
 #define жив attrs::живо
 
-#define презосн attrs::презентскаа_основа
+#define презосн attrs::презентска_основа
 #define перфосн attrs::перфектна_основа
 #define оснмнож attrs::основа_множине
 
@@ -91,7 +91,11 @@ struct Serbian
 
 	Serbian()
 	{
-		translator::populate_words(dictWords, word_rules);
+#ifdef _DEBUG
+		for (auto& rule : word_rules)
+			rule.used = false;
+#endif
+		translator::populate_words<Serbian>();
 	}
 
 	template <typename Lambda>

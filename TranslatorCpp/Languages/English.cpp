@@ -59,6 +59,7 @@ const std::vector<translator::dictionary_word<English>> English::dictWords
 		{ "had",{ perf } }
 	} },
 	{ "hear", verb,{},{ { "heard",{ past } },{ "heard",{ perf } } } },
+	{ "move", verb },
 	{ "say", verb,{},{ { "said",{ past } },{ "said",{ perf } } } },
 	{ "see", verb,{},{ { "saw",{ past } },{ "seen",{ perf } } } },
 	{ "talk", verb },
@@ -66,9 +67,13 @@ const std::vector<translator::dictionary_word<English>> English::dictWords
 	{ "want", verb },
 
 	//Nouns
+	{ "body", noun },
+	{ "bus", noun },
+	{ "crisis", noun },
 	{ "house", noun },
 	{ "man", noun },
 	{ "policeman", noun },
+	{ "potato", noun },
 	{ "wife", noun },
 	{ "woman", noun },
 };
@@ -100,10 +105,10 @@ const std::vector<translator::word_rule<English>> English::word_rules
 
 	{ { "*" },{ "*" }, verb,{ plur } },
 
-	{ { "*e" },{ "*ed" }, verb,{ past } },
 	{ { "*" },{ "*ed" }, verb,{ past } },
-	{ { "*e" },{ "*ed" }, verb,{ perf } },
+	{ { "*e" },{ "*ed" }, verb,{ past } },
 	{ { "*" },{ "*ed" }, verb,{ perf } },
+	{ { "*e" },{ "*ed" }, verb,{ perf } },
 
 	//// Pronouns
 	{ { "*" },{ "*" }, pron,{} },
