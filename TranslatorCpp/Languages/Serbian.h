@@ -39,6 +39,7 @@ struct Serbian
 		једнина, множина,
 		мушки, женски, средњи,
 		позитив, компаратив, суперлатив,
+		живо,
 
 		//not real attributes as they are used for basis
 		презентскаа_основа, перфектна_основа,
@@ -69,6 +70,8 @@ struct Serbian
 #define комп attrs::компаратив
 #define суп	attrs::суперлатив
 
+#define жив attrs::живо
+
 #define презосн attrs::презентскаа_основа
 #define перфосн attrs::перфектна_основа
 #define оснмнож attrs::основа_множине
@@ -90,7 +93,6 @@ struct Serbian
 	{
 		translator::populate_words(dictWords, word_rules);
 	}
-
 
 	template <typename Lambda>
 	void traverse_words(Lambda fun) const

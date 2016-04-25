@@ -128,7 +128,8 @@ namespace TranslatorTest
 
 		TEST_METHOD(check_some_noun_forms)
 		{
-			//CHECK(L"коња",	L"коњ", attr_t::једнина, attr_t::акузатив);
+			CHECK(L"коња",	L"коњ", attr_t::једнина, attr_t::акузатив);
+			CHECK(L"орах", L"орах", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"ораси", L"орах", attr_t::множина, attr_t::номинатив);
 			CHECK(L"орахе", L"орах", attr_t::множина, attr_t::акузатив);
 			CHECK(L"мишеви", L"миш", attr_t::множина, attr_t::номинатив);

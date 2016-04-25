@@ -194,6 +194,7 @@ namespace translator
 		const typename Language::word_type wordtype;
 		const set<typename Language::attributes> attrs;
 		mutable vector<word_form<Language>> words;	//todo: this is a hack
+
 		const word_form<Language>& find_word_form(const set<attr_t>& attrs) const
 		{
 			for (const auto& w : words)
@@ -201,6 +202,8 @@ namespace translator
 					return w;
 			ASSERT(false);
 		}
+		
+		/// <summary>Checks if a word form with the given attribute exists</summary>
 		bool operator()(attr_t a) const
 		{
 			for (const auto& w : words)
@@ -209,6 +212,7 @@ namespace translator
 			return false;
 		}
 
+		/// <summary>Checks if a word form with the given attributes exists</summary>
 		bool operator()(attr_t a1, attr_t a2) const
 		{
 			for (const auto& w : words)
@@ -489,13 +493,21 @@ namespace translator
 					continue;
 
 				// Attribute combination already exists?
-				if (any_of(w.words.begin(), w.words.end(), [&](const word_form<Language> wf)
+				if (any_of(w.words.begin(), w.words.end(), [&](const word_form<Language>& wf)
 				{	return r.attrs == wf.attrs;	}))
 					continue;
 
-				const string_t stBase = r.is_set()
-					? w.find_word_form({ r.f.get() }).word
-					: w.word;
+				string_t stBase = w.word;
+				if (r.is_set())
+				{
+					// The extra attribute denotes either a word form, or if not,
+					// the attribute is required to be present in the dictionary word
+					if (w(r.f.get()))
+						stBase = w[r.f.get()].word;
+					else
+						if (w.attrs.count(r.f.get()) == 0)
+							continue;
+				}
 
 				// Rule matches the source?
 				if (!r.source.match(stBase))
