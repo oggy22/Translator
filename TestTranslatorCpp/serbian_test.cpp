@@ -54,13 +54,13 @@ namespace TranslatorTest
 
 		using attr_t = Serbian::attributes;
 
-		void test_word_forms(const translator::dictionary_word<Serbian> &word, std::set<attr_t> set1)
+		void test_word_forms(const translator::dictionary_word<Serbian> &word, set<attr_t> set1)
 		{
 			for (attr_t a : set1)
 				Assert::IsTrue(word(a), L"Missing wordform");
 		}
 
-		void test_word_forms(const translator::dictionary_word<Serbian> &word, std::set<attr_t> set1, std::set<attr_t> set2)
+		void test_word_forms(const translator::dictionary_word<Serbian> &word, set<attr_t> set1, set<attr_t> set2)
 		{
 			for (attr_t a1 : set1)
 				for (attr_t a2 : set2)
@@ -68,7 +68,7 @@ namespace TranslatorTest
 						(word.word + std::wstring(L"Missing wordform 2 attrs")).c_str());
 		}
 
-		void test_word_forms(const translator::dictionary_word<Serbian> &word, std::set<attr_t> set1, std::set<attr_t> set2, std::set<attr_t> set3)
+		void test_word_forms(const translator::dictionary_word<Serbian> &word, set<attr_t> set1, set<attr_t> set2, set<attr_t> set3)
 		{
 			for (attr_t a1 : set1)
 				for (attr_t a2 : set2)

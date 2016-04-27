@@ -5,7 +5,7 @@ const Serbian::string_t SERBIAN_BASE::stAlphabet(L"абвгдђежзијклљ�
 using attrs = Serbian::attributes;
 using cats = Serbian::attribute_categories;
 
-const std::unordered_map<attrs, cats> Serbian::belongs_to_category
+const map<attrs, cats> Serbian::belongs_to_category
 {
 	// Падежи
 	{ ном, пад },

@@ -38,13 +38,13 @@ namespace TranslatorTest
 
 		using attr_t = English::attributes;
 
-		void test_word_forms(const translator::dictionary_word<English> &word, std::set<attr_t> set1)
+		void test_word_forms(const translator::dictionary_word<English> &word, set<attr_t> set1)
 		{
 			for (attr_t a : set1)
 				Assert::IsTrue(word(a), L"Missing wordform");
 		}
 
-		void test_word_forms(const translator::dictionary_word<English> &word, std::set<attr_t> set1, std::set<attr_t> set2)
+		void test_word_forms(const translator::dictionary_word<English> &word, set<attr_t> set1, set<attr_t> set2)
 		{
 			for (attr_t a1 : set1)
 				for (attr_t a2 : set2)

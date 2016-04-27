@@ -1,14 +1,21 @@
 #pragma once
 
+#include <sstream>
 #include <algorithm>
-#include <set>
-#include <unordered_set>
-#include <map>
-#include <unordered_map>
-#include <string>
 #include <vector>
-#include <utility>
 #include <iterator>
+
+#ifdef _DEBUG
+#include <set>
+#include <map>
+#define set std::set
+#define map std::map
+#else
+#include <unordered_set>
+#include <unordered_map>
+#define set std::unordered_set
+#define map std::unordered_map
+#endif
 
 #include "parsing_triangle.h"
 #include "Assert.h"
@@ -20,13 +27,11 @@ namespace translator
 	template <typename Language>
 	class attribute_manager
 	{
-		template <class T, class U> using umap = typename std::unordered_map<T, U>;
-		template <class T> using uset = std::unordered_set<T>;
 		using attr_t = typename Language::attributes;
 		using cat_t = typename Language::attribute_categories;
-		umap<cat_t, attr_t> mapping;
-		uset<cat_t> free_cat;
-		uset<attr_t> free_attr;
+		map<cat_t, attr_t> mapping;
+		set<cat_t> free_cat;
+		set<attr_t> free_attr;
 
 	public:
 		attribute_manager() {}
@@ -46,7 +51,7 @@ namespace translator
 		}
 
 		template <typename... Args>
-		attribute_manager(const std::set<attr_t>& attrs, Args... args) : attribute_manager(args...)
+		attribute_manager(const set<attr_t>& attrs, Args... args) : attribute_manager(args...)
 		{
 			for (attr_t a : attrs)
 			{
@@ -231,7 +236,7 @@ namespace translator
 			ASSERT(false);
 		}
 
-		const word_form<Language>& operator[](const std::set<attr_t>& attrs) const
+		const word_form<Language>& operator[](const set<attr_t>& attrs) const
 		{
 			for (const auto& w : words)
 				if (w.attrs == attrs)
@@ -350,7 +355,7 @@ namespace translator
 			cats.insert(c);
 		}
 
-		bool accept(const word_form<Language>& w, std::map<cats_t, attrs_t>& values) const
+		bool accept(const word_form<Language>& w, map<cats_t, attrs_t>& values) const
 		{
 			if (!word.empty() && word != w.word)
 				return false;

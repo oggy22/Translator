@@ -1,6 +1,4 @@
-﻿#include <unordered_map>
-#include <sstream>
-#include "..\language.h"
+﻿#include "..\language.h"
 
 #define SERBIAN_BASE translator::Language<Serbian, wchar_t>
 struct Serbian : public SERBIAN_BASE
@@ -74,7 +72,7 @@ struct Serbian : public SERBIAN_BASE
 #define перфосн attrs::перфектна_основа
 #define оснмнож attrs::основа_множине
 
-	static const std::unordered_map<attrs, cats> belongs_to_category;
+	static const map<attrs, cats> belongs_to_category;
 
 	static bool is_phony_attribute(attributes a)
 	{

@@ -25,7 +25,7 @@ int main1(void)
 	}
 	auto& out = cout;
 	using language_t = English;
-	std::set<language_t::string_t> words;
+	set<language_t::string_t> words;
 	if (std::is_same<language_t::letter, wchar_t>::value)
 		set_wide();
 	English::traverse_word_forms([&](const translator::word_form<language_t>& word)

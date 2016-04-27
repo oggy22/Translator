@@ -1,6 +1,4 @@
-﻿#include <unordered_map>
-#include <sstream>
-#include "..\language.h"
+﻿#include "..\language.h"
 
 #define ENGLISH_BASE translator::Language<English, char>
 struct English : public ENGLISH_BASE
@@ -39,9 +37,7 @@ struct English : public ENGLISH_BASE
 #define posses English::attributes::posses
 #define refl English::attributes::refl
 
-	const std::set<attributes> phony_attrs{ };
-
-	static const std::unordered_map<attributes, attribute_categories> belongs_to_category;
+	static const map<attributes, attribute_categories> belongs_to_category;
 
 	static bool is_phony_attribute(attributes a)
 	{

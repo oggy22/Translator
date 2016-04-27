@@ -34,7 +34,7 @@ enum class attributes { person1, person2, person3, male, female, neutral, singul
 #define sing attributes::singular
 #define plur attributes::plural
 
-const std::unordered_map<attributes, categories> belongs
+const map<attributes, categories> belongs
 {
 	{ per1, per },
 	{ per2, per },
@@ -51,7 +51,7 @@ class node
 	string st;
 	set<attributes> free_attrs;
 	set<categories> free_cats;
-	unordered_map<categories, attributes> mapping;
+	map<categories, attributes> mapping;
 
 public:
 	node(const string& st) : st(st)
