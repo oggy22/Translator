@@ -2,13 +2,11 @@
 #include <sstream>
 #include "..\language.h"
 
-struct Serbian
+#define SERBIAN_BASE translator::Language<Serbian, wchar_t>
+struct Serbian : public SERBIAN_BASE
 {
 	using letter = wchar_t;
-	using string_t = std::basic_string < letter >;
 	
-	static const Serbian::string_t Serbian::stAlphabet;
-
 	enum class word_type {
 		именица, заменица, глагол, придев, прилог,
 		РЕЧЕНИЦА,
@@ -17,20 +15,20 @@ struct Serbian
 		ПрилошкаОдредба
 	};
 
-#define имен word_type::именица
-#define зам word_type::заменица
-#define глаг word_type::глагол
-#define прид word_type::придев
-#define прил word_type::прилог
-#define РЕЧН word_type::РЕЧЕНИЦА
-#define ИС word_type::ИменичкаСинтагма
-#define Одр word_type::ПрилошкаОдредба
+#define имен Serbian::word_type::именица
+#define зам Serbian::word_type::заменица
+#define глаг Serbian::word_type::глагол
+#define прид Serbian::word_type::придев
+#define прил Serbian::word_type::прилог
+#define РЕЧН Serbian::word_type::РЕЧЕНИЦА
+#define ИС Serbian::word_type::ИменичкаСинтагма
+#define Одр Serbian::word_type::ПрилошкаОдредба
 
 	enum class attribute_categories { падеж, број, род, лице };
-#define пад attribute_categories::падеж
-#define бр	attribute_categories::број
-#define род	attribute_categories::род
-#define лиц attribute_categories::лице
+#define пад Serbian::attribute_categories::падеж
+#define бр	Serbian::attribute_categories::број
+#define род	Serbian::attribute_categories::род
+#define лиц Serbian::attribute_categories::лице
 
 	enum class attributes
 	{
@@ -83,28 +81,6 @@ struct Serbian
 		return a == оснмнож || a == перфосн || a == презосн;
 	}
 
-	static const std::vector<translator::dictionary_word<Serbian>> dictWords;
+	Serbian() : SERBIAN_BASE() {}
 
-	static const std::vector<translator::word_rule<Serbian>> word_rules;
-
-	static const std::vector<translator::rule<Serbian>> grammar_rules;
-
-	Serbian()
-	{
-#ifdef _DEBUG
-		for (auto& rule : word_rules)
-			rule.used = false;
-#endif
-		translator::populate_words<Serbian>();
-	}
-
-	template <typename Lambda>
-	void traverse_words(Lambda fun) const
-	{
-		for (const auto& w : dictWords)
-		{
-			for (const auto& word : w.words)
-				fun(word);
-		}
-	}
 };

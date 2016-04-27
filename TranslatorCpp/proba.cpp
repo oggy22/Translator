@@ -28,7 +28,7 @@ int main1(void)
 	std::set<language_t::string_t> words;
 	if (std::is_same<language_t::letter, wchar_t>::value)
 		set_wide();
-	English::traverse_words([&](const translator::word_form<language_t>& word)
+	English::traverse_word_forms([&](const translator::word_form<language_t>& word)
 	{
 		words.insert(word.word);
 		//wcout << word.word << " ";

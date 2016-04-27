@@ -1,6 +1,5 @@
 #include "English.h"
 
-
 const std::unordered_map<English::attributes, English::attribute_categories> English::belongs_to_category
 {
 	{ per1, attribute_categories::person },
@@ -8,23 +7,23 @@ const std::unordered_map<English::attributes, English::attribute_categories> Eng
 	{ per3, attribute_categories::person },
 };
 
-const English::string_t English::stAlphabet("abcdefghijklmnopqrstuvwxyz");
+const English::string_t ENGLISH_BASE::stAlphabet("abcdefghijklmnopqrstuvwxyz");
 
-const std::vector<translator::dictionary_word<English>> English::dictWords
+const std::vector<translator::dictionary_word<English>> ENGLISH_BASE::dictWords
 {
 	{ "i", pron,{ sing, per1 },
 	{
-		{ "me",{ attributes::accus } },
-		{ "my",{ attributes::posses } },
-		{ "mine",{ attributes::posses, attributes::refl } },
-		{ "myself",{ attributes::refl } },
+		{ "me",{ accus } },
+		{ "my",{ posses } },
+		{ "mine",{ posses, refl } },
+		{ "myself",{ refl } },
 	} },
 	{ "you", pron,{ sing, per2 },
 	{
-		{ "you",{ attributes::accus } },
-		{ "your",{ attributes::posses } },
-		{ "yours",{ attributes::posses } },
-		{ "yourself",{ attributes::refl } },
+		{ "you",{ accus } },
+		{ "your",{ posses } },
+		{ "yours",{ posses } },
+		{ "yourself",{ refl } },
 	} },
 	{ "he", pron,{ sing, per3 } },
 	{ "we", pron,{ plur, per1 } },
@@ -78,15 +77,15 @@ const std::vector<translator::dictionary_word<English>> English::dictWords
 	{ "woman", noun },
 };
 
-const std::vector<translator::rule<English>> English::grammar_rules
+const std::vector<translator::rule<English>> ENGLISH_BASE::grammar_rules
 {
 	{
 		{ Sent },
-		{ word_type::pronoun },{ verb }
+		{ pron },{ verb }
 	}
 };
 
-const std::vector<translator::word_rule<English>> English::word_rules
+const std::vector<translator::word_rule<English>> ENGLISH_BASE::word_rules
 {
 	// Nouns
 	{ { "*" },{ "*" }, noun,{ sing } },
@@ -97,7 +96,7 @@ const std::vector<translator::word_rule<English>> English::word_rules
 	{ { "*sis" },{ "*ses" }, noun,{ plur } },	// basis, crisis, diagnosis
 	{ { "*man" },{ "*men" }, noun,{ plur } },	// man, woman, policeman
 
-												//// Verbs
+	//// Verbs
 	{ { "*" },{ "*" }, verb,{ sing, per1 } },
 	{ { "*" },{ "*" }, verb,{ sing, per2 } },
 	{ { "*" },{ "*s" }, verb,{ sing, per3 } },

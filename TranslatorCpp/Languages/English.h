@@ -2,23 +2,21 @@
 #include <sstream>
 #include "..\language.h"
 
-struct English
+#define ENGLISH_BASE translator::Language<English, char>
+struct English : public ENGLISH_BASE
 {
 	using letter = char;
-	using string_t = std::basic_string < letter >;
-
-	static const string_t stAlphabet;
 
 	enum class word_type { noun, verb, pronoun, adjective, adverb, article, NP, VP, Sentence };
-#define noun	word_type::noun
-#define verb	word_type::verb
-#define pron	word_type::pronoun
-#define adj		word_type::adjective
-#define adv		word_type::adverb
-#define art		word_type::article
-#define NP		word_type::NP
-#define VP		word_type::VP
-#define Sent	word_type::Sentence
+#define noun	English::word_type::noun
+#define verb	English::word_type::verb
+#define pron	English::word_type::pronoun
+#define adj		English::word_type::adjective
+#define adv		English::word_type::adverb
+#define art		English::word_type::article
+#define NP		English::word_type::NP
+#define VP		English::word_type::VP
+#define Sent	English::word_type::Sentence
 
 	enum class attribute_categories { gender, plurality, person };
 
@@ -30,13 +28,16 @@ struct English
 		posses, refl, accus
 	};
 
-#define past attributes::past
-#define perf attributes::perfect
-#define per1 attributes::per1
-#define per2 attributes::per2
-#define per3 attributes::per3
-#define sing attributes::sing
-#define plur attributes::plur
+#define past English::attributes::past
+#define perf English::attributes::perfect
+#define per1 English::attributes::per1
+#define per2 English::attributes::per2
+#define per3 English::attributes::per3
+#define sing English::attributes::sing
+#define plur English::attributes::plur
+#define accus English::attributes::accus
+#define posses English::attributes::posses
+#define refl English::attributes::refl
 
 	const std::set<attributes> phony_attrs{ };
 
@@ -47,28 +48,5 @@ struct English
 		return false;
 	}
 
-	static const std::vector<translator::dictionary_word<English>> dictWords;
-
-	static const std::vector<translator::word_rule<English>> word_rules;
-
-	static const std::vector<translator::rule<English>> grammar_rules;
-
-	English()
-	{
-#ifdef _DEBUG
-		for (auto& rule : word_rules)
-			rule.used = false;
-#endif
-		translator::populate_words<English>();
-	}
-
-	template <typename Lambda>
-	static void traverse_words(Lambda fun)
-	{
-		for (const auto& w : dictWords)
-		{
-			for (const auto& word : w.words)
-				fun(word);
-		}
-	}
+	English() : ENGLISH_BASE() {}
 };

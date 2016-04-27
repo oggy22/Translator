@@ -381,7 +381,7 @@ namespace translator
 		}
 	};
 
-	/// <summmary>Contains left node and right nodes of the rule.</summary>
+	/// <summary>Contains left node and right nodes of the rule.</summary>
 	template <class Language>
 	class rule
 	{
@@ -619,6 +619,40 @@ namespace translator
 			for (auto& w : dw.words)
 				lambda(w);
 	}
+
+	template <class Lang, class letter>
+	class Language
+	{
+	public:
+		using string_t = std::basic_string<letter>;
+
+		static const string_t stAlphabet;
+		
+		static const std::vector<dictionary_word<Lang>> dictWords;
+
+		static const std::vector<word_rule<Lang>> word_rules;
+
+		static const std::vector<rule<Lang>> grammar_rules;
+
+		Language()
+		{
+#ifdef _DEBUG
+			for (auto& rule : word_rules)
+				rule.used = false;
+#endif
+			populate_words<Lang>();
+		}
+
+		template <typename Lambda>
+		static void traverse_word_forms(Lambda fun)
+		{
+			for (const auto& w : dictWords)
+			{
+				for (const auto& word : w.words)
+					fun(word);
+			}
+		}
+	};
 
 	template <class SourceLanguage, class DestinationLanguage>
 	class translator

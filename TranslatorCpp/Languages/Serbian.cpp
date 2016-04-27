@@ -1,6 +1,6 @@
 ﻿#include "Serbian.h"
 
-const Serbian::string_t Serbian::stAlphabet(L"абвгдђежзијклљмнњопрстћуфхцчџш");
+const Serbian::string_t SERBIAN_BASE::stAlphabet(L"абвгдђежзијклљмнњопрстћуфхцчџш");
 
 using attrs = Serbian::attributes;
 using cats = Serbian::attribute_categories;
@@ -26,17 +26,17 @@ const std::unordered_map<attrs, cats> Serbian::belongs_to_category
 	{ множ, бр },
 };
 
-const std::vector<translator::dictionary_word<Serbian>> Serbian::dictWords
+const std::vector<translator::dictionary_word<Serbian>> SERBIAN_BASE::dictWords
 {
 #include "Serbian_words.h"
 };
 
-const std::vector<translator::word_rule<Serbian>> Serbian::word_rules
+const std::vector<translator::word_rule<Serbian>> SERBIAN_BASE::word_rules
 {
 #include "Serbian_word_rules.h"
 };
 
-const std::vector<translator::rule<Serbian>> Serbian::grammar_rules
+const std::vector<translator::rule<Serbian>> SERBIAN_BASE::grammar_rules
 {
 	{ { РЕЧН },
 	{ { зам, бр, лиц },{ глаг, бр, лиц } } },
