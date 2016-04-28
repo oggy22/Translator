@@ -36,10 +36,11 @@ struct Serbian : public SERBIAN_BASE
 		мушки, женски, средњи,
 		позитив, компаратив, суперлатив,
 		живо,
+		дужи_облик,
 
 		//not real attributes as they are used for basis
 		презентска_основа, перфектна_основа,
-		основа_множине
+		основа_множине, основа_позитива
 	};
 
 	using wt = word_type;
@@ -67,16 +68,22 @@ struct Serbian : public SERBIAN_BASE
 #define суп	attrs::суперлатив
 
 #define жив attrs::живо
+#define д_о attrs::дужи_облик
 
 #define презосн attrs::презентска_основа
 #define перфосн attrs::перфектна_основа
 #define оснмнож attrs::основа_множине
+#define оснпоз attrs::основа_позитива
 
 	static const map<attrs, cats> belongs_to_category;
 
 	static bool is_phony_attribute(attributes a)
 	{
-		return a == оснмнож || a == перфосн || a == презосн;
+		return a == оснмнож
+			|| a == перфосн
+			|| a == презосн
+			|| a == оснмнож
+			|| a == оснпоз;
 	}
 
 	Serbian() : SERBIAN_BASE() {}

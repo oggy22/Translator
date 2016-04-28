@@ -28,6 +28,9 @@
     <ClInclude Include="Languages\Serbian_word_rules.h">
       <Filter>Languages</Filter>
     </ClInclude>
+    <ClInclude Include="Languages\Serbian_word_rules_adjectives.h">
+      <Filter>Languages</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Languages">

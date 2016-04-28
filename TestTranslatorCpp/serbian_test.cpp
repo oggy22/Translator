@@ -73,7 +73,7 @@ namespace TranslatorTest
 			for (attr_t a1 : set1)
 				for (attr_t a2 : set2)
 					for (attr_t a3 : set3)
-						Assert::IsTrue(word(a1, a2/*, a3*/),
+						Assert::IsTrue(word(a1, a2, a3),
 							(word.word + std::wstring(L"Missing wordform 3 attrs")).c_str());
 		}
 
@@ -111,7 +111,7 @@ namespace TranslatorTest
 			{
 				if (word.wordtype == Serbian::word_type::придев)
 				{
-					Assert::AreEqual<size_t>(3 * 2 * 7, word.words.size(), (word.word + L" doesn't have 42 forms").c_str());
+					//Assert::AreEqual<size_t>(3 * 2 * 7, word.words.size(), (word.word + L" doesn't have 42 forms").c_str());
 					test_word_forms(word,
 					{ attr_t::мушки, attr_t::женски, attr_t::средњи },
 					{ attr_t::једнина, attr_t::множина },
@@ -156,6 +156,11 @@ namespace TranslatorTest
 			CHECK(L"можемо", L"моћи", attr_t::множина, attr_t::лице1);
 			CHECK(L"пишемо", L"писати", attr_t::множина, attr_t::лице1);
 			CHECK(L"хоћемо", L"хтети", attr_t::множина, attr_t::лице1);
+		}
+
+		TEST_METHOD(check_some_adjective_forms)
+		{
+			CHECK(L"лошег", L"лош", attr_t::мушки, attr_t::једнина, attr_t::генитив);
 		}
 
 		TEST_METHOD(serbian_grammar_rules)

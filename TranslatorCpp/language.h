@@ -228,6 +228,18 @@ namespace translator
 			return false;
 		}
 
+		/// <summary>Checks if a word form with the given attributes exists</summary>
+		bool operator()(attr_t a1, attr_t a2, attr_t a3) const
+		{
+			for (const auto& w : words)
+				if (w.attrs.size() == 3
+					&& w.attrs.find(a1) != w.attrs.end()
+					&& w.attrs.find(a2) != w.attrs.end()
+					&& w.attrs.find(a3) != w.attrs.end())
+					return true;
+			return false;
+		}
+
 		const word_form<Language>& operator[](attr_t a) const
 		{
 			for (const auto& w : words)

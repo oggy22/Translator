@@ -185,6 +185,7 @@
     <ClInclude Include="Languages\Serbian.h" />
     <ClInclude Include="Languages\Serbian_word_rules.h" />
     <ClInclude Include="Languages\Serbian_words.h" />
+    <ClInclude Include="Languages\Serbian_word_rules_adjectives.h" />
     <ClInclude Include="parsing_triangle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
