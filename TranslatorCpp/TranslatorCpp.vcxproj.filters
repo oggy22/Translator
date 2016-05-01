@@ -11,6 +11,9 @@
     <ClCompile Include="Languages\English.cpp">
       <Filter>Languages</Filter>
     </ClCompile>
+    <ClCompile Include="EnglishSerbian.cpp">
+      <Filter>Languages</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assert.h" />

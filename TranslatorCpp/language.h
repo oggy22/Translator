@@ -108,7 +108,7 @@ namespace translator
 			return true;
 		}
 
-		void check_consistency()
+		inline void check_consistency()
 		{
 			for (auto attr : free_attr)
 				ASSERT(Language::belongs_to_category.count(attr) == 0);
@@ -278,29 +278,36 @@ namespace translator
 		}
 	};
 
-	template <class Language>
-	class nullable_attr
+	template <class EnumClass>
+	class nullable
 	{
+		static_assert(std::is_enum<EnumClass>::value, "Language::attributes must be an enum");
+		using underlying_type_t = typename std::underlying_type<EnumClass>::type;
+		static const underlying_type_t VOID_VALUE = -1;
+
 		union
 		{
-			int n;
-			typename Language::attributes attr;
+			underlying_type_t n;
+			EnumClass attr;
 		} data;
 
 	public:
-		nullable_attr()
+		nullable()
 		{
-			data.n = -1;
+			data.n = VOID_VALUE;
 		}
-		nullable_attr(typename Language::attributes attr)
+
+		nullable(EnumClass attr)
 		{
 			data.attr = attr;
 		}
+
 		bool is_set() const
 		{
-			return data.n != -1;
+			return data.n != VOID_VALUE;
 		}
-		typename Language::attributes get() const
+
+		EnumClass get() const
 		{
 			return data.attr;
 		}
@@ -313,7 +320,7 @@ namespace translator
 		pattern<typename Language::letter> destination;
 		typename Language::word_type wt;
 		set<typename Language::attributes> attrs;
-		nullable_attr<Language> f;
+		nullable<typename Language::attributes> f;
 #ifdef _DEBUG
 		mutable bool used;
 #endif
@@ -669,27 +676,88 @@ namespace translator
 					fun(word);
 			}
 		}
+
+		static const dictionary_word<Lang>& find_dictionary_word(const string_t& st)
+		{
+			for (const dictionary_word<Lang>& w : dictWords)
+			{
+				if (w.word == st)
+				{
+#ifdef _DEBUG
+					// Check that only one such a word exists
+					for (auto p_word = dictWords.crbegin(); p_word != dictWords.crend(); p_word++)
+					{
+						if (p_word->word == st)
+						{
+							ASSERT(&w == &*p_word);
+							break;
+						}
+					}
+#endif
+					return w;
+				}
+			}
+			ASSERT_WITH_MSG(false, "No such a word");
+		}
 	};
 
-	template <class SourceLanguage, class DestinationLanguage>
-	class translator
+	
+	template <class Lang, class attr_t = typename Lang::attributes>
+	class translator_node
 	{
-		const SourceLanguage &source;
-		const DestinationLanguage &destination;
+		const dictionary_word<Lang> word;
+		const nullable<typename Lang::word_type> wt;
+		set<attr_t> attrs;
+
+		void create_attrs()
+		{
+		}
+
+		template <typename... Args>
+		void create_attrs(attr_t attr, Args... args)
+		{
+			attrs.emplace(attr);
+			create_attrs(args...);
+		}
 
 	public:
-		translator(const SourceLanguage& source, const DestinationLanguage& destination)
-			: source(source), destination(destination)
-		{ }
+		template <typename... Args>
+		translator_node(typename Lang::string_t st, Args... args)
+			:  word(Lang::find_dictionary_word(st))
+		{
+			create_attrs();
+		}
+	};
 
-		typename DestinationLanguage::string_t translate(const typename SourceLanguage::string_t text)
+	template <class Lang1, class Lang2>
+	struct translator
+	{
+		translator() { }
+
+		static const string stConst;
+
+		using word_type1 = typename Lang1::word_type;
+		using word_type2 = typename Lang2::word_type;
+		using attributes1 = typename Lang1::attributes;
+		using attributes2 = typename Lang2::attributes;
+		using categories1 = typename Lang1::attribute_categories;
+		using categories2 = typename Lang2::attribute_categories;
+		using trans_node1 = typename translator_node<Lang1>;
+		using trans_node2 = typename translator_node<Lang2>;
+
+		static const vector<std::pair<word_type1, word_type2>> wordtypes;
+		static const vector<std::pair<attributes1, attributes2>> attrs;
+		static const vector<std::pair<categories1, categories2>> cats;
+		static const vector<std::pair<trans_node1, trans_node2>> translations;
+
+		typename Lang2::string_t translate(const typename Lang1::string_t text)
 		{
 			wcout << "Trying to translate : " << text << endl;
-			return DestinationLanguage::string_t();
+			return Lang2::string_t();
 		}
 
 	private:
-		typename DestinationLanguage::string_t translate(const vector<const typename SourceLanguage::string_t> text)
+		typename Lang2::string_t translate(const vector<const typename Lang1::string_t> text)
 		{
 		}
 	};
