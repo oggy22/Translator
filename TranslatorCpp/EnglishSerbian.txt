@@ -1,7 +1,9 @@
 // Examples of translations
 I go to school.
-I had a bad night
+I had a bad night.
+I told you about her.
 A smart man knows
 How old are you?
+What do you think about her?
 What is your name?
 You look familiar.
