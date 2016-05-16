@@ -1,5 +1,5 @@
-[Translator][1] — Translator from and to natural languages
+Translator from and to natural languages
 ==============================================
-Translator supports **Serbian and English**.
-
-See the [project home][1] and the [documentation][2] for more information.
+Translator supports **Serbian and English** so far.
+Planned support includes Russian, German and Spanish.
+Other languages that might be implemented in the future are Macedonian, Serbian latin/Croatian, and some Polish and French.
