@@ -3,6 +3,7 @@
 #include "common.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+std::ofstream test_output("english_test.log");
 
 namespace TranslatorTest
 {
@@ -70,14 +71,18 @@ namespace TranslatorTest
 			}
 		}
 
-		TEST_METHOD(english_grammar_rules)
-		{
-			//TODO
-		}
-
 		TEST_METHOD(check_some_noun_forms)
 		{
 			check<English>("women", "woman", attr_t::plur);
+		}
+
+		TEST_METHOD(english_grammar_rules)
+		{
+			test("i speak");
+			test("you walks", false);
+			test("he talks");
+			test("she goes");
+			test("she go", false);
 		}
 	};
 }

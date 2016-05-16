@@ -5,6 +5,8 @@ const map<English::attributes, English::attribute_categories> English::belongs_t
 	{ per1, attribute_categories::person },
 	{ per2, attribute_categories::person },
 	{ per3, attribute_categories::person },
+	{ sing, attribute_categories::plurality },
+	{ plur, attribute_categories::plurality },
 };
 
 const English::string_t ENGLISH_BASE::stAlphabet("abcdefghijklmnopqrstuvwxyz");
@@ -26,6 +28,8 @@ const std::vector<translator::dictionary_word<English>> ENGLISH_BASE::dictWords
 		{ "yourself",{ refl } },
 	} },
 	{ "he", pron,{ sing, per3 } },
+	{ "she", pron,{ sing, per3 } },
+	{ "it", pron,{ sing, per3 } },
 	{ "we", pron,{ plur, per1 } },
 	{ "you", pron,{ plur, per2 } },
 	{ "they", pron,{ plur, per3 } },
@@ -61,6 +65,7 @@ const std::vector<translator::dictionary_word<English>> ENGLISH_BASE::dictWords
 	{ "move", verb },
 	{ "say", verb,{},{ { "said",{ past } },{ "said",{ perf } } } },
 	{ "see", verb,{},{ { "saw",{ past } },{ "seen",{ perf } } } },
+	{ "speak", verb,{},{ { "spoke",{ past } },{ "spoken",{ perf } } } },
 	{ "talk", verb },
 	{ "walk", verb },
 	{ "want", verb },
@@ -75,14 +80,6 @@ const std::vector<translator::dictionary_word<English>> ENGLISH_BASE::dictWords
 	{ "potato", noun },
 	{ "wife", noun },
 	{ "woman", noun },
-};
-
-const std::vector<translator::rule<English>> ENGLISH_BASE::grammar_rules
-{
-	{
-		{ Sent },
-		{ pron },{ verb }
-	}
 };
 
 const std::vector<translator::word_rule<English>> ENGLISH_BASE::word_rules
@@ -111,6 +108,12 @@ const std::vector<translator::word_rule<English>> ENGLISH_BASE::word_rules
 
 	//// Pronouns
 	{ { "*" },{ "*" }, pron,{} },
+};
+
+const std::vector<translator::rule<English>> ENGLISH_BASE::grammar_rules
+{
+	{ { Sent },
+	{ { pron, sing, per },{ verb, sing, per } } },
 };
 
 English english;

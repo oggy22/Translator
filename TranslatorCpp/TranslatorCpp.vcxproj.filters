@@ -40,4 +40,7 @@
       <UniqueIdentifier>{5b4c63a2-0aeb-43a6-93f5-cbba7d1e65f4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="TranslatorCpp.natvis" />
+  </ItemGroup>
 </Project>

@@ -22,10 +22,10 @@ struct Serbian : public SERBIAN_BASE
 #define ИС Serbian::word_type::ИменичкаСинтагма
 #define Одр Serbian::word_type::ПрилошкаОдредба
 
-	enum class attribute_categories { падеж, број, род, лице };
+	enum class attribute_categories { падеж, број, род_, лице };
 #define пад Serbian::attribute_categories::падеж
 #define бр	Serbian::attribute_categories::број
-#define род	Serbian::attribute_categories::род
+#define род	Serbian::attribute_categories::род_
 #define лиц Serbian::attribute_categories::лице
 
 	enum class attributes
@@ -88,4 +88,30 @@ struct Serbian : public SERBIAN_BASE
 
 	Serbian() : SERBIAN_BASE() {}
 
+	static string_t wordtype_to_string_t(word_type wt)
+	{
+		switch (wt)
+		{
+		case word_type::именица:
+			return L"именица";
+		case word_type::заменица:
+			return L"заменица";
+		case word_type::глагол:
+			return L"глагол";
+		case word_type::придев:
+			return L"придев";
+		case word_type::прилог:
+			return L"прилог";
+		case word_type::РЕЧЕНИЦА:
+			return L"РЕЧЕНИЦА";
+		case word_type::ИменичкаСинтагма:
+			return L"ИменичкаСинтагма";
+		case word_type::ГлаголскаСинтагма:
+			return L"ГлаголскаСинтагма";
+		case word_type::ПрилошкаОдредба:
+			return L"ПрилошкаОдредба";
+		default:
+			ASSERT(false);
+		}
+	}
 };

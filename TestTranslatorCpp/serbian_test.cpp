@@ -1,8 +1,16 @@
 ﻿#include "stdafx.h"
 #include "../TranslatorCpp/Languages/Serbian.h"
 #include "common.h"
+#include <codecvt>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+std::wofstream test_output("serbian_test.log");
+
+TEST_MODULE_INITIALIZE(TestModuleInitialize)
+{
+	test_output.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
+	test_output << "Serbian" << std::endl;
+}
 
 namespace TranslatorTest
 {
@@ -170,6 +178,19 @@ namespace TranslatorTest
 			test(L"ти радиш");
 			test(L"он пева");
 			test(L"он певам", false);
+			
+			// Именичке синтагме
+			test(L"лепа жена");
+			test(L"леп кућа", false);
+
+			//// Прилошке одредбе
+			test(L"у школу");
+			test(L"у школа", false);
+
+			// Реченице
+			test(L"ја идем у школу");
+			test(L"ја идем у школа", false);
+			test(L"ја иде у школу", false);
 		}
 	};
 }

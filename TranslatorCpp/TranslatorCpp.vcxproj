@@ -189,6 +189,11 @@
     <ClInclude Include="Languages\Serbian_word_rules_adjectives.h" />
     <ClInclude Include="parsing_triangle.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="TranslatorCpp.natvis">
+      <SubType>Designer</SubType>
+    </Natvis>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

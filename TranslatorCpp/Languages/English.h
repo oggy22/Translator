@@ -37,6 +37,8 @@ struct English : public ENGLISH_BASE
 #define posses English::attributes::posses
 #define refl English::attributes::refl
 
+#define per English::attribute_categories::person
+
 	static const map<attributes, attribute_categories> belongs_to_category;
 
 	static bool is_phony_attribute(attributes a)
@@ -45,4 +47,31 @@ struct English : public ENGLISH_BASE
 	}
 
 	English() : ENGLISH_BASE() {}
+
+	static string_t wordtype_to_string_t(word_type wt)
+	{
+		switch (wt)
+		{
+		case word_type::adjective:
+			return "adjective";
+		case word_type::adverb:
+			return "adverb";
+		case word_type::article:
+			return "article";
+		case noun:
+			return "noun";
+		case NP:
+			return "NP";
+		case word_type::pronoun:
+			return "pronoun";
+		case word_type::Sentence:
+			return "Sentence";
+		case verb:
+			return "verb";
+		case VP:
+			return "VP";
+		default:
+			ASSERT(false);
+		}
+	}
 };

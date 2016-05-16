@@ -39,15 +39,20 @@ namespace translator
 		template <typename... Values>
 		attribute_manager(attr_t attr, Values... values) : attribute_manager(values...)
 		{
-			ASSERT_WITH_MSG(!free_attr.count(attr), "Attribute already contained");
-			free_attr.emplace(attr)
+			ASSERT_WITH_MSG(!free_attr.count(attr), "Free attribute already contained");
+			
+			auto p_c = Language::belongs_to_category.find(attr);
+			if (p_c != Language::belongs_to_category.end())
+				mapping[p_c->second] = attr;	// todo: assert that mapping for this category doesn't exist
+			else
+				free_attr.emplace(attr);
 		}
 
 		template <typename... Values>
 		attribute_manager(cat_t cat, Values... values) : attribute_manager(values...)
 		{
-			ASSERT_WITH_MSG(free_cat.count(cat), "Category already contained");
-			free_cat.emplace(cat)
+			ASSERT_WITH_MSG(!free_cat.count(cat), "Category already contained");
+			free_cat.emplace(cat);
 		}
 
 		template <typename... Args>
@@ -269,13 +274,6 @@ namespace translator
 		{
 			return attrs.count(a) || p_dw->attrs.count(a);
 		}
-
-		typename Language::attributes operator[](typename Language::attribute_categories c)
-		{
-			for (auto a : attrs)
-				if (true)
-					return 
-		}
 	};
 
 	template <class EnumClass>
@@ -344,8 +342,7 @@ namespace translator
 	public:
 		const typename Language::string_t word;
 		typename Language::word_type wordtype;
-		set<cats_t> cats;
-		set<attrs_t> attrs;
+		attribute_manager<Language> am;
 
 		const enum node_type_t { LITERAL, TOKEN } node_type;
 
@@ -353,29 +350,14 @@ namespace translator
 			typename Language::string_t word
 			) : word(word), node_type(LITERAL) {}
 
-		//rule_node(
-		//	typename Language::string_t word,
-		//	typename Language::word_type wordtype
-		//	) : word(word), wordtype(wordtype) {}
-
+		template <typename... Values>
 		rule_node(
-			typename Language::word_type wordtype
-			) : wordtype(wordtype), node_type(TOKEN) {}
-
-		template <typename... Values>
-		rule_node(typename Language::word_type wordtype, attrs_t a, Values... values) : rule_node(wordtype, values...)
-		{
-			attrs.insert(a);
-		}
-
-		template <typename... Values>
-		rule_node(typename Language::word_type wordtype, cats_t c, Values... values) : rule_node(wordtype, values...)
-		{
-			cats.insert(c);
-		}
+			typename Language::word_type wordtype, Values... values
+			) : wordtype(wordtype), node_type(TOKEN), am(values...) {}
 
 		bool accept(const word_form<Language>& w, map<cats_t, attrs_t>& values) const
 		{
+			ASSERT_WITH_MSG(false, "This should not be used");
 			if (!word.empty() && word != w.word)
 				return false;
 
@@ -490,6 +472,15 @@ namespace translator
 			return p_rule->size();
 		}
 
+		typename Language::word_type get_wordtype() const
+		{
+			if (is_word_form())
+				return p_wf->p_dw->wordtype;
+			if (is_rule_application())
+				return p_rule->left.wordtype;
+			ASSERT(false);
+		}
+
 		/// <summary>Checks if attribute_manager can accept this parsing_node.
 		/// Returns true iff attribute_manager has been updated</summary>
 		bool accept(const rule_node<Language>& nd, attribute_manager<Language>& am) const
@@ -497,10 +488,42 @@ namespace translator
 			if (is_literal())
 				return nd.node_type == nd.LITERAL && nd.word == this->st;
 
-			//todo: Here should be attribute arithmetic
-			return am += this->am;
+			attribute_manager<Language> copy_am(am);
+
+			if (is_rule_application() && p_rule->left.wordtype != nd.wordtype)
+				return false;
+
+			if (is_word_form())
+				if (this->p_wf->p_dw->wordtype != nd.wordtype)
+					return false;
+
+			if (!(copy_am += nd.am))
+				return false;
+
+			if (!(copy_am += this->am))
+				return false;
+			
+			am = copy_am;
+
+			return true;
 		}
 	};
+
+	template <typename Language>
+	std::basic_ostream<char>& operator<<(std::basic_ostream<char>& os, const parsing_node<Language>& pn)
+	{
+		if (!pn.is_literal())
+			os << Language::wordtype_to_string_t(pn.get_wordtype());
+		return os;
+	}
+
+	template <typename Language>
+	std::basic_ostream<wchar_t>& operator<<(std::basic_ostream<wchar_t>& os, const parsing_node<Language>& pn)
+	{
+		if (!pn.is_literal())
+			os << Language::wordtype_to_string_t(pn.get_wordtype());
+		return os;
+	}
 
 #pragma endregion
 
@@ -627,11 +650,46 @@ namespace translator
 							}
 						}
 						break;
+					case 3:
+						for (int second = first + 1; second <= end; second++)
+						{
+							for (const parsing_node<Language>& pn1 : pt(first, second - 1))
+							{
+								attribute_manager<Language> am1;
+								if (!pn1.accept(rule[0], am1))
+									continue;
+								for (int third = second + 1; third <= end; third++)
+								{
+									for (const parsing_node<Language>& pn2 : pt(second, third-1))
+									{
+										attribute_manager<Language> am2 = am1;
+										if (!pn2.accept(rule[1], am2))
+											continue;
+
+										for (const parsing_node<Language>& pn3 : pt(third, end))
+										{
+											attribute_manager<Language> am3 = am2;
+											if (!pn3.accept(rule[2], am3))
+												continue;
+
+											pt(first, end).emplace_back(parsing_node<Language>(rule, &pn1, &pn2, &pn3));
+										}
+									}
+								}
+							}
+						}
+						break;
 					default:
 						ASSERT(false);
 						break;
 					}
 				}
+#ifdef TEST
+		test_output << "**********************************" << std::endl;
+		test_output << "Parsing: '" << s << "'" << std::endl;
+		pt.to_ostream(test_output, vs);
+		test_output << "Root: " << pt(0, vs.size() - 1).size() << std::endl;
+#endif
 
 		return pt(0, vs.size() - 1).size() > 0;
 	}
@@ -700,7 +758,6 @@ namespace translator
 			ASSERT_WITH_MSG(false, "No such a word");
 		}
 	};
-
 	
 	template <class Lang, class attr_t = typename Lang::attributes>
 	class translator_node

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010"> 
+
+  <Type Name="parsing_triangle&lt;*&gt;">
+    <DisplayString>Triangle: {n}x{n}, total={n*(n+1)/2}</DisplayString>
+      <Expand>
+        <IndexListItems>
+          <Size>n*n</Size>
+          <ValueNode Condition="$i/n&lt;=$i%n">
+            (data[$i])
+          </ValueNode>
+        </IndexListItems>
+      </Expand>
+  </Type>
+
+  <Type Name="translator::rule_node&lt;*&gt;">
+    <DisplayString Condition="node_type==node_type_t::LITERAL">{word}</DisplayString>
+    <DisplayString Condition="node_type==node_type_t::TOKEN">{wordtype}: {am}</DisplayString>
+  </Type>
+
+  <Type Name="translator::attribute_manager&lt;*&gt;">
+    <DisplayString>mapping={mapping}, free_attr={free_attr}, free_cat={free_cat}</DisplayString>
+  </Type>
+
+  <Type Name="parsing_node&lt;*&gt;">
+    <DisplayString>This is a parsing node</DisplayString>
+  </Type>
+
+</AutoVisualizer>
