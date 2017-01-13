@@ -13,6 +13,43 @@ const English::string_t ENGLISH_BASE::stAlphabet("abcdefghijklmnopqrstuvwxyz");
 
 const std::vector<translator::dictionary_word<English>> ENGLISH_BASE::dictWords
 {
+	//Determiners:
+	{ "the", det },
+	{ "a", det },
+	{ "this", det },
+	{ "that", det },
+
+	{ "my", det },
+	{ "your", det },
+	{ "his", det },
+	{ "her", det },
+	{ "its", det },
+	{ "our", det },
+	{ "their", det },
+
+	{ "all", det },
+	{ "both", det },
+	{ "either", det },
+	{ "neither", det },
+	{ "each", det },
+	{ "every", det },
+
+	//Others:
+	{ "and", othr },
+	{ "as", othr },
+	{ "at", othr },
+	{ "but", othr },
+	{ "by", othr },
+	{ "for", othr },
+	{ "from", othr },
+	{ "in", othr },
+	{ "not", othr },
+	{ "or", othr },
+	{ "to", othr },
+	{ "what", othr },
+	{ "with", othr },
+
+	//Pronouns:
 	{ "i", pron,{ sing, per1 },
 	{
 		{ "me",{ accus } },
@@ -69,8 +106,9 @@ const std::vector<translator::dictionary_word<English>> ENGLISH_BASE::dictWords
 	{ "talk", verb },
 	{ "walk", verb },
 	{ "want", verb },
+	{ "will", verb },
 
-	//Nouns
+	//Nouns:
 	{ "body", noun },
 	{ "bus", noun },
 	{ "crisis", noun },
@@ -80,10 +118,25 @@ const std::vector<translator::dictionary_word<English>> ENGLISH_BASE::dictWords
 	{ "potato", noun },
 	{ "wife", noun },
 	{ "woman", noun },
+
+	//Numbers:
+	{ "one", numb },
+	{ "two", numb },
+	{ "three", numb },
+	{ "four", numb },
+	{ "five", numb },
+	{ "six", numb },
+	{ "seven", numb },
+	{ "eight", numb },
+	{ "nine", numb },
+	{ "ten", numb },
 };
 
 const std::vector<translator::word_rule<English>> ENGLISH_BASE::word_rules
 {
+	// Determiners
+	{ { "*"}, {"*"}, det },
+
 	// Nouns
 	{ { "*" },{ "*" }, noun,{ sing } },
 	{ { "*" },{ "*s" }, noun,{ plur } },

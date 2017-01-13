@@ -5,13 +5,17 @@ struct English : public ENGLISH_BASE
 {
 	using letter = char;
 
-	enum class word_type { noun, verb, pronoun, adjective, adverb, article, NP, VP, Sentence };
+	enum class word_type
+	{ noun, verb, pronoun, adjective, adverb, determiner, number, other, NP, VP, Sentence };
+
 #define noun	English::word_type::noun
 #define verb	English::word_type::verb
 #define pron	English::word_type::pronoun
 #define adj		English::word_type::adjective
 #define adv		English::word_type::adverb
-#define art		English::word_type::article
+#define det		English::word_type::determiner
+#define numb	English::word_type::number
+#define othr	English::word_type::other
 #define NP		English::word_type::NP
 #define VP		English::word_type::VP
 #define Sent	English::word_type::Sentence
@@ -56,8 +60,8 @@ struct English : public ENGLISH_BASE
 			return "adjective";
 		case word_type::adverb:
 			return "adverb";
-		case word_type::article:
-			return "article";
+		case word_type::determiner:
+			return "determiner";
 		case noun:
 			return "noun";
 		case NP:
