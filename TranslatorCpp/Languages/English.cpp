@@ -13,11 +13,13 @@ const English::string_t ENGLISH_BASE::stAlphabet("abcdefghijklmnopqrstuvwxyz");
 
 const std::vector<translator::dictionary_word<English>> ENGLISH_BASE::dictWords
 {
-	//Determiners:
+#pragma region Determiners
 	{ "the", det },
-	{ "a", det },
-	{ "this", det },
-	{ "that", det },
+	{ "a", det, {sing} },
+	{ "this", det,{ sing } },
+	{ "that", det,{ sing } },
+	{ "these", det,{ plur } },
+	{ "those", det,{ plur } },
 
 	{ "my", det },
 	{ "your", det },
@@ -27,14 +29,15 @@ const std::vector<translator::dictionary_word<English>> ENGLISH_BASE::dictWords
 	{ "our", det },
 	{ "their", det },
 
-	{ "all", det },
-	{ "both", det },
+	{ "all", det, {plur} },
+	{ "both", det, {plur} },
 	{ "either", det },
 	{ "neither", det },
-	{ "each", det },
-	{ "every", det },
+	{ "each", det, {plur} },
+	{ "every", det, {plur} },
+#pragma endregion 
 
-	//Others:
+#pragma region Others
 	{ "and", othr },
 	{ "as", othr },
 	{ "at", othr },
@@ -48,8 +51,9 @@ const std::vector<translator::dictionary_word<English>> ENGLISH_BASE::dictWords
 	{ "to", othr },
 	{ "what", othr },
 	{ "with", othr },
+#pragma endregion
 
-	//Pronouns:
+#pragma region Pronouns
 	{ "i", pron,{ sing, per1 },
 	{
 		{ "me",{ accus } },
@@ -70,8 +74,9 @@ const std::vector<translator::dictionary_word<English>> ENGLISH_BASE::dictWords
 	{ "we", pron,{ plur, per1 } },
 	{ "you", pron,{ plur, per2 } },
 	{ "they", pron,{ plur, per3 } },
+#pragma endregion
 
-	//Verbs:
+#pragma region Verbs
 	{ "be", verb,{},
 	{
 		{ "am",{ sing, per1 } },
@@ -107,8 +112,9 @@ const std::vector<translator::dictionary_word<English>> ENGLISH_BASE::dictWords
 	{ "walk", verb },
 	{ "want", verb },
 	{ "will", verb },
+#pragma endregion
 
-	//Nouns:
+#pragma region Nouns
 	{ "body", noun },
 	{ "bus", noun },
 	{ "crisis", noun },
@@ -118,8 +124,9 @@ const std::vector<translator::dictionary_word<English>> ENGLISH_BASE::dictWords
 	{ "potato", noun },
 	{ "wife", noun },
 	{ "woman", noun },
+#pragma endregion
 
-	//Numbers:
+#pragma region Numbers
 	{ "one", numb },
 	{ "two", numb },
 	{ "three", numb },
@@ -130,6 +137,7 @@ const std::vector<translator::dictionary_word<English>> ENGLISH_BASE::dictWords
 	{ "eight", numb },
 	{ "nine", numb },
 	{ "ten", numb },
+#pragma endregion
 };
 
 const std::vector<translator::word_rule<English>> ENGLISH_BASE::word_rules
