@@ -171,9 +171,9 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="EnglishSerbian.cpp" />
     <ClCompile Include="Languages\English.cpp" />
     <ClCompile Include="Languages\Serbian.cpp" />
+    <ClCompile Include="EnglishSerbian.cpp" />
     <ClCompile Include="Parse.cpp" />
     <ClCompile Include="proba.cpp" />
     <ClCompile Include="prototype.cpp" />
