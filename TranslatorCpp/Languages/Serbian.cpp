@@ -54,4 +54,6 @@ const std::vector<translator::rule<Serbian>> SERBIAN_BASE::grammar_rules
 	{ { прид, бр, пад },{ имен, бр, пад } } }
 };
 
+bool SERBIAN_BASE::initialized = false;
+
 Serbian serbian;

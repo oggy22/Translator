@@ -18,7 +18,6 @@ namespace TranslatorTest
 	{
 		void test(const std::wstring& st, bool expected=true)
 		{
-			Serbian serbian;
 			Assert::AreEqual(expected, translator::parse<Serbian>(st));
 		}
 

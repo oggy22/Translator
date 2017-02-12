@@ -716,13 +716,23 @@ namespace translator
 
 		static const std::vector<rule<Lang>> grammar_rules;
 
-		Language()
+		static bool initialized;
+
+		static void Initialize()
 		{
+			ASSERT(!initialized);
+
 #ifdef _DEBUG
 			for (auto& rule : word_rules)
 				rule.used = false;
 #endif
 			populate_words<Lang>();
+		}
+
+		
+		Language()
+		{
+			Initialize();
 		}
 
 		template <typename Lambda>

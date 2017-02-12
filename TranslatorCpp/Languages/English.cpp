@@ -177,4 +177,6 @@ const std::vector<translator::rule<English>> ENGLISH_BASE::grammar_rules
 	{ { pron, sing, per },{ verb, sing, per } } },
 };
 
+bool ENGLISH_BASE::initialized = false;
+
 English english;
