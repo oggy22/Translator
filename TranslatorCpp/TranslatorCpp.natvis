@@ -26,4 +26,9 @@
     <DisplayString>This is a parsing node</DisplayString>
   </Type>
 
+  <Type Name="translator::pattern&lt;*&gt;">
+    <DisplayString Condition="has_joker">{pre} * {post}</DisplayString>
+    <DisplayString Condition="!has_joker">{pre}</DisplayString>
+  </Type>
+  
 </AutoVisualizer>

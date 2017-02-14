@@ -26,7 +26,7 @@ const map<attrs, cats> Serbian::belongs_to_category
 	{ множ, бр },
 };
 
-const std::vector<translator::dictionary_word<Serbian>> SERBIAN_BASE::dictWords
+std::vector<translator::dictionary_word<Serbian>> SERBIAN_BASE::_dictWords
 {
 #include "Serbian_words.h"
 };
@@ -34,6 +34,40 @@ const std::vector<translator::dictionary_word<Serbian>> SERBIAN_BASE::dictWords
 const std::vector<translator::word_rule<Serbian>> SERBIAN_BASE::word_rules
 {
 #include "Serbian_word_rules.h"
+};
+
+const std::vector<translator::word_to_word_rule<Serbian>> SERBIAN_BASE::word_to_word_rules
+{
+	// Глаголи:
+	{ L"*ти",	L"*ње",		глаг, имен,{ сред } },
+	{ L"бити",	L"",		глаг, имен,{ сред } },
+	{ L"*лети",	L"*љење",	глаг, имен,{ сред } },
+	{ L"видети",L"виђање",	глаг, имен,{ сред } },
+	{ L"јести",	L"једење",	глаг, имен,{ сред } },
+
+	{ L"*ати",	L"*ајући",	глаг, прил },
+	{ L"*а",	L"*ски",	имен, прид },	//жена, свиња
+	{ L"*еме",	L"*еменски",имен, прид },	//време, племе
+	
+	{ L"*",		L"*о",		прид, прил },	//брзо, лепо
+	{ L"*ан",	L"*но",		прид, прил },	//брзо, лепо
+
+	// Заменице:
+	{ L"ја",	L"мој",		зам, прид },
+	{ L"ти",	L"твој",	зам, прид },
+	{ L"он",	L"његов",	зам, прид },
+	{ L"она",	L"његов",	зам, прид },
+	{ L"оно",	L"његов",	зам, прид },
+	{ L"ми",	L"мој",		зам, прид },
+	{ L"ви",	L"твој",	зам, прид },
+	{ L"они",	L"његов",	зам, прид },
+	{ L"оне",	L"његов",	зам, прид },
+	{ L"она",	L"његов",	зам, прид },
+
+	// Присвојни придеви:
+	{ L"*",		L"*ов",	имен, прид },	//Миланов, Ненадов, монахов
+	{ L"коњ",	L"коњев",	имен, прид },	//Миланов, Ненадов, монахов
+	{ L"*а",	L"*ин",	имен, прид },	//женин
 };
 
 const std::vector<translator::rule<Serbian>> SERBIAN_BASE::grammar_rules

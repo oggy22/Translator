@@ -34,7 +34,7 @@ int main1(void)
 		//wcout << word.word << " ";
 	});
 	
-	for (const auto& dw : English::dictWords)
+	for (const auto& dw : English::dictWords())
 	{
 		out << dw.word << " (";
 		for (const auto& wf : dw.words)

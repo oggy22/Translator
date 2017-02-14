@@ -11,7 +11,7 @@ const map<English::attributes, English::attribute_categories> English::belongs_t
 
 const English::string_t ENGLISH_BASE::stAlphabet("abcdefghijklmnopqrstuvwxyz");
 
-const std::vector<translator::dictionary_word<English>> ENGLISH_BASE::dictWords
+std::vector<translator::dictionary_word<English>> ENGLISH_BASE::_dictWords
 {
 #pragma region Determiners
 	{ "the", det },
@@ -169,6 +169,11 @@ const std::vector<translator::word_rule<English>> ENGLISH_BASE::word_rules
 
 	//// Pronouns
 	{ { "*" },{ "*" }, pron,{} },
+};
+
+const std::vector<translator::word_to_word_rule<English>> ENGLISH_BASE::word_to_word_rules
+{
+	{"*", "*ly", adj, adv, {}}
 };
 
 const std::vector<translator::rule<English>> ENGLISH_BASE::grammar_rules

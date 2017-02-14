@@ -35,8 +35,11 @@ namespace TranslatorTest
 
 		TEST_METHOD(every_word_composed_of_serbian_letters)
 		{
-			for (const auto& word : Serbian::dictWords)
+			for (const auto& word : Serbian::dictWords())
 			{
+				for (wchar_t c : word.word)
+					Assert::AreNotEqual(std::wstring::npos, Serbian::stAlphabet.find(c));
+
 				for (const auto& w : word.words)
 				{
 					for (wchar_t c : w.word)
@@ -47,7 +50,7 @@ namespace TranslatorTest
 
 		TEST_METHOD(every_noun_has_gender)
 		{
-			for (const auto& word : Serbian::dictWords)
+			for (const auto& word : Serbian::dictWords())
 			{
 				if (word.wordtype == Serbian::word_type::именица)
 				{
@@ -86,7 +89,7 @@ namespace TranslatorTest
 
 		TEST_METHOD(each_noun_has_7cases_2numbers)
 		{
-			for (const auto& word : Serbian::dictWords)
+			for (const auto& word : Serbian::dictWords())
 			{
 				if (word.wordtype == Serbian::word_type::именица)
 				{
@@ -100,7 +103,7 @@ namespace TranslatorTest
 
 		TEST_METHOD(each_verb_has_2plurals_3persons_present_forms)
 		{
-			for (const auto& word : Serbian::dictWords)
+			for (const auto& word : Serbian::dictWords())
 			{
 				if (word.wordtype == Serbian::word_type::глагол)
 				{
@@ -114,7 +117,7 @@ namespace TranslatorTest
 
 		TEST_METHOD(each_adjective_has_3genders_2plurals_7cases)
 		{
-			for (const auto& word : Serbian::dictWords)
+			for (const auto& word : Serbian::dictWords())
 			{
 				if (word.wordtype == Serbian::word_type::придев)
 				{
@@ -130,14 +133,24 @@ namespace TranslatorTest
 
 		TEST_METHOD(each_adverb_has_3comparatives)
 		{
-			for (const auto& word : Serbian::dictWords)
+			for (const auto& word : Serbian::dictWords())
 			{
 				if (word.wordtype == Serbian::word_type::прилог)
 				{
-					Assert::AreEqual<size_t>(3, word.words.size(), (word.word + L" doesn't have 3 forms").c_str());
-					test_word_forms(word,
-					{ attr_t::позитив, attr_t::компаратив, attr_t::суперлатив }
-					);
+					if (ends_with<std::basic_string<wchar_t>>(word.word, L"ћи"))
+					{
+						Assert::AreEqual<size_t>(1, word.words.size(), (word.word + L" doesn't have 1 form").c_str());
+						test_word_forms(word,
+						{ attr_t::позитив }
+						);
+					}
+					else
+					{
+						Assert::AreEqual<size_t>(3, word.words.size(), (word.word + L" doesn't have 3 forms").c_str());
+						test_word_forms(word,
+						{ attr_t::позитив, attr_t::компаратив, attr_t::суперлатив }
+						);
+					}
 				}
 			}
 		}
@@ -146,7 +159,7 @@ namespace TranslatorTest
 
 		TEST_METHOD(check_some_noun_forms)
 		{
-			CHECK(L"коња",	L"коњ", attr_t::једнина, attr_t::акузатив);
+			CHECK(L"коња", L"коњ", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"орах", L"орах", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"ораси", L"орах", attr_t::множина, attr_t::номинатив);
 			CHECK(L"орахе", L"орах", attr_t::множина, attr_t::акузатив);
@@ -170,6 +183,40 @@ namespace TranslatorTest
 			CHECK(L"лошег", L"лош", attr_t::мушки, attr_t::једнина, attr_t::генитив);
 		}
 
+		bool dictionary_word_exists(const std::wstring& st)
+		{
+			for (auto &w : Serbian::dictWords())
+			{
+				if (w.word == st)
+					return true;
+			}
+			return false;
+		}
+
+		TEST_METHOD(serbian_derived_words)
+		{
+#define EXISTS(word) Assert::IsTrue(dictionary_word_exists(word))
+#define NEXISTS(word) Assert::IsFalse(dictionary_word_exists(word))
+
+			// глаг -> имен
+			NEXISTS(L"биње");
+			NEXISTS(L"волење");
+			EXISTS(L"вољење");
+			NEXISTS(L"видење");
+			EXISTS(L"виђање");
+			NEXISTS(L"јесње");
+			EXISTS(L"једење");
+
+			// имен -> прид
+			NEXISTS(L"женаов");
+			NEXISTS(L"коњов");
+			EXISTS(L"коњев");
+
+			// прид -> прил
+			NEXISTS(L"ружано");
+			EXISTS(L"ружно");
+		}
+
 		TEST_METHOD(serbian_grammar_rules)
 		{
 			test(L"ја гледам");
@@ -177,7 +224,7 @@ namespace TranslatorTest
 			test(L"ти радиш");
 			test(L"он пева");
 			test(L"он певам", false);
-			
+
 			// Именичке синтагме
 			test(L"лепа жена");
 			test(L"леп кућа", false);
@@ -190,6 +237,26 @@ namespace TranslatorTest
 			test(L"ја идем у школу");
 			test(L"ја идем у школа", false);
 			test(L"ја иде у школу", false);
+		}
+
+		TEST_METHOD(dictionary_words_count)
+		{
+			// Update this number when necessary
+			Assert::AreEqual<int>(152, Serbian::dictWords().size());
+		}
+
+		TEST_METHOD(word_forms_count)
+		{
+			int count = 0;
+			for (auto& dw : Serbian::dictWords())
+			{
+				int increment = dw.words.size();
+				Assert::IsFalse(increment == 0);
+				count += increment;
+			}
+
+			// Update this number when necessary
+			Assert::AreEqual<int>(3124, count);
 		}
 	};
 }

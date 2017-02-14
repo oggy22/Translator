@@ -77,7 +77,7 @@ struct Serbian : public SERBIAN_BASE
 
 	static const map<attrs, cats> belongs_to_category;
 
-	static bool is_phony_attribute(attributes a)
+	static constexpr bool is_phony_attribute(attributes a)
 	{
 		return a == оснмнож
 			|| a == перфосн

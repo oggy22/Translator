@@ -27,7 +27,7 @@ namespace TranslatorTest
 
 		TEST_METHOD(every_word_composed_of_english_letters)
 		{
-			for (const auto& word : English::dictWords)
+			for (const auto& word : English::dictWords())
 			{
 				for (const auto& w : word.words)
 				{
@@ -59,7 +59,7 @@ namespace TranslatorTest
 
 		TEST_METHOD(each_noun_singular_and_plural)
 		{
-			for (const auto& word : English::dictWords)
+			for (const auto& word : English::dictWords())
 			{
 				if (word.wordtype == English::word_type::noun)
 				{

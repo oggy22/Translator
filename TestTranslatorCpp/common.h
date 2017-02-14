@@ -4,7 +4,7 @@
 template <class Language, class... Attributes>
 const typename Language::string_t get_dictionary_word(const typename Language::string_t& st, Attributes... attributes)
 {
-	for (const auto& word : Language::dictWords)
+	for (const auto& word : Language::dictWords())
 		if (word.word == st)
 		{
 			return word[{ attributes... }].word;

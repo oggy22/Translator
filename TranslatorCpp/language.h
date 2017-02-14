@@ -20,6 +20,24 @@
 #include "parsing_triangle.h"
 #include "Assert.h"
 
+template <typename string_t = basic_string<Char>>
+static bool starts_with(const string_t& str, const string_t& prefix)
+{
+	if (prefix.length() > str.length())
+		return false;
+
+	return equal(prefix.cbegin(), prefix.end(), str.cbegin());
+}
+
+template <typename string_t = basic_string<Char>>
+static bool ends_with(const string_t& str, const string_t& sufix)
+{
+	if (sufix.length() > str.length())
+		return false;
+
+	return equal(sufix.cbegin(), sufix.end(), str.cbegin() + str.size() - sufix.size());
+}
+
 namespace translator
 {
 	using namespace std;
@@ -128,26 +146,11 @@ namespace translator
 	{
 		using string_t = basic_string < Char >;
 		string_t pre, post;
+		bool has_joker;
 
 		size_t length() const
 		{
 			return pre.length() + post.length();
-		}
-
-		static bool starts_with(const string_t& str, const string_t& prefix)
-		{
-			if (prefix.length() > str.length())
-				return false;
-
-			return equal(prefix.cbegin(), prefix.end(), str.cbegin());
-		}
-
-		static bool ends_with(const string_t& str, const string_t& sufix)
-		{
-			if (sufix.length() > str.length())
-				return false;
-
-			return equal(sufix.cbegin(), sufix.end(), str.cbegin() + str.size() - sufix.size());
 		}
 
 	public:
@@ -155,26 +158,46 @@ namespace translator
 		{
 			const Char joker = Char('*');
 			const typename string_t::size_type pos = s.find(joker);
-			ASSERT(0 <= pos && pos < s.length());
-			ASSERT(s.find(joker, pos + 1) == string_t::npos);
-			pre = s.substr(0, pos);
-			post = s.substr(pos + 1);
+			if (pos != string_t::npos)
+			{
+				ASSERT(0 <= pos && pos < s.length());
+				ASSERT(s.find(joker, pos + 1) == string_t::npos);
+				pre = s.substr(0, pos);
+				post = s.substr(pos + 1);
+				has_joker = true;
+			}
+			else
+			{
+				pre = s;
+				has_joker = false;
+			}
 		}
 
-		bool operator>(const pattern& other)
+		//TODO: This may need to be tested better
+		bool operator>(const pattern& other) const
 		{
+			// Without a joker the rule can't be the stronger one
+			if (!has_joker)
+				return false;
+
+			if (!other.has_joker)
+				return starts_with(other.pre, pre) && ends_with(other.pre, post) && length() < other.pre.length();
+
 			return starts_with(pre, other.pre) && ends_with(post, other.post);
 		}
 
-		bool match(const basic_string<Char>& s) const
+		bool match(const string_t& s) const
 		{
+			if (!has_joker)
+				return pre == s;
+
+			if (pre.length() + post.length() >= s.length())
+				return false;
+
 			if (s.compare(0, pre.length(), pre))
 				return false;
 
 			if (s.compare(s.length() - post.length(), post.length(), post))
-				return false;
-
-			if (pre.length() + post.length() >= s.length())
 				return false;
 
 			return true;
@@ -182,8 +205,13 @@ namespace translator
 
 		string_t match_and_transform(const string_t& input, const pattern& to) const
 		{
+			ASSERT(has_joker == to.has_joker);
+
 			if (!match(input))
-				return string_t();
+				ASSERT(false);
+
+			if (!has_joker)
+				return to.pre;
 
 			size_t core_len = input.length() - length();
 
@@ -326,6 +354,16 @@ namespace translator
 		{
 			return f.is_set();
 		}
+	};
+
+	template <class Language>
+	struct word_to_word_rule
+	{
+		pattern<typename Language::letter> source;
+		pattern<typename Language::letter> destination;
+		typename Language::word_type wt_source;
+		typename Language::word_type wt_destination;
+		set<typename Language::attributes> attrs;
 	};
 
 #pragma endregion
@@ -531,7 +569,7 @@ namespace translator
 	template<typename Language, typename string_t = Language::string_t>
 	void populate_words()
 	{
-		for (auto& w : Language::dictWords)
+		for (auto& w : Language::dictWords())
 		{
 			using namespace std;
 
@@ -542,7 +580,7 @@ namespace translator
 				if (r.wt != w.wordtype)
 					continue;
 
-				// Attribute combination already exists?
+				// Attribute combination exists already?
 				if (any_of(w.words.begin(), w.words.end(), [&](const word_form<Language>& wf)
 				{	return r.attrs == wf.attrs;	}))
 					continue;
@@ -603,7 +641,7 @@ namespace translator
 		{
 			pt(i, i).emplace_back(parsing_node<Language>(vs[i]));
 
-			getWords<Language>(Language::dictWords,
+			getWords<Language>(Language::dictWords(),
 				[&](const word_form<Language>& w)
 			{
 				if (w.word == vs[i])
@@ -705,14 +743,21 @@ namespace translator
 	template <class Lang, class letter>
 	class Language
 	{
+		static std::vector<dictionary_word<Lang>> _dictWords;
+
 	public:
 		using string_t = std::basic_string<letter>;
 
+		static const std::vector<word_rule<Lang>> word_rules;
+
 		static const string_t stAlphabet;
 		
-		static const std::vector<dictionary_word<Lang>> dictWords;
+		static const std::vector<dictionary_word<Lang>>& dictWords()
+		{
+			return _dictWords;
+		}
 
-		static const std::vector<word_rule<Lang>> word_rules;
+		static const std::vector<word_to_word_rule<Lang>> word_to_word_rules;
 
 		static const std::vector<rule<Lang>> grammar_rules;
 
@@ -726,8 +771,50 @@ namespace translator
 			for (auto& rule : word_rules)
 				rule.used = false;
 #endif
+			populate_derived_dict_words();
 			populate_words<Lang>();
+			initialized = true;
 		}
+
+		// Creates all the words given dictionary word list and word-to-word rules.
+		static void populate_derived_dict_words()
+		{
+			using string_t = Language::string_t;
+			using dw_t = typename dictionary_word<Language>;
+			std::vector<dictionary_word<Lang>> derived_words;
+
+			for (auto& w : Lang::dictWords())
+			{
+				map<Lang::word_type, const word_to_word_rule<Lang>*> applicable_rules;
+
+				for (auto& rule : Lang::word_to_word_rules)
+				{
+					if (rule.wt_source == w.wordtype && rule.source.match(w.word))
+					{
+						applicable_rules[rule.wt_source] = &rule;
+					}
+				}
+
+				for (auto& pair : applicable_rules)
+				{
+					const auto& rule = *pair.second;
+					string_t word = rule.source.match_and_transform(w.word, rule.destination);
+					if (word.empty())
+						continue;
+
+					derived_words.emplace_back(dictionary_word<Lang>
+					{
+						word,
+							rule.wt_destination,
+							rule.attrs
+					});
+				}
+			}
+
+			for (auto& w : derived_words)
+				_dictWords.push_back(w);
+		}
+
 
 		
 		Language()
@@ -738,7 +825,7 @@ namespace translator
 		template <typename Lambda>
 		static void traverse_word_forms(Lambda fun)
 		{
-			for (const auto& w : dictWords)
+			for (const auto& w : _dictWords)
 			{
 				for (const auto& word : w.words)
 					fun(word);
@@ -747,13 +834,13 @@ namespace translator
 
 		static const dictionary_word<Lang>& find_dictionary_word(const string_t& st)
 		{
-			for (const dictionary_word<Lang>& w : dictWords)
+			for (const dictionary_word<Lang>& w : _dictWords)
 			{
 				if (w.word == st)
 				{
 #ifdef _DEBUG
 					// Check that only one such a word exists
-					for (auto p_word = dictWords.crbegin(); p_word != dictWords.crend(); p_word++)
+					for (auto p_word = _dictWords.crbegin(); p_word != _dictWords.crend(); p_word++)
 					{
 						if (p_word->word == st)
 						{
