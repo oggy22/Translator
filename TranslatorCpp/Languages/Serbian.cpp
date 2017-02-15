@@ -38,6 +38,10 @@ const std::vector<translator::word_rule<Serbian>> SERBIAN_BASE::word_rules
 
 const std::vector<translator::word_to_word_rule<Serbian>> SERBIAN_BASE::word_to_word_rules
 {
+	// Именице:
+	{ L"*ац",	L"*чић",	имен, имен,{ жен } }, //мушкарац
+	{ L"*а",	L"*ица",	имен, имен,{ жен } }, //жена
+
 	// Глаголи:
 	{ L"*ти",	L"*ње",		глаг, имен,{ сред } },
 	{ L"бити",	L"",		глаг, имен,{ сред } },

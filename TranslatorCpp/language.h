@@ -785,13 +785,14 @@ namespace translator
 
 			for (auto& w : Lang::dictWords())
 			{
+				// All the applicable rules for the given word, mapped by derived word type
 				map<Lang::word_type, const word_to_word_rule<Lang>*> applicable_rules;
 
 				for (auto& rule : Lang::word_to_word_rules)
 				{
 					if (rule.wt_source == w.wordtype && rule.source.match(w.word))
 					{
-						applicable_rules[rule.wt_source] = &rule;
+						applicable_rules[rule.wt_destination] = &rule;
 					}
 				}
 
@@ -815,8 +816,6 @@ namespace translator
 				_dictWords.push_back(w);
 		}
 
-
-		
 		Language()
 		{
 			Initialize();

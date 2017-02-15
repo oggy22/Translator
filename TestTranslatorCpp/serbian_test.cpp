@@ -215,6 +215,10 @@ namespace TranslatorTest
 			// прид -> прил
 			NEXISTS(L"ружано");
 			EXISTS(L"ружно");
+
+			// имен -> имен-деминутив
+			EXISTS(L"женица");
+			EXISTS(L"мушкарчић");
 		}
 
 		TEST_METHOD(serbian_grammar_rules)
@@ -242,7 +246,7 @@ namespace TranslatorTest
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<int>(152, Serbian::dictWords().size());
+			Assert::AreEqual<int>(170, Serbian::dictWords().size());
 		}
 
 		TEST_METHOD(word_forms_count)
@@ -256,7 +260,7 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(3124, count);
+			Assert::AreEqual<int>(3376, count);
 		}
 	};
 }
