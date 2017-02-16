@@ -364,6 +364,10 @@ namespace translator
 		typename Language::word_type wt_source;
 		typename Language::word_type wt_destination;
 		set<typename Language::attributes> attrs;
+
+#ifdef _DEBUG
+		mutable bool used;
+#endif
 	};
 
 #pragma endregion
@@ -770,10 +774,18 @@ namespace translator
 #ifdef _DEBUG
 			for (auto& rule : word_rules)
 				rule.used = false;
+			for (auto& rule : word_to_word_rules)
+				rule.used = false;
 #endif
 			populate_derived_dict_words();
 			populate_words<Lang>();
 			initialized = true;
+#ifdef _DEBUG
+			for (auto& rule : word_rules)
+				ASSERT(rule.used);
+			for (auto& rule : word_to_word_rules)
+				ASSERT(rule.used);
+#endif
 		}
 
 		// Creates all the words given dictionary word list and word-to-word rules.
@@ -800,6 +812,9 @@ namespace translator
 				{
 					const auto& rule = *pair.second;
 					string_t word = rule.source.match_and_transform(w.word, rule.destination);
+#ifdef _DEBUG
+					rule.used = true;
+#endif
 					if (word.empty())
 						continue;
 

@@ -30,5 +30,13 @@
     <DisplayString Condition="has_joker">{pre} * {post}</DisplayString>
     <DisplayString Condition="!has_joker">{pre}</DisplayString>
   </Type>
-  
+
+  <Type Name="translator::word_rule&lt;*&gt;">
+    <DisplayString>{source} -> {destination}</DisplayString>
+  </Type>
+
+  <Type Name="translator::word_to_word_rule&lt;*&gt;">
+    <DisplayString>{source} -> {destination}</DisplayString>
+  </Type>
+
 </AutoVisualizer>

@@ -126,6 +126,11 @@ std::vector<translator::dictionary_word<English>> ENGLISH_BASE::_dictWords
 	{ "woman", noun },
 #pragma endregion
 
+#pragma region Adjectives
+	{ "slow", adj },
+	{ "quick", adj },
+#pragma endregion
+
 #pragma region Numbers
 	{ "one", numb },
 	{ "two", numb },
