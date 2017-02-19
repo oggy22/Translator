@@ -206,31 +206,6 @@ namespace translator
 
 		static const std::vector<rule<Lang>> grammar_rules;
 
-		static bool initialized;
-
-		static void Initialize()
-		{
-			ASSERT(!initialized);
-
-#ifdef _DEBUG
-			for (auto& rule : word_rules)
-				rule.used = false;
-			for (auto& rule : word_to_word_rules)
-				rule.used = false;
-#endif
-			populate_derived_dict_words();
-			populate_words<Lang>();
-			initialized = true;
-#ifdef _DEBUG
-			for (auto& rule : word_rules)
-				ASSERT(rule.used);
-			for (auto& rule : word_to_word_rules)
-				ASSERT(rule.used);
-#endif
-
-			check_for_duplicates();
-		}
-
 		static void check_for_duplicates()
 		{
 			for (unsigned i = 0; i<dictWords().size(); i++)
@@ -282,11 +257,6 @@ namespace translator
 				_dictWords.push_back(w);
 		}
 
-		Language()
-		{
-			Initialize();
-		}
-
 		template <typename Lambda>
 		static void traverse_word_forms(Lambda fun)
 		{
@@ -319,5 +289,37 @@ namespace translator
 			}
 			ASSERT_WITH_MSG(false, "No such a word");
 		}
-	};	
+
+protected:
+		Language()
+		{
+			Initialize();
+		}
+
+private:
+		static bool initialized;
+
+		static void Initialize()
+		{
+			ASSERT(!initialized);
+
+#ifdef _DEBUG
+			for (auto& rule : word_rules)
+				rule.used = false;
+			for (auto& rule : word_to_word_rules)
+				rule.used = false;
+#endif
+			populate_derived_dict_words();
+			populate_words<Lang>();
+			initialized = true;
+#ifdef _DEBUG
+			for (auto& rule : word_rules)
+				ASSERT(rule.used);
+			for (auto& rule : word_to_word_rules)
+				ASSERT(rule.used);
+#endif
+
+			check_for_duplicates();
+		}
+	};
 }

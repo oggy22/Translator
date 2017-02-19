@@ -20,7 +20,6 @@ int main()
 	using SourceLanguage = Serbian;
 
 	using namespace std;
-	SourceLanguage source;
 
 	cout << "Input a sentence:" << endl;
 	SourceLanguage::string_t text = L"ја читам";
