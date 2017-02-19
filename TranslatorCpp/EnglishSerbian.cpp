@@ -1,4 +1,6 @@
-﻿#include "language.h"
+﻿#include "stdafx.h"
+
+#include "translator.h"
 #include "Languages\English.h"
 #include "Languages\Serbian.h"
 

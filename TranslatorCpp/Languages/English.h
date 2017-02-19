@@ -78,4 +78,17 @@ struct English : public ENGLISH_BASE
 			ASSERT(false);
 		}
 	}
+
+	static bool is_duplicate(
+		const translator::dictionary_word<English>& w1,
+		const translator::dictionary_word<English>& w2)
+	{
+		if (w1.word != w2.word || w1.wordtype != w2.wordtype)
+			return false;
+
+		if (w1.word == "you")
+			return w1.attrs == w2.attrs;
+
+		return true;
+	}
 };

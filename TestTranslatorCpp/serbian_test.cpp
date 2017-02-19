@@ -1,7 +1,5 @@
 ﻿#include "stdafx.h"
 #include "../TranslatorCpp/Languages/Serbian.h"
-#include "common.h"
-#include <codecvt>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 std::wofstream test_output("serbian_test.log");
@@ -246,7 +244,7 @@ namespace TranslatorTest
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<int>(184, Serbian::dictWords().size());
+			Assert::AreEqual<int>(182, Serbian::dictWords().size());
 		}
 
 		TEST_METHOD(word_forms_count)
@@ -260,7 +258,7 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(3760, count);
+			Assert::AreEqual<int>(3754, count);
 		}
 	};
 }

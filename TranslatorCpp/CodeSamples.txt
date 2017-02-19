@@ -1,0 +1,24 @@
+************************************************
+Prototype for language:
+http://cpp.sh/9s4hr
+
+************************************************
+Things that may help with widestrings:
+#include <fcntl.h>
+#include <io.h>
+_setmode(_fileno(stdout), _O_U16TEXT);
+_setmode(_fileno(stdin), _O_U16TEXT);
+
+void testConio() {
+	wchar_t buffer[0x1000];
+	std::size_t numRead = 0;
+	if (_cgetws_s(buffer, &numRead)) return;
+	const std::wstring first(buffer, numRead);
+	if (_cgetws_s(buffer, &numRead)) return;
+	const std::wstring second(buffer, numRead);
+	const std::wstring result = first + second + L'\n';
+	_cputws(result.c_str());
+}
+
+std::locale mylocale("");   // get global locale	
+std::cout.imbue(mylocale);  // imbue global locale	cin >> text;

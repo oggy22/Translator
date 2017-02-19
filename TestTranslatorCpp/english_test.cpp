@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "../TranslatorCpp/Languages/English.h"
-#include "common.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 std::ofstream test_output("english_test.log");

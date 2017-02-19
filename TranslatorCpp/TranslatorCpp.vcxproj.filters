@@ -2,9 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Parse.cpp" />
-    <ClCompile Include="proba.cpp" />
-    <ClCompile Include="prototype.cpp" />
-    <ClCompile Include="Source.cpp" />
     <ClCompile Include="Languages\Serbian.cpp">
       <Filter>Languages</Filter>
     </ClCompile>
@@ -14,6 +11,7 @@
     <ClCompile Include="EnglishSerbian.cpp">
       <Filter>Languages</Filter>
     </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assert.h" />
@@ -34,6 +32,12 @@
     <ClInclude Include="Languages\Serbian_word_rules_adjectives.h">
       <Filter>Languages</Filter>
     </ClInclude>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="translator.h" />
+    <ClInclude Include="attribute_manager.h" />
+    <ClInclude Include="pattern.h" />
+    <ClInclude Include="Words.h" />
+    <ClInclude Include="Rules.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Languages">
@@ -42,5 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="TranslatorCpp.natvis" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CodeSamples.txt" />
   </ItemGroup>
 </Project>

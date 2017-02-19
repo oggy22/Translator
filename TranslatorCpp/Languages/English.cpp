@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "English.h"
 
 const map<English::attributes, English::attribute_categories> English::belongs_to_category

@@ -114,4 +114,20 @@ struct Serbian : public SERBIAN_BASE
 			ASSERT(false);
 		}
 	}
+
+	static bool is_duplicate(
+		const translator::dictionary_word<Serbian>& w1,
+		const translator::dictionary_word<Serbian>& w2)
+	{
+		if (w1.word != w2.word || w1.wordtype != w2.wordtype)
+			return false;
+
+		if (w1.wordtype == word_type::заменица)
+			return w1.attrs == w2.attrs;
+
+		if (w1.word == L"његов" || w1.word == L"њен" || w1.word == L"њихов")
+			return false;
+
+		return true;
+	}
 };

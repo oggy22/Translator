@@ -81,7 +81,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -127,8 +127,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -175,12 +174,13 @@
     <ClCompile Include="Languages\Serbian.cpp" />
     <ClCompile Include="EnglishSerbian.cpp" />
     <ClCompile Include="Parse.cpp" />
-    <ClCompile Include="proba.cpp" />
-    <ClCompile Include="prototype.cpp" />
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assert.h" />
+    <ClInclude Include="attribute_manager.h" />
     <ClInclude Include="language.h" />
     <ClInclude Include="Languages\English.h" />
     <ClInclude Include="Languages\Serbian.h" />
@@ -188,11 +188,19 @@
     <ClInclude Include="Languages\Serbian_words.h" />
     <ClInclude Include="Languages\Serbian_word_rules_adjectives.h" />
     <ClInclude Include="parsing_triangle.h" />
+    <ClInclude Include="pattern.h" />
+    <ClInclude Include="Rules.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="translator.h" />
+    <ClInclude Include="Words.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="TranslatorCpp.natvis">
       <SubType>Designer</SubType>
     </Natvis>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CodeSamples.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

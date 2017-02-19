@@ -1,4 +1,6 @@
-﻿#include <fcntl.h>
+﻿#include "stdafx.h"
+
+#include <fcntl.h>
 #include <io.h>
 #include <iostream>
 #include <cstdio>
@@ -7,7 +9,11 @@
 #include "Languages\English.h"
 #include "Languages\Serbian.h"
 
-void set_wide();
+void set_wide()
+{
+	_setmode(_fileno(stdout), _O_U16TEXT);
+	_setmode(_fileno(stdin), _O_U16TEXT);
+}
 
 int main()
 {
