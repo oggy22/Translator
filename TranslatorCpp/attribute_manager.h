@@ -13,6 +13,15 @@ namespace translator
 		set<cat_t> free_cat;
 		set<attr_t> free_attr;
 
+		inline void check_consistency()
+		{
+			for (auto attr : free_attr)
+				ASSERT(Language::belongs_to_category.count(attr) == 0);
+
+			for (auto cat : free_cat)
+				ASSERT(mapping.count(cat) == 0);
+		}
+
 	public:
 		attribute_manager() {}
 
@@ -93,13 +102,36 @@ namespace translator
 			return true;
 		}
 
-		inline void check_consistency()
+		bool has_all(const attribute_manager<Language>& am) const
 		{
-			for (auto attr : free_attr)
-				ASSERT(Language::belongs_to_category.count(attr) == 0);
+			for (const auto& pair : am.mapping)
+			{
+				auto iter = mapping.find(pair.first);
+				if (iter == mapping.end() || iter->second != pair.second)
+					return false;
+			}
 
-			for (auto cat : free_cat)
-				ASSERT(mapping.count(cat) == 0);
+			for (auto a : am.free_attr)
+				if (free_attr.count(a) == 0)
+					return false;
+
+			return true;
 		}
+
+		bool accepts(const attribute_manager<Language>& am) const
+		{
+			for (const auto& pair : am.mapping)
+			{
+				auto iter = mapping.find(pair.first);
+				if (iter == mapping.end())
+					continue;
+				
+				if (iter->second != pair.second)
+					return false;
+			}
+
+			return true;
+		}
+
 	};
 }
