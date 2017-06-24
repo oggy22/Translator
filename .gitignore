@@ -59,6 +59,8 @@ dlldata.c
 *.scc
 *.VC.opendb
 *.VC.db
+*.db-shm
+*.db-wal
 
 # Chutzpah Test files
 _Chutzpah*
