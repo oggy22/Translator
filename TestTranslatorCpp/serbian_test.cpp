@@ -99,13 +99,17 @@ namespace TranslatorTest
 			}
 		}
 
-		TEST_METHOD(each_verb_has_2plurals_3persons_present_forms)
+		TEST_METHOD(each_verb_has_2plurals_3persons_present_forms_and_inf)
 		{
 			for (const auto& word : Serbian::dictWords())
 			{
 				if (word.wordtype == Serbian::word_type::глагол)
 				{
-					Assert::AreEqual<size_t>(3 * 2, word.words.size(), (word.word + L" doesn't have 6 forms").c_str());
+					Assert::AreEqual<size_t>(3 * 2 + 1, word.words.size(), (word.word + L" doesn't have 6 forms").c_str());
+					
+					test_word_forms(word,
+					{ attr_t::инфинитив});
+
 					test_word_forms(word,
 					{ attr_t::једнина, attr_t::множина },
 					{ attr_t::лице1, attr_t::лице2, attr_t::лице3 });
@@ -237,8 +241,12 @@ namespace TranslatorTest
 
 			// Реченице
 			test(L"ја идем у школу");
-			test(L"ја идем у школа", false);
-			test(L"ја иде у школу", false);
+			test(L"ја идем у школа", false);	// wrong case
+			test(L"ја иде у школу", false);		// wrong verb declination
+
+			// Прелазни глаголи
+			test(L"видети школу");
+			//test(L"ићи школу", false);
 		}
 
 		TEST_METHOD(dictionary_words_count)
@@ -247,6 +255,8 @@ namespace TranslatorTest
 			Assert::AreEqual<int>(182, Serbian::dictWords().size());
 		}
 
+		// This test helps keeping awereness of the number of word forms.
+		// It should prevent from adding more word forms unintentionally.
 		TEST_METHOD(word_forms_count)
 		{
 			int count = 0;
@@ -258,7 +268,7 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(3754, count);
+			Assert::AreEqual<int>(3777, count);
 		}
 	};
 }

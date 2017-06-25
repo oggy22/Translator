@@ -20,6 +20,7 @@ struct Serbian : public SERBIAN_BASE
 #define прил Serbian::word_type::прилог
 #define РЕЧН Serbian::word_type::РЕЧЕНИЦА
 #define ИС Serbian::word_type::ИменичкаСинтагма
+#define ГС Serbian::word_type::ГлаголскаСинтагма
 #define Одр Serbian::word_type::ПрилошкаОдредба
 
 	enum class attribute_categories { падеж, број, род_, лице };
@@ -35,8 +36,10 @@ struct Serbian : public SERBIAN_BASE
 		једнина, множина,
 		мушки, женски, средњи,
 		позитив, компаратив, суперлатив,
+		инфинитив,
 		живо,
 		дужи_облик,
+		прелазни,
 
 		//not real attributes as they are used for basis
 		презентска_основа, перфектна_основа,
@@ -68,7 +71,9 @@ struct Serbian : public SERBIAN_BASE
 #define суп	attrs::суперлатив
 
 #define жив attrs::живо
+#define инф attrs::инфинитив
 #define д_о attrs::дужи_облик
+#define прел attrs::прелазни
 
 #define презосн attrs::презентска_основа
 #define перфосн attrs::перфектна_основа

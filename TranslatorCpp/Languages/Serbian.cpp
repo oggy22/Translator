@@ -92,7 +92,9 @@ const std::vector<translator::rule<Serbian>> SERBIAN_BASE::grammar_rules
 	{ { РЕЧН },
 	{ РЕЧН, Одр } },
 	{ { ИС },
-	{ { прид, бр, пад },{ имен, бр, пад } } }
+	{ { прид, бр, пад },{ имен, бр, пад } } },
+	{ { ГС },
+	{ { глаг, прел }, { имен, акуз } } }
 };
 
 bool SERBIAN_BASE::initialized = false;
