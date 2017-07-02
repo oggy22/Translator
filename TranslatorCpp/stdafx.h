@@ -5,6 +5,7 @@
 #include <vector>
 #include <iterator>
 #include <iostream>
+#include <experimental/generator>
 
 #ifdef _DEBUG
 #include <set>

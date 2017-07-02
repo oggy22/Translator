@@ -91,6 +91,7 @@
       <MinimalRebuild />
       <BufferSecurityCheck />
       <FloatingPointModel />
+      <AdditionalOptions>/await %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,6 +136,7 @@
       <SDLCheck>true</SDLCheck>
       <BrowseInformation>true</BrowseInformation>
       <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalOptions>/await %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

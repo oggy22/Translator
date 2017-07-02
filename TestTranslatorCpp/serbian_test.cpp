@@ -246,7 +246,7 @@ namespace TranslatorTest
 
 			// Прелазни глаголи
 			test(L"видети школу");
-			//test(L"ићи школу", false);
+			test(L"ићи школу", false);
 		}
 
 		TEST_METHOD(dictionary_words_count)

@@ -12,7 +12,7 @@ namespace translator
 		map<cat_t, attr_t> mapping;
 		set<cat_t> free_cat;
 		set<attr_t> free_attr;
-
+	
 		inline void check_consistency()
 		{
 			for (auto attr : free_attr)
@@ -133,5 +133,17 @@ namespace translator
 			return true;
 		}
 
+		std::experimental::generator<attr_t> attrs() const
+		{
+			for (auto attr : free_attr)
+			{
+				co_yield attr;
+			}
+
+			for (auto pair : mapping)
+			{
+				co_yield pair.second;
+			}
+		}
 	};
 }
