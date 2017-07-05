@@ -22,8 +22,8 @@
     <DisplayString>mapping={mapping}, free_attr={free_attr}, free_cat={free_cat}</DisplayString>
   </Type>
 
-  <Type Name="parsing_node&lt;*&gt;">
-    <DisplayString>This is a parsing node</DisplayString>
+  <Type Name="translator::parsing_node&lt;*&gt;">
+    <DisplayString>Rule={*p_rule}</DisplayString>
   </Type>
 
   <Type Name="translator::pattern&lt;*&gt;">
@@ -37,6 +37,12 @@
 
   <Type Name="translator::word_to_word_rule&lt;*&gt;">
     <DisplayString>{source} -> {destination}</DisplayString>
+  </Type>
+
+  <Type Name="translator::RNode&lt;*&gt;">
+    <DisplayString Condition="t==type::string">{st}</DisplayString>
+    <DisplayString Condition="t==type::word">{*p_dw}</DisplayString>
+    <DisplayString Condition="t==type::node">{children}</DisplayString>
   </Type>
 
 </AutoVisualizer>

@@ -37,21 +37,21 @@ namespace translator
 		}
 
 	public:
-		pattern(const string_t& s)
+		pattern(const string_t& st)
 		{
 			const Char joker = Char('*');
-			const typename string_t::size_type pos = s.find(joker);
+			const typename string_t::size_type pos = st.find(joker);
 			if (pos != string_t::npos)
 			{
-				ASSERT(0 <= pos && pos < s.length());
-				ASSERT(s.find(joker, pos + 1) == string_t::npos);
-				pre = s.substr(0, pos);
-				post = s.substr(pos + 1);
+				ASSERT(0 <= pos && pos < st.length());
+				ASSERT(st.find(joker, pos + 1) == string_t::npos);
+				pre = st.substr(0, pos);
+				post = st.substr(pos + 1);
 				has_joker = true;
 			}
 			else
 			{
-				pre = s;
+				pre = st;
 				has_joker = false;
 			}
 		}
@@ -99,6 +99,14 @@ namespace translator
 			size_t core_len = input.length() - length();
 
 			return to.pre + input.substr(pre.length(), core_len) + to.post;
+		}
+
+		string_t to_string() const
+		{
+			if (has_joker)
+				return pre + Char('*') + post;
+			else
+				return pre;
 		}
 	};
 }

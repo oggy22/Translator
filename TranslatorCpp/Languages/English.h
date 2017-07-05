@@ -6,7 +6,9 @@ struct English : public ENGLISH_BASE
 	using letter = char;
 
 	enum class word_type
-	{ noun, verb, pronoun, adjective, adverb, determiner, number, other, NP, VP, Sentence };
+	{
+		noun, verb, pronoun, adjective, adverb, determiner, number, other, NP, VP, Sentence
+	};
 
 #define noun	English::word_type::noun
 #define verb	English::word_type::verb
@@ -90,5 +92,19 @@ struct English : public ENGLISH_BASE
 			return w1.attrs == w2.attrs;
 
 		return true;
+	}
+
+	static const word_type Sentence = word_type::Sentence;
+
+	static constexpr bool is_word_type(word_type wt)
+	{
+		return wt == word_type::adjective ||
+			wt == word_type::adverb ||
+			wt == word_type::determiner ||
+			wt == noun ||
+			wt == word_type::number ||
+			wt == word_type::other ||
+			wt == word_type::pronoun ||
+			wt == verb;
 	}
 };

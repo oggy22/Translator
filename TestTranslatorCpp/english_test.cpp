@@ -75,6 +75,12 @@ namespace TranslatorTest
 			check<English>("women", "woman", attr_t::plur);
 		}
 
+		TEST_METHOD(check_some_derived_words)
+		{
+			check_dictionary_word_exists<English>("doable");
+			check_dictionary_word_exists<English>("talkable");
+		}
+
 		TEST_METHOD(english_grammar_rules)
 		{
 			test("i speak");

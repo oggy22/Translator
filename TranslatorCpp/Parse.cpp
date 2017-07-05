@@ -1,5 +1,6 @@
 ﻿#include "stdafx.h"
 
+//#include <random>
 #include <fcntl.h>
 #include <io.h>
 #include <iostream>
@@ -8,6 +9,7 @@
 #include <string>
 #include "Languages\English.h"
 #include "Languages\Serbian.h"
+#include "random_sentence.h"
 
 void set_wide()
 {
@@ -15,17 +17,82 @@ void set_wide()
 	_setmode(_fileno(stdin), _O_U16TEXT);
 }
 
-int main()
+using namespace std;
+
+int main(int argc, char *argv[])
 {
-	using SourceLanguage = Serbian;
+	std::random_device device2;
+	auto seed = device2();
+	std::default_random_engine device(seed);
 
-	using namespace std;
+	if (argc == 1)
+	{
+		cout << "Translator 1.0" << endl;
+		cout << "Made by Oggy" << endl;
+		cout << "-h or -help for help" << endl;
+		return 0;
+	}
 
-	cout << "Input a sentence:" << endl;
-	SourceLanguage::string_t text = L"ја читам";
-	set_wide();
-	bool success = translator::parse<SourceLanguage>(text);
-	wcout << text << endl;
-	wcout << (success ? "Success" : "Fail") << endl;
+	if (starts_with<string>(argv[1], "-random:"))
+	{
+		string stLang = argv[1] + strlen("-random:");
+
+		if (stLang == "SR")
+		{
+			wstring str = translator::random_sentence<Serbian>();
+			set_wide();
+			std::wcout << str << endl;
+		}
+		else if (stLang == "EN")
+		{
+			string str = translator::random_sentence<English>();
+			std::cout << str << endl;
+		}
+		else
+		{
+			std::cerr << "Unrecognized language: " << stLang << std::endl;
+			return -1;
+		}
+
+		return 0;
+	}
+
+	if (starts_with<string>(argv[1], "-list:"))
+	{
+		string stLang = argv[1] + strlen("-list:");
+		if (stLang == "SR")
+		{
+			set_wide();
+			for (const auto& word : Serbian::dictWords())
+			{
+				wcout << word.word << endl;
+				wcout << " ";
+				for (const auto& form : word.words)
+					wcout << form.word << " ";
+				wcout << endl;
+			}
+		}
+		else if (stLang == "EN")
+		{
+			cout << "Not implemented yet" << endl;
+		}
+		else
+		{
+			cerr << "Unrecognized language: " << stLang << endl;
+			return -1;
+		}
+
+		return 0;
+	}
+
+	string arg = argv[1];
 	return 0;
+}
+
+void print_help()
+{
+	cout << "Translator -[Argument]" << endl;
+	cout << "[Argument] can be" << endl;
+	cout << "help/h			: Print this screen" << endl;
+	cout << "random:Lang	: Generates a random sentence, Lang - two chars language identifier" << endl;
 }
