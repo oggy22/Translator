@@ -24,7 +24,7 @@ namespace TranslatorWPF
         private void InitTranslatorProcess()
         {
             proc = new Process();
-            proc.StartInfo.FileName = @"D:\Solutions\Translator\Release\TranslatorCpp.exe";
+            proc.StartInfo.FileName = System.IO.Directory.GetCurrentDirectory() + "\\TranslatorCpp.exe";
 
             // set up output redirection
             proc.StartInfo.RedirectStandardOutput = true;
