@@ -100,5 +100,12 @@ namespace translator
 
 			return to.pre + input.substr(pre.length(), core_len) + to.post;
 		}
+
+		void printw(std::wostream& wos) const
+		{
+			wos << std::wstring(pre.begin(), pre.end());
+			if (has_joker)
+				wos << L"*" << std::wstring(post.begin(), post.end());
+		}
 	};
 }

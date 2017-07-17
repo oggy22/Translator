@@ -1,5 +1,16 @@
 #include "stdafx.h"
 #include "../TranslatorCpp/Languages/English.h"
+std::wostream& operator<<(std::wostream&wout, English::word_type wt)
+{
+	switch (wt)
+	{
+		case noun: wout << L"noun"; break;
+		case verb: wout << L"verb"; break;
+	default: FAIL("Unknown English::word_type");
+	}
+	return wout;
+}
+#include "wstring_outputs.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 std::ofstream test_output("english_test.log");
@@ -19,7 +30,12 @@ namespace TranslatorTest
 		{
 			for (auto& rule : English::word_rules)
 			{
-				Assert::IsTrue(rule.used/*, (std::wstring)(rule.destination)*/);
+				if (!rule.used)
+				{
+					std::wstringstream wss;
+					wss << rule << L" not used";
+					Assert::Fail(wss.str().c_str());
+				}
 			}
 		}
 #endif

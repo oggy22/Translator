@@ -1,5 +1,18 @@
 ﻿#include "stdafx.h"
 #include "../TranslatorCpp/Languages/Serbian.h"
+std::wostream& operator<<(std::wostream&wout, Serbian::word_type wt)
+{
+	switch (wt)
+	{
+	case Serbian::word_type::именица: wout << L"именица"; break;
+	case Serbian::word_type::глагол: wout << L"глагол"; break;
+	case Serbian::word_type::придев: wout << L"придев"; break;
+	default: FAIL("Unknown Serbian::word_type");
+	}
+	return wout;
+}
+
+#include "wstring_outputs.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 std::wofstream test_output("serbian_test.log");
@@ -26,7 +39,12 @@ namespace TranslatorTest
 		{
 			for (auto& rule : Serbian::word_rules)
 			{
-				Assert::IsTrue(rule.used/*, (std::wstring)(rule.destination)*/);
+				if (!rule.used)
+				{
+					std::wstringstream wss;
+					wss << rule << L" not used";
+					Assert::Fail(wss.str().c_str());
+				}
 			}
 		}
 #endif
@@ -36,12 +54,14 @@ namespace TranslatorTest
 			for (const auto& word : Serbian::dictWords())
 			{
 				for (wchar_t c : word.word)
-					Assert::AreNotEqual(std::wstring::npos, Serbian::stAlphabet.find(c));
+					Assert::AreNotEqual(std::wstring::npos, Serbian::stAlphabet.find(c),
+						word.word.c_str());
 
 				for (const auto& w : word.words)
 				{
 					for (wchar_t c : w.word)
-						Assert::AreNotEqual(std::wstring::npos, Serbian::stAlphabet.find(c));
+						Assert::AreNotEqual(std::wstring::npos, Serbian::stAlphabet.find(c),
+							w.word.c_str());
 				}
 			}
 		}
