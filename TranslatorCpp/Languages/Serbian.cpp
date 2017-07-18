@@ -80,9 +80,9 @@ const std::vector<translator::word_to_word_rule<Serbian>> SERBIAN_BASE::word_to_
 const std::vector<translator::rule<Serbian>> SERBIAN_BASE::grammar_rules
 {
 	{ { РЕЧН },
-	{ { зам, бр, лиц, ном },{ глаг, бр, лиц } } },
+	{ { зам, бр, лиц },{ глаг, бр, лиц } } },
 	{ { РЕЧН },
-	{ { имен, бр, лиц3, ном },{ глаг, бр, лиц } } },
+	{ { имен, бр, лиц3 },{ глаг, бр, лиц } } },
 	{ { Одр },
 	{ { L"у" },{ имен, лок } } },
 	{ { Одр },

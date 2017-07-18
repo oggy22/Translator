@@ -313,10 +313,10 @@ private:
 			populate_words<Lang>();
 			initialized = true;
 #ifdef _DEBUG
-			//for (auto& rule : word_rules)
-			//	ASSERT(rule.used, "Rule not used");
-			//for (auto& rule : word_to_word_rules)
-			//	ASSERT(rule.used);
+			for (auto& rule : word_rules)
+				ASSERT(rule.used);
+			for (auto& rule : word_to_word_rules)
+				ASSERT(rule.used);
 #endif
 
 			check_for_duplicates();

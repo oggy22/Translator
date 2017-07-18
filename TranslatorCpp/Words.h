@@ -25,16 +25,6 @@ namespace translator
 			ASSERT(false);
 		}
 
-		const word_form<Language>& find_word_form(const attribute_manager<Language>& am) const
-		{
-			for (const auto& w : words)
-				if (am.has_all(w.attrs))
-					return w;
-
-			return words[0];
-			//ASSERT(false);
-		}
-
 		/// <summary>Checks if a word form with the given attribute exists</summary>
 		bool operator()(attr_t a) const
 		{
@@ -139,8 +129,6 @@ namespace translator
 		pattern<typename Language::letter> source;
 		pattern<typename Language::letter> destination;
 		typename Language::word_type wt;
-		using char_t = typename Language::letter;
-		//typename Language::string_t char_t;
 		set<typename Language::attributes> attrs;
 		nullable<typename Language::attributes> f;
 #ifdef _DEBUG
@@ -149,11 +137,6 @@ namespace translator
 		bool is_set() const
 		{
 			return f.is_set();
-		}
-
-		typename Language::string_t to_string() const
-		{
-			return source.to_string() + char_t(' ') + destination.to_string();
 		}
 	};
 

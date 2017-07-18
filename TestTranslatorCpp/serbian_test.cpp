@@ -26,8 +26,7 @@ namespace TranslatorTest
 		{
 			for (auto& rule : Serbian::word_rules)
 			{
-				auto st = rule.to_string();
-				Assert::IsTrue(rule.used, st.c_str());
+				Assert::IsTrue(rule.used/*, (std::wstring)(rule.destination)*/);
 			}
 		}
 #endif
@@ -162,14 +161,12 @@ namespace TranslatorTest
 
 		TEST_METHOD(check_some_noun_forms)
 		{
-			CHECK(L"жену", L"жена", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"коња", L"коњ", attr_t::једнина, attr_t::акузатив);
-			CHECK(L"мишеви", L"миш", attr_t::множина, attr_t::номинатив);
 			CHECK(L"орах", L"орах", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"ораси", L"орах", attr_t::множина, attr_t::номинатив);
 			CHECK(L"орахе", L"орах", attr_t::множина, attr_t::акузатив);
+			CHECK(L"мишеви", L"миш", attr_t::множина, attr_t::номинатив);
 			CHECK(L"човече", L"човек", attr_t::једнина, attr_t::вокатив);
-			CHECK(L"људи", L"човек", attr_t::множина, attr_t::номинатив);
 		}
 
 		TEST_METHOD(check_some_verb_forms)
@@ -181,15 +178,6 @@ namespace TranslatorTest
 			CHECK(L"можемо", L"моћи", attr_t::множина, attr_t::лице1);
 			CHECK(L"пишемо", L"писати", attr_t::множина, attr_t::лице1);
 			CHECK(L"хоћемо", L"хтети", attr_t::множина, attr_t::лице1);
-		}
-
-		TEST_METHOD(check_some_noun_case_forms)
-		{
-			//Nouns
-			//CHECK(L"сунца", L"сунце", attr_t::једнина, attr_t::генитив);
-			CHECK(L"сунц", L"сунце", attr_t::основа_једнине);
-			//CHECK(L"времена", L"време", attr_t::једнина, attr_t::генитив);
-			//CHECK(L"племену", L"племе", attr_t::једнина, attr_t::акузатив);
 		}
 
 		TEST_METHOD(check_some_adjective_forms)
@@ -258,15 +246,13 @@ namespace TranslatorTest
 
 			// Прелазни глаголи
 			test(L"видети школу");
-			test(L"гледати кућу");
 			test(L"ићи школу", false);
-			test(L"играти кућу", false);
 		}
 
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<int>(184, Serbian::dictWords().size());
+			Assert::AreEqual<int>(182, Serbian::dictWords().size());
 		}
 
 		// This test helps keeping awereness of the number of word forms.
@@ -277,12 +263,12 @@ namespace TranslatorTest
 			for (auto& dw : Serbian::dictWords())
 			{
 				int increment = dw.words.size();
-				Assert::IsTrue(increment > 0);
+				Assert::IsFalse(increment == 0);
 				count += increment;
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(3839, count);
+			Assert::AreEqual<int>(3777, count);
 		}
 	};
 }

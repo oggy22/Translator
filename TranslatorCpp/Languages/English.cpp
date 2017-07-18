@@ -179,8 +179,7 @@ const std::vector<translator::word_rule<English>> ENGLISH_BASE::word_rules
 
 const std::vector<translator::word_to_word_rule<English>> ENGLISH_BASE::word_to_word_rules
 {
-	{"*", "*ly", adj, adv, {} },
-	{"*", "*able", verb, adj, {} },
+	{"*", "*ly", adj, adv, {}}
 };
 
 const std::vector<translator::rule<English>> ENGLISH_BASE::grammar_rules
