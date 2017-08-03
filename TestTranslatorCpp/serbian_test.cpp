@@ -217,8 +217,8 @@ namespace TranslatorTest
 
 		TEST_METHOD(serbian_derived_words)
 		{
-#define EXISTS(word) Assert::IsTrue(dictionary_word_exists(word))
-#define NEXISTS(word) Assert::IsFalse(dictionary_word_exists(word))
+#define EXISTS(word) Assert::IsTrue(dictionary_word_exists(word), word)
+#define NEXISTS(word) Assert::IsFalse(dictionary_word_exists(word), word)
 
 			// глаг -> имен
 			NEXISTS(L"биње");
@@ -241,6 +241,10 @@ namespace TranslatorTest
 			// имен -> имен-деминутив
 			EXISTS(L"женица");
 			EXISTS(L"мушкарчић");
+
+			// имен -> имен-аугментатив
+			EXISTS(L"женетина");
+			EXISTS(L"кућетина");
 		}
 
 		TEST_METHOD(serbian_grammar_rules)
@@ -274,7 +278,7 @@ namespace TranslatorTest
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<int>(182, Serbian::dictWords().size());
+			Assert::AreEqual<int>(188, Serbian::dictWords().size());
 		}
 
 		// This test helps keeping awereness of the number of word forms.
@@ -290,7 +294,7 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(3777, count);
+			Assert::AreEqual<int>(3861, count);
 		}
 	};
 }

@@ -148,6 +148,7 @@ namespace translator
 		typename Language::word_type wt_source;
 		typename Language::word_type wt_destination;
 		set<typename Language::attributes> attrs;
+		set<typename Language::attributes> attrs_added;	//e.g. deminutive
 
 #ifdef _DEBUG
 		mutable bool used;

@@ -40,6 +40,7 @@ struct Serbian : public SERBIAN_BASE
 		живо,
 		дужи_облик,
 		прелазни,
+		аугментатив, деминутив,
 
 		//not real attributes as they are used for basis
 		презентска_основа, перфектна_основа,
@@ -74,6 +75,9 @@ struct Serbian : public SERBIAN_BASE
 #define инф attrs::инфинитив
 #define д_о attrs::дужи_облик
 #define прел attrs::прелазни
+
+#define ауг attrs::аугментатив
+#define дем attrs::деминутив
 
 #define презосн attrs::презентска_основа
 #define перфосн attrs::перфектна_основа
