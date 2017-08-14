@@ -191,6 +191,7 @@
     <ClInclude Include="Languages\Serbian_word_rules_adjectives.h" />
     <ClInclude Include="parsing_triangle.h" />
     <ClInclude Include="pattern.h" />
+    <ClInclude Include="random_sentence.h" />
     <ClInclude Include="Rules.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="translator.h" />

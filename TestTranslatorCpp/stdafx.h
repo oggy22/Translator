@@ -14,4 +14,5 @@
 #include <fstream>
 #include <codecvt>
 #include "../TranslatorCpp/language.h"
+#include "../TranslatorCpp/random_sentence.h"
 #include "common.h"

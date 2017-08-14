@@ -29,7 +29,7 @@ namespace TranslatorTest
 	{
 		void test(const std::wstring& st, bool expected=true)
 		{
-			Assert::AreEqual(expected, translator::parse<Serbian>(st));
+			Assert::AreEqual(expected, translator::parse<Serbian>(st), st.c_str());
 		}
 
 	public:
@@ -111,7 +111,7 @@ namespace TranslatorTest
 			{
 				if (word.wordtype == Serbian::word_type::именица)
 				{
-					Assert::AreEqual<size_t>(7 * 2, word.words.size(), (word.word + L" doesn't have 14 forms").c_str());
+					Assert::IsTrue(7 * 2 <= word.words.size(), (word.word + L" has less than 14 forms").c_str());
 					test_word_forms(word,
 					{ attr_t::номинатив, attr_t::генитив, attr_t::датив, attr_t::акузатив, attr_t::вокатив, attr_t::инструментал, attr_t::локатив },
 					{ attr_t::једнина, attr_t::множина });
@@ -181,12 +181,26 @@ namespace TranslatorTest
 
 		TEST_METHOD(check_some_noun_forms)
 		{
+			CHECK(L"жену", L"жена", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"коња", L"коњ", attr_t::једнина, attr_t::акузатив);
+			CHECK(L"мишеви", L"миш", attr_t::множина, attr_t::номинатив);
 			CHECK(L"орах", L"орах", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"ораси", L"орах", attr_t::множина, attr_t::номинатив);
 			CHECK(L"орахе", L"орах", attr_t::множина, attr_t::акузатив);
-			CHECK(L"мишеви", L"миш", attr_t::множина, attr_t::номинатив);
 			CHECK(L"човече", L"човек", attr_t::једнина, attr_t::вокатив);
+			CHECK(L"људи", L"човек", attr_t::множина, attr_t::номинатив);
+		}
+
+		TEST_METHOD(check_some_noun_case_forms)
+		{
+			//Nouns
+			CHECK(L"сунца", L"сунце", attr_t::једнина, attr_t::генитив);
+			CHECK(L"времена", L"време", attr_t::једнина, attr_t::генитив);
+			CHECK(L"племену", L"племе", attr_t::једнина, attr_t::датив);
+
+			//Accusative male
+			CHECK(L"човека", L"човек", attr_t::једнина, attr_t::акузатив);
+			CHECK(L"кромпир", L"кромпир", attr_t::једнина, attr_t::акузатив);
 		}
 
 		TEST_METHOD(check_some_verb_forms)
@@ -195,6 +209,7 @@ namespace TranslatorTest
 			CHECK(L"идем", L"ићи", attr_t::једнина, attr_t::лице1);
 			CHECK(L"једем", L"јести", attr_t::једнина, attr_t::лице1);
 			CHECK(L"могу", L"моћи", attr_t::једнина, attr_t::лице1);
+			CHECK(L"пије", L"пити", attr_t::једнина, attr_t::лице3);
 			CHECK(L"можемо", L"моћи", attr_t::множина, attr_t::лице1);
 			CHECK(L"пишемо", L"писати", attr_t::множина, attr_t::лице1);
 			CHECK(L"хоћемо", L"хтети", attr_t::множина, attr_t::лице1);
@@ -294,7 +309,16 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(3861, count);
+			Assert::AreEqual<int>(3884, count);
+		}
+
+		TEST_METHOD(random_test)
+		{
+			for (int i = 0; i < 10; i++)
+			{
+				std::wstring str = translator::random_sentence<Serbian>(i);
+				test(str);
+			}
 		}
 	};
 }
