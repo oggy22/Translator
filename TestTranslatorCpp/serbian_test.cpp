@@ -1,4 +1,5 @@
 ﻿#include "stdafx.h"
+#include <unordered_set>
 #include "../TranslatorCpp/Languages/Serbian.h"
 std::wostream& operator<<(std::wostream&wout, Serbian::word_type wt)
 {
@@ -51,17 +52,21 @@ namespace TranslatorTest
 
 		TEST_METHOD(every_word_composed_of_serbian_letters)
 		{
+			std::unordered_set<wchar_t> alphabet;
+			for (unsigned int i = 0; i < Serbian::stAlphabet.length(); i++)
+				alphabet.insert(Serbian::stAlphabet[i]);
+
 			for (const auto& word : Serbian::dictWords())
 			{
 				for (wchar_t c : word.word)
-					Assert::AreNotEqual(std::wstring::npos, Serbian::stAlphabet.find(c),
-						word.word.c_str());
+					if (alphabet.find(c) == alphabet.end())
+						Assert::Fail(word.word.c_str());
 
 				for (const auto& w : word.words)
 				{
 					for (wchar_t c : w.word)
-						Assert::AreNotEqual(std::wstring::npos, Serbian::stAlphabet.find(c),
-							w.word.c_str());
+						if (alphabet.find(c) == alphabet.end())
+							Assert::Fail(w.word.c_str());
 				}
 			}
 		}
