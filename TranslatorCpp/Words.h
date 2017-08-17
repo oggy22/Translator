@@ -25,6 +25,15 @@ namespace translator
 			ASSERT(false);
 		}
 
+		const word_form<Language>& find_word_form(const attribute_manager<Language>& am) const
+		{
+			for (const auto& w : words)
+				if (am.accepts(w.attrs))
+					return w;
+
+			ASSERT(false);
+		}
+
 		/// <summary>Checks if a word form with the given attribute exists</summary>
 		bool operator()(attr_t a) const
 		{
@@ -60,16 +69,20 @@ namespace translator
 		const word_form<Language>& operator[](attr_t a) const
 		{
 			for (const auto& w : words)
+			{
 				if (w.attrs.size() == 1 && *w.attrs.begin() == a)
 					return w;
+			}
 			ASSERT(false);
 		}
 
 		const word_form<Language>& operator[](const set<attr_t>& attrs) const
 		{
 			for (const auto& w : words)
+			{
 				if (w.attrs == attrs)
 					return w;
+			}
 			ASSERT(false);
 		}
 	};
@@ -129,6 +142,7 @@ namespace translator
 		pattern<typename Language::letter> source;
 		pattern<typename Language::letter> destination;
 		typename Language::word_type wt;
+		using char_t = typename Language::letter;
 		set<typename Language::attributes> attrs;
 		nullable<typename Language::attributes> f;
 #ifdef _DEBUG
@@ -148,6 +162,7 @@ namespace translator
 		typename Language::word_type wt_source;
 		typename Language::word_type wt_destination;
 		set<typename Language::attributes> attrs;
+		set<typename Language::attributes> attrs_added;	//e.g. deminutive
 
 #ifdef _DEBUG
 		mutable bool used;

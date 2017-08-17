@@ -1,5 +1,19 @@
 ﻿#include "stdafx.h"
+#include <unordered_set>
 #include "../TranslatorCpp/Languages/Serbian.h"
+std::wostream& operator<<(std::wostream&wout, Serbian::word_type wt)
+{
+	switch (wt)
+	{
+	case Serbian::word_type::именица: wout << L"именица"; break;
+	case Serbian::word_type::глагол: wout << L"глагол"; break;
+	case Serbian::word_type::придев: wout << L"придев"; break;
+	default: FAIL("Unknown Serbian::word_type");
+	}
+	return wout;
+}
+
+#include "wstring_outputs.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 std::wofstream test_output("serbian_test.log");
@@ -16,7 +30,7 @@ namespace TranslatorTest
 	{
 		void test(const std::wstring& st, bool expected=true)
 		{
-			Assert::AreEqual(expected, translator::parse<Serbian>(st));
+			Assert::AreEqual(expected, translator::parse<Serbian>(st), st.c_str());
 		}
 
 	public:
@@ -26,22 +40,33 @@ namespace TranslatorTest
 		{
 			for (auto& rule : Serbian::word_rules)
 			{
-				Assert::IsTrue(rule.used/*, (std::wstring)(rule.destination)*/);
+				if (!rule.used)
+				{
+					std::wstringstream wss;
+					wss << rule << L" not used";
+					Assert::Fail(wss.str().c_str());
+				}
 			}
 		}
 #endif
 
 		TEST_METHOD(every_word_composed_of_serbian_letters)
 		{
+			std::unordered_set<wchar_t> alphabet;
+			for (unsigned int i = 0; i < Serbian::stAlphabet.length(); i++)
+				alphabet.insert(Serbian::stAlphabet[i]);
+
 			for (const auto& word : Serbian::dictWords())
 			{
 				for (wchar_t c : word.word)
-					Assert::AreNotEqual(std::wstring::npos, Serbian::stAlphabet.find(c));
+					if (alphabet.find(c) == alphabet.end())
+						Assert::Fail(word.word.c_str());
 
 				for (const auto& w : word.words)
 				{
 					for (wchar_t c : w.word)
-						Assert::AreNotEqual(std::wstring::npos, Serbian::stAlphabet.find(c));
+						if (alphabet.find(c) == alphabet.end())
+							Assert::Fail(w.word.c_str());
 				}
 			}
 		}
@@ -91,7 +116,7 @@ namespace TranslatorTest
 			{
 				if (word.wordtype == Serbian::word_type::именица)
 				{
-					Assert::AreEqual<size_t>(7 * 2, word.words.size(), (word.word + L" doesn't have 14 forms").c_str());
+					Assert::IsTrue(7 * 2 <= word.words.size(), (word.word + L" has less than 14 forms").c_str());
 					test_word_forms(word,
 					{ attr_t::номинатив, attr_t::генитив, attr_t::датив, attr_t::акузатив, attr_t::вокатив, attr_t::инструментал, attr_t::локатив },
 					{ attr_t::једнина, attr_t::множина });
@@ -161,12 +186,26 @@ namespace TranslatorTest
 
 		TEST_METHOD(check_some_noun_forms)
 		{
+			CHECK(L"жену", L"жена", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"коња", L"коњ", attr_t::једнина, attr_t::акузатив);
+			CHECK(L"мишеви", L"миш", attr_t::множина, attr_t::номинатив);
 			CHECK(L"орах", L"орах", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"ораси", L"орах", attr_t::множина, attr_t::номинатив);
 			CHECK(L"орахе", L"орах", attr_t::множина, attr_t::акузатив);
-			CHECK(L"мишеви", L"миш", attr_t::множина, attr_t::номинатив);
 			CHECK(L"човече", L"човек", attr_t::једнина, attr_t::вокатив);
+			CHECK(L"људи", L"човек", attr_t::множина, attr_t::номинатив);
+		}
+
+		TEST_METHOD(check_some_noun_case_forms)
+		{
+			//Nouns
+			CHECK(L"сунца", L"сунце", attr_t::једнина, attr_t::генитив);
+			CHECK(L"времена", L"време", attr_t::једнина, attr_t::генитив);
+			CHECK(L"племену", L"племе", attr_t::једнина, attr_t::датив);
+
+			//Accusative male
+			CHECK(L"човека", L"човек", attr_t::једнина, attr_t::акузатив);
+			CHECK(L"кромпир", L"кромпир", attr_t::једнина, attr_t::акузатив);
 		}
 
 		TEST_METHOD(check_some_verb_forms)
@@ -175,6 +214,7 @@ namespace TranslatorTest
 			CHECK(L"идем", L"ићи", attr_t::једнина, attr_t::лице1);
 			CHECK(L"једем", L"јести", attr_t::једнина, attr_t::лице1);
 			CHECK(L"могу", L"моћи", attr_t::једнина, attr_t::лице1);
+			CHECK(L"пије", L"пити", attr_t::једнина, attr_t::лице3);
 			CHECK(L"можемо", L"моћи", attr_t::множина, attr_t::лице1);
 			CHECK(L"пишемо", L"писати", attr_t::множина, attr_t::лице1);
 			CHECK(L"хоћемо", L"хтети", attr_t::множина, attr_t::лице1);
@@ -197,8 +237,8 @@ namespace TranslatorTest
 
 		TEST_METHOD(serbian_derived_words)
 		{
-#define EXISTS(word) Assert::IsTrue(dictionary_word_exists(word))
-#define NEXISTS(word) Assert::IsFalse(dictionary_word_exists(word))
+#define EXISTS(word) Assert::IsTrue(dictionary_word_exists(word), word)
+#define NEXISTS(word) Assert::IsFalse(dictionary_word_exists(word), word)
 
 			// глаг -> имен
 			NEXISTS(L"биње");
@@ -221,6 +261,10 @@ namespace TranslatorTest
 			// имен -> имен-деминутив
 			EXISTS(L"женица");
 			EXISTS(L"мушкарчић");
+
+			// имен -> имен-аугментатив
+			EXISTS(L"женетина");
+			EXISTS(L"кућетина");
 		}
 
 		TEST_METHOD(serbian_grammar_rules)
@@ -246,13 +290,15 @@ namespace TranslatorTest
 
 			// Прелазни глаголи
 			test(L"видети школу");
+			test(L"гледати кућу");
 			test(L"ићи школу", false);
+			test(L"играти кућу", false);
 		}
 
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<int>(182, Serbian::dictWords().size());
+			Assert::AreEqual<int>(188, Serbian::dictWords().size());
 		}
 
 		// This test helps keeping awereness of the number of word forms.
@@ -268,7 +314,16 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(3777, count);
+			Assert::AreEqual<int>(3884, count);
+		}
+
+		TEST_METHOD(random_test)
+		{
+			for (int i = 0; i < 10; i++)
+			{
+				std::wstring str = translator::random_sentence<Serbian>(i);
+				test(str);
+			}
 		}
 	};
 }

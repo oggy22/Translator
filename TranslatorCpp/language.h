@@ -224,22 +224,32 @@ namespace translator
 			for (auto& w : Lang::dictWords())
 			{
 				// All the applicable rules for the given word, mapped by derived word type
-				map<Lang::word_type, const word_to_word_rule<Lang>*> applicable_rules;
+				set<const word_to_word_rule<Lang>*> applicable_rules;
 
 				for (auto& rule : Lang::word_to_word_rules)
 				{
 					if (rule.wt_source == w.wordtype && rule.source.match(w.word))
 					{
-						applicable_rules[rule.wt_destination] = &rule;
+						// Find the rule with the same destination and attributes added
+						auto p_rule = std::find_if(applicable_rules.begin(), applicable_rules.end(),
+							[&](const word_to_word_rule<Lang>* p)
+						{
+							return p->attrs_added == rule.attrs_added &&
+								p->wt_destination == rule.wt_destination;
+						});
+
+						if (p_rule != applicable_rules.end())
+							applicable_rules.erase(p_rule);
+
+						applicable_rules.insert(&rule);
 					}
 				}
 
-				for (auto& pair : applicable_rules)
+				for (auto& rule : applicable_rules)
 				{
-					const auto& rule = *pair.second;
-					string_t word = rule.source.match_and_transform(w.word, rule.destination);
+					string_t word = rule->source.match_and_transform(w.word, rule->destination);
 #ifdef _DEBUG
-					rule.used = true;
+					rule->used = true;
 #endif
 					if (word.empty())
 						continue;
@@ -247,8 +257,8 @@ namespace translator
 					derived_words.emplace_back(dictionary_word<Lang>
 					{
 						word,
-							rule.wt_destination,
-							rule.attrs
+							rule->wt_destination,
+							rule->attrs
 					});
 				}
 			}
@@ -312,12 +322,6 @@ private:
 			populate_derived_dict_words();
 			populate_words<Lang>();
 			initialized = true;
-#ifdef _DEBUG
-			for (auto& rule : word_rules)
-				ASSERT(rule.used);
-			for (auto& rule : word_to_word_rules)
-				ASSERT(rule.used);
-#endif
 
 			check_for_duplicates();
 		}

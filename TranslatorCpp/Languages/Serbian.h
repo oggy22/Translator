@@ -4,7 +4,7 @@
 struct Serbian : public SERBIAN_BASE
 {
 	using letter = wchar_t;
-	
+
 	enum class word_type {
 		именица, заменица, глагол, придев, прилог,
 		РЕЧЕНИЦА,
@@ -40,10 +40,12 @@ struct Serbian : public SERBIAN_BASE
 		живо,
 		дужи_облик,
 		прелазни,
+		аугментатив, деминутив,
 
 		//not real attributes as they are used for basis
 		презентска_основа, перфектна_основа,
-		основа_множине, основа_позитива
+		основа_множине, основа_позитива,
+		основа_једнине
 	};
 
 	using wt = word_type;
@@ -75,9 +77,13 @@ struct Serbian : public SERBIAN_BASE
 #define д_о attrs::дужи_облик
 #define прел attrs::прелазни
 
+#define ауг attrs::аугментатив
+#define дем attrs::деминутив
+
 #define презосн attrs::презентска_основа
 #define перфосн attrs::перфектна_основа
 #define оснмнож attrs::основа_множине
+#define оснједн attrs::основа_једнине
 #define оснпоз attrs::основа_позитива
 
 	static const map<attrs, cats> belongs_to_category;
@@ -87,6 +93,7 @@ struct Serbian : public SERBIAN_BASE
 		return a == оснмнож
 			|| a == перфосн
 			|| a == презосн
+			|| a == оснједн
 			|| a == оснмнож
 			|| a == оснпоз;
 	}
@@ -134,5 +141,16 @@ struct Serbian : public SERBIAN_BASE
 			return false;
 
 		return true;
+	}
+
+	static const word_type Sentence = word_type::РЕЧЕНИЦА;
+
+	static constexpr bool is_word_type(word_type wt)
+	{
+		return wt == word_type::глагол ||
+			wt == word_type::заменица ||
+			wt == word_type::именица ||
+			wt == word_type::придев ||
+			wt == word_type::прилог;
 	}
 };

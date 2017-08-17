@@ -1,6 +1,16 @@
 #pragma once
 #include <string>
 
+template <class Language>
+void check_dictionary_word_exists(const typename Language::string_t& st)
+{
+	for (const auto& word : Language::dictWords())
+		if (word.word == st)
+			return;
+
+	Assert::Fail(L"Word st wasn't found");
+}
+
 template <class Language, class... Attributes>
 const typename Language::string_t get_dictionary_word(const typename Language::string_t& st, Attributes... attributes)
 {

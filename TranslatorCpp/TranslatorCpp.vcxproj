@@ -22,7 +22,7 @@
     <ProjectGuid>{5710F855-51CF-4B1E-A57F-B45C98541958}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Translator</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -191,6 +191,7 @@
     <ClInclude Include="Languages\Serbian_word_rules_adjectives.h" />
     <ClInclude Include="parsing_triangle.h" />
     <ClInclude Include="pattern.h" />
+    <ClInclude Include="random_sentence.h" />
     <ClInclude Include="Rules.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="translator.h" />
