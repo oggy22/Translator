@@ -322,6 +322,7 @@ namespace TranslatorTest
 			for (int i = 0; i < 10; i++)
 			{
 				std::wstring str = translator::random_sentence<Serbian>(i);
+				Logger::WriteMessage(str.c_str());
 				test(str);
 			}
 		}

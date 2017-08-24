@@ -19,14 +19,26 @@ namespace translator
 	}
 
 	template<typename Language>
-	const dictionary_word<Language>& get_dictionary_word(std::default_random_engine& device, typename Language::word_type wt = Language::Sentence)
+	const dictionary_word<Language>& get_dictionary_word(
+		std::default_random_engine& device,
+		typename Language::word_type wt = Language::Sentence,
+		typename attribute_manager<Language>& am = attribute_manager<Language>()
+		)
 	{
 		std::uniform_int_distribution<int> uniform_dist(0, Language::dictWords().size() - 1);
 		int pos;
 		do
 		{
-			pos = uniform_dist(device);
-		} while (Language::dictWords()[pos].wordtype != wt);
+			do
+			{
+				pos = uniform_dist(device);
+			} while (Language::dictWords()[pos].wordtype != wt);
+		
+			const dictionary_word<Language>& dw = Language::dictWords()[pos];
+			if (dw.can_accept(am))
+				break;
+
+		} while (!Language::dictWords()[pos].can_accept(am));
 
 		return Language::dictWords()[pos];
 	}
@@ -64,7 +76,7 @@ namespace translator
 				}
 				else if (Language::is_word_type(child.wordtype))
 				{
-					const auto& dw = get_dictionary_word<Language>(device, child.wordtype);
+					const auto& dw = get_dictionary_word<Language>(device, child.wordtype, child.am);
 					children.emplace_back(dw, device, child.am);
 				}
 				else

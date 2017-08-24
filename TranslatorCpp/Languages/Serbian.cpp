@@ -82,10 +82,16 @@ const std::vector<translator::word_to_word_rule<Serbian>> SERBIAN_BASE::word_to_
 
 const std::vector<translator::rule<Serbian>> SERBIAN_BASE::grammar_rules
 {
+	// transitive verbs as reflexive
+	{ { РЕЧН },
+	{ { глаг, бр, лиц, прел },{ L"се" } } },
+	{ { РЕЧН },
+	{ { Одр }, { L"се" }, { глаг, бр, лиц, прел } } },
+
 	{ { РЕЧН },
 	{ { зам, ном, бр, лиц },{ глаг, бр, лиц } } },
 	{ { РЕЧН },
-	{ { имен, ном, бр, лиц3 },{ глаг, бр, лиц } } },
+	{ { имен, ном, бр },{ глаг, бр, лиц3 } } },
 	{ { Одр },
 	{ { L"у" },{ имен, лок } } },
 	{ { Одр },

@@ -85,6 +85,32 @@ namespace translator
 			}
 			ASSERT(false);
 		}
+
+		bool can_accept(const attribute_manager<Language>& am) const
+		{
+			set<attr_t> attrs;
+			for (auto attr : am.attrs())
+				attrs.insert(attr);
+
+			for (auto attr : this->attrs)
+				attrs.erase(attr);
+
+			for (const auto& w : words)
+			{
+#ifdef _DEBUG
+				if (std::includes(w.attrs.begin(), w.attrs.end(),
+					attrs.begin(), attrs.end()))
+#else
+				if (std::all_of(attrs.begin(), attrs.end(), [&](const attr_t& attr)
+				{
+					return w.attrs.find(attr) != w.attrs.end();
+				}))
+#endif
+					return true;
+			}
+
+			return false;
+		}
 	};
 
 	template <class Language>

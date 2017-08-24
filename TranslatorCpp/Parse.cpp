@@ -95,11 +95,10 @@ int main(int argc, char *argv[])
 			cerr << "Unrecognized language: " << stLang << endl;
 			return -1;
 		}
-
-		return 0;
 	}
 
-	return 0;
+	cerr << "Unrecognized command" << endl;
+	return -1;
 }
 
 void print_help()
