@@ -20,9 +20,8 @@ void set_wide()
 using namespace std;
 
 template <typename Language, typename string_t = Language::string_t>
-void generate_random_sentences(map<int, string_t>& sents)
+void generate_random_sentences(map<int, string_t>& sents, int seed=0)
 {
-	int seed = rand();
 	for (int i = 0; i < 100; i++)
 	{
 		string_t str = translator::random_sentence<Language>(seed++);
@@ -32,9 +31,8 @@ void generate_random_sentences(map<int, string_t>& sents)
 
 int main(int argc, char *argv[])
 {
-	std::random_device device2;
-	auto seed = device2();
-	std::default_random_engine device(seed);
+	std::random_device device;
+	auto seed = device();
 
 	if (argc == 1)
 	{
@@ -50,7 +48,7 @@ int main(int argc, char *argv[])
 		if (stLang == "SR")
 		{
 			map<int, wstring> sents;
-			generate_random_sentences<Serbian>(sents);
+			generate_random_sentences<Serbian>(sents, seed);
 			set_wide();
 			for (auto const &pair : sents)
 				std::wcout << pair.second << endl;
@@ -58,7 +56,7 @@ int main(int argc, char *argv[])
 		else if (stLang == "EN")
 		{
 			map<int, string> sents;
-			generate_random_sentences<English>(sents);
+			generate_random_sentences<English>(sents, seed);
 			for (auto const &pair : sents)
 				std::cout << pair.second << endl;
 		}

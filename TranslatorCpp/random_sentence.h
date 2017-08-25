@@ -19,6 +19,21 @@ namespace translator
 	}
 
 	template<typename Language>
+	typename Language::attributes random_attr(typename Language::attribute_categories cat, std::default_random_engine& device)
+	{
+		auto size = Language::belongs_to_category.size();
+		std::uniform_int_distribution<int> uniform_dist(0, Language::grammar_rules.size() - 1);
+
+		while (true)
+		{
+			auto iter = Language::belongs_to_category.begin();
+			std::advance(iter, uniform_dist(device));
+			if (iter->second == cat)
+				return iter->first;
+		}
+	}
+
+	template<typename Language>
 	const dictionary_word<Language>& get_dictionary_word(
 		std::default_random_engine& device,
 		typename Language::word_type wt = Language::Sentence,
@@ -91,7 +106,7 @@ namespace translator
 		{
 		}
 
-		void consolidate_attributes()
+		void consolidate_attributes(std::default_random_engine& device)
 		{
 			attribute_manager<Language> am;
 			for (const auto& child : children)
@@ -103,11 +118,22 @@ namespace translator
 				}
 			}
 
+			bool found;
+			do
+			{
+				found = false;
+				for (const auto& cat : am.free_cats())
+				{
+					am += random_attr<Language>(cat, device);
+					found = true;
+					break;
+				}
+			} while (found);
+
 			for (auto& child : children)
 			{
 				child.am += am;
-				child.consolidate_attributes();
-				//todo: there might be something more missing here
+				child.consolidate_attributes(device);
 			}
 		}
 
@@ -150,7 +176,7 @@ namespace translator
 		const rule<Language>& r = get_random_rule<Language>(device);
 
 		RNode<Language> node(r, device);
-		node.consolidate_attributes();
+		node.consolidate_attributes(device);
 		return node.ToString();
 	}
 }

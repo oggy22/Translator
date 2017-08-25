@@ -161,10 +161,10 @@ const std::vector<translator::word_rule<English>> ENGLISH_BASE::word_rules
 	{ { "*man" },{ "*men" }, noun,{ plur } },	// man, woman, policeman
 
 	//// Verbs
-	{ { "*" },{ "*" }, verb,{ sing, per1 } },
-	{ { "*" },{ "*" }, verb,{ sing, per2 } },
-	{ { "*" },{ "*s" }, verb,{ sing, per3 } },
-	{ { "*o" },{ "*oes" }, verb,{ sing, per3 } },	//goes, does
+	{ { "*" },{ "*" }, verb,{ pres, sing, per1 } },
+	{ { "*" },{ "*" }, verb,{ pres, sing, per2 } },
+	{ { "*" },{ "*s" }, verb,{ pres, sing, per3 } },
+	{ { "*o" },{ "*oes" }, verb,{ pres, sing, per3 } },	//goes, does
 
 	{ { "*" },{ "*" }, verb,{ plur } },
 
@@ -174,7 +174,7 @@ const std::vector<translator::word_rule<English>> ENGLISH_BASE::word_rules
 	{ { "*e" },{ "*ed" }, verb,{ perf } },
 
 	//// Pronouns
-	{ { "*" },{ "*" }, pron,{} },
+	{ { "*" },{ "*" }, pron, { nom } },
 };
 
 const std::vector<translator::word_to_word_rule<English>> ENGLISH_BASE::word_to_word_rules
@@ -186,7 +186,7 @@ const std::vector<translator::word_to_word_rule<English>> ENGLISH_BASE::word_to_
 const std::vector<translator::rule<English>> ENGLISH_BASE::grammar_rules
 {
 	{ { Sent },
-	{ { pron, sing, per },{ verb, sing, per } } },
+	{ { pron, sing, nom, per }, { verb, sing, per, pres } } },
 };
 
 bool ENGLISH_BASE::initialized = false;

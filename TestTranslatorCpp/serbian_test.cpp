@@ -194,18 +194,21 @@ namespace TranslatorTest
 			CHECK(L"орахе", L"орах", attr_t::множина, attr_t::акузатив);
 			CHECK(L"човече", L"човек", attr_t::једнина, attr_t::вокатив);
 			CHECK(L"људи", L"човек", attr_t::множина, attr_t::номинатив);
-		}
-
-		TEST_METHOD(check_some_noun_case_forms)
-		{
-			//Nouns
 			CHECK(L"сунца", L"сунце", attr_t::једнина, attr_t::генитив);
 			CHECK(L"времена", L"време", attr_t::једнина, attr_t::генитив);
 			CHECK(L"племену", L"племе", attr_t::једнина, attr_t::датив);
+			CHECK(L"мушкарци", L"мушкарац", attr_t::множина, attr_t::номинатив);
 
-			//Accusative male
+			// Accusative male
 			CHECK(L"човека", L"човек", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"кромпир", L"кромпир", attr_t::једнина, attr_t::акузатив);
+
+			// време, племе, семе
+			CHECK(L"времена", L"време", attr_t::једнина, attr_t::генитив);
+			CHECK(L"племе", L"племе", attr_t::једнина, attr_t::акузатив);
+			CHECK(L"семеном", L"семе", attr_t::једнина, attr_t::инструментал);
+			CHECK(L"племена", L"племе", attr_t::множина, attr_t::номинатив);
+			CHECK(L"семенима", L"семе", attr_t::множина, attr_t::инструментал);
 		}
 
 		TEST_METHOD(check_some_verb_forms)
@@ -253,6 +256,7 @@ namespace TranslatorTest
 			NEXISTS(L"женаов");
 			NEXISTS(L"коњов");
 			EXISTS(L"коњев");
+			EXISTS(L"сунчев");
 
 			// прид -> прил
 			NEXISTS(L"ружано");
@@ -298,7 +302,7 @@ namespace TranslatorTest
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<int>(188, Serbian::dictWords().size());
+			Assert::AreEqual<int>(186, Serbian::dictWords().size());
 		}
 
 		// This test helps keeping awereness of the number of word forms.
@@ -314,12 +318,12 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(3884, count);
+			Assert::AreEqual<int>(3887, count);
 		}
 
 		TEST_METHOD(random_test)
 		{
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 100; i++)
 			{
 				std::wstring str = translator::random_sentence<Serbian>(i);
 				Logger::WriteMessage(str.c_str());

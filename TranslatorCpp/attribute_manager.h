@@ -145,5 +145,11 @@ namespace translator
 				co_yield pair.second;
 			}
 		}
+
+		std::experimental::generator<cat_t> free_cats() const
+		{
+			for (auto cat : free_cat)
+				co_yield cat;
+		}
 	};
 }

@@ -29,9 +29,10 @@ struct English : public ENGLISH_BASE
 		present, past, future, continous, perfect,
 		per1, per2, per3,
 		sing, plur,
-		posses, refl, accus
+		posses, refl, nom, accus
 	};
 
+#define pres English::attributes::present
 #define past English::attributes::past
 #define perf English::attributes::perfect
 #define per1 English::attributes::per1
@@ -39,11 +40,13 @@ struct English : public ENGLISH_BASE
 #define per3 English::attributes::per3
 #define sing English::attributes::sing
 #define plur English::attributes::plur
+#define nom English::attributes::nom
 #define accus English::attributes::accus
 #define posses English::attributes::posses
 #define refl English::attributes::refl
 
 #define per English::attribute_categories::person
+#define plt English::attribute_categories::plurality
 
 	static const map<attributes, attribute_categories> belongs_to_category;
 
