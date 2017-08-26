@@ -64,9 +64,25 @@ namespace TranslatorTest
 
 				for (const auto& w : word.words)
 				{
+					wchar_t prev_c = 0;
 					for (wchar_t c : w.word)
+					{
 						if (alphabet.find(c) == alphabet.end())
 							Assert::Fail(w.word.c_str());
+
+						// Double letters are usually no-no
+						if (prev_c == c)
+						{
+							if (c == L'ј' && w.word.find(L'најј') == 0)
+							{
+								// do nothing
+							}
+							else
+								Assert::Fail(w.word.c_str());
+						}
+
+						prev_c = c;
+					}
 				}
 			}
 		}
@@ -225,6 +241,7 @@ namespace TranslatorTest
 
 		TEST_METHOD(check_some_adjective_forms)
 		{
+			CHECK(L"моје", L"мој", attr_t::средњи, attr_t::једнина, attr_t::номинатив);
 			CHECK(L"лошег", L"лош", attr_t::мушки, attr_t::једнина, attr_t::генитив);
 		}
 
@@ -256,6 +273,7 @@ namespace TranslatorTest
 			NEXISTS(L"женаов");
 			NEXISTS(L"коњов");
 			EXISTS(L"коњев");
+			EXISTS(L"полицајчев");
 			EXISTS(L"сунчев");
 
 			// прид -> прил
@@ -291,6 +309,7 @@ namespace TranslatorTest
 			test(L"ја идем у школу");
 			test(L"ја идем у школа", false);	// wrong case
 			test(L"ја иде у школу", false);		// wrong verb declination
+			//test(L"малу школу ради", false);	// non-nominative predicate
 
 			// Прелазни глаголи
 			test(L"видети школу");
@@ -302,7 +321,7 @@ namespace TranslatorTest
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<int>(190, Serbian::dictWords().size());
+			Assert::AreEqual<int>(194, Serbian::dictWords().size());
 		}
 
 		// This test helps keeping awereness of the number of word forms.
@@ -318,7 +337,7 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(3977, count);
+			Assert::AreEqual<int>(4101, count);
 		}
 
 		TEST_METHOD(random_test)
