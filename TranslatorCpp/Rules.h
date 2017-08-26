@@ -166,13 +166,15 @@ namespace translator
 				return false;
 
 			if (is_word_form())
+			{
 				if (this->p_wf->p_dw->wordtype != nd.wordtype)
 					return false;
 
-			// Check attribute requirements on the node
-			for (auto attr : nd.am.attrs())
-				if (!this->p_wf->contains(attr))
-					return false;
+				// Check attribute requirements on the node
+				for (auto attr : nd.am.attrs())
+					if (!this->p_wf->contains(attr))
+						return false;
+			}
 
 			if (!(copy_am += nd.am))
 				return false;

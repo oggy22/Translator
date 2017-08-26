@@ -105,5 +105,18 @@ namespace TranslatorTest
 			test("she goes");
 			test("she go", false);
 		}
+
+		BEGIN_TEST_METHOD_ATTRIBUTE(random_test)
+			TEST_IGNORE()
+		END_TEST_METHOD_ATTRIBUTE()
+		TEST_METHOD(random_test)
+		{
+			for (int i = 0; i < 100; i++)
+			{
+				std::string str = translator::random_sentence<English>(0);
+				Logger::WriteMessage(str.c_str());
+				test(str);
+			}
+		}
 	};
 }

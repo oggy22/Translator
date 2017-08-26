@@ -22,7 +22,7 @@ namespace translator
 	typename Language::attributes random_attr(typename Language::attribute_categories cat, std::default_random_engine& device)
 	{
 		auto size = Language::belongs_to_category.size();
-		std::uniform_int_distribution<int> uniform_dist(0, Language::grammar_rules.size() - 1);
+		std::uniform_int_distribution<int> uniform_dist(0, size - 1);
 
 		while (true)
 		{
@@ -118,18 +118,25 @@ namespace translator
 				}
 			}
 
-			bool found;
-			do
+			// Assign attribute to each free_cat
+			while (true)
 			{
-				found = false;
+				bool found = false;
+				typename Language::attributes attr;
 				for (const auto& cat : am.free_cats())
 				{
-					am += random_attr<Language>(cat, device);
+					attr = random_attr<Language>(cat, device);
 					found = true;
 					break;
 				}
-			} while (found);
 
+				if (!found)
+					break;
+
+				am += attr;
+			}
+
+			// Recursively consolidate children
 			for (auto& child : children)
 			{
 				child.am += am;
