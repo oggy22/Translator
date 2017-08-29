@@ -8,6 +8,7 @@ std::wostream& operator<<(std::wostream&wout, Serbian::word_type wt)
 	case Serbian::word_type::именица: wout << L"именица"; break;
 	case Serbian::word_type::глагол: wout << L"глагол"; break;
 	case Serbian::word_type::придев: wout << L"придев"; break;
+	case Serbian::word_type::прилог: wout << L"прилог"; break;
 	default: FAIL("Unknown Serbian::word_type");
 	}
 	return wout;
@@ -243,6 +244,23 @@ namespace TranslatorTest
 		{
 			CHECK(L"моје", L"мој", attr_t::средњи, attr_t::једнина, attr_t::номинатив);
 			CHECK(L"лошег", L"лош", attr_t::мушки, attr_t::једнина, attr_t::генитив);
+			CHECK(L"стара", L"стар", attr_t::женски, attr_t::једнина, attr_t::номинатив);
+		}
+
+		TEST_METHOD(check_some_adjverb_forms)
+		{
+			CHECK(L"веће", L"велико", attr_t::компаратив);
+			CHECK(L"глупље", L"глупо", attr_t::компаратив);
+			CHECK(L"боље", L"добро", attr_t::компаратив);
+			CHECK(L"дуже", L"дуго", attr_t::компаратив);
+			CHECK(L"жуће", L"жуто", attr_t::компаратив);
+			CHECK(L"зеленије", L"зелено", attr_t::компаратив);
+			CHECK(L"јаче", L"јако", attr_t::компаратив);
+			CHECK(L"краће", L"кратко", attr_t::компаратив);
+			CHECK(L"лепше", L"лепо", attr_t::компаратив);
+			CHECK(L"мање", L"мало", attr_t::компаратив);
+			CHECK(L"скупље", L"скупо", attr_t::компаратив);
+			CHECK(L"црње", L"црно", attr_t::компаратив);
 		}
 
 		bool dictionary_word_exists(const std::wstring& st)
@@ -277,6 +295,7 @@ namespace TranslatorTest
 			EXISTS(L"сунчев");
 
 			// прид -> прил
+			EXISTS(L"јако");
 			NEXISTS(L"ружано");
 			EXISTS(L"ружно");
 
@@ -321,7 +340,7 @@ namespace TranslatorTest
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<int>(194, Serbian::dictWords().size());
+			Assert::AreEqual<int>(232, Serbian::dictWords().size());
 		}
 
 		// This test helps keeping awereness of the number of word forms.
@@ -337,7 +356,7 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(4101, count);
+			Assert::AreEqual<int>(5414, count);
 		}
 
 		TEST_METHOD(random_test)

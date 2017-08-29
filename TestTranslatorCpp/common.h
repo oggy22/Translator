@@ -19,7 +19,7 @@ const typename Language::string_t get_dictionary_word(const typename Language::s
 		{
 			return word[{ attributes... }].word;
 		}
-	ASSERT(false);
+	Assert::Fail(L"Word st wasn't found");
 }
 
 template <class Language, class... Attributes>
