@@ -74,7 +74,7 @@ namespace TranslatorTest
 						// Double letters are usually no-no
 						if (prev_c == c)
 						{
-							if (c == L'ј' && w.word.find(L'најј') == 0)
+							if (c == L'ј' && w.word.find(L"најј") == 0)
 							{
 								// do nothing
 							}

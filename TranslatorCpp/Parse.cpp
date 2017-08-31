@@ -42,6 +42,26 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
+	if (std::strcmp(argv[1], "-help") == 0)
+	{
+		cout << "TranslatorCpp.exe -[COMMAND]" << endl;
+		cout << "TranslatorCpp.exe -[COMMAND]:[LANG1]" << endl;
+		cout << "TranslatorCpp.exe -[COMMAND]:[LANG1]:[LANG2]" << endl;
+		cout << "[COMMAND] me be:" << endl;
+		cout << "list - print out all the words form the language" << endl;
+		cout << "random - generate a random sentence" << endl;
+		cout << "translate - generate a random sentence" << endl;
+		cout << "help- generate a random sentence" << endl;
+		cout << "[LANG] me be SR or EN" << endl;
+		return 0;
+	}
+
+	if (starts_with<string>(argv[1], "-translate:"))
+	{
+		cout << "Translate is not yet implemented" << endl;
+		return 0;
+	}
+	
 	if (starts_with<string>(argv[1], "-random:"))
 	{
 		string stLang = argv[1] + strlen("-random:");
@@ -86,23 +106,24 @@ int main(int argc, char *argv[])
 		}
 		else if (stLang == "EN")
 		{
-			cout << "Not implemented yet" << endl;
+			for (const auto& word : English::dictWords())
+			{
+				cout << word.word << endl;
+				cout << " ";
+				for (const auto& form : word.words)
+					cout << form.word << " ";
+				cout << endl;
+			}
 		}
 		else
 		{
 			cerr << "Unrecognized language: " << stLang << endl;
 			return -1;
 		}
+
+		return 0;
 	}
 
 	cerr << "Unrecognized command" << endl;
 	return -1;
-}
-
-void print_help()
-{
-	cout << "Translator -[Argument]" << endl;
-	cout << "[Argument] can be" << endl;
-	cout << "help/h			: Print this screen" << endl;
-	cout << "random:Lang	: Generates a random sentence, Lang - two chars language identifier" << endl;
 }
