@@ -222,6 +222,7 @@ namespace TranslatorTest
 
 			// време, племе, семе
 			CHECK(L"времена", L"време", attr_t::једнина, attr_t::генитив);
+			CHECK(L"времену", L"време", attr_t::једнина, attr_t::локатив);
 			CHECK(L"племе", L"племе", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"семеном", L"семе", attr_t::једнина, attr_t::инструментал);
 			CHECK(L"племена", L"племе", attr_t::множина, attr_t::номинатив);
