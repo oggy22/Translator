@@ -203,6 +203,8 @@ namespace TranslatorTest
 
 		TEST_METHOD(check_some_noun_forms)
 		{
+			CHECK(L"синови", L"син", attr_t::множина, attr_t::номинатив);
+			CHECK(L"унуци", L"унук", attr_t::множина, attr_t::номинатив);
 			CHECK(L"жену", L"жена", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"коња", L"коњ", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"мишеви", L"миш", attr_t::множина, attr_t::номинатив);
@@ -341,7 +343,7 @@ namespace TranslatorTest
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<int>(232, Serbian::dictWords().size());
+			Assert::AreEqual<int>(266, Serbian::dictWords().size());
 		}
 
 		// This test helps keeping awereness of the number of word forms.
@@ -357,7 +359,7 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(5414, count);
+			Assert::AreEqual<int>(6230, count);
 		}
 
 		TEST_METHOD(random_test)
