@@ -202,6 +202,8 @@ namespace translator
 			return _dictWords;
 		}
 
+		static string_t number(int n);
+
 		static const std::vector<word_to_word_rule<Lang>> word_to_word_rules;
 
 		static const std::vector<rule<Lang>> grammar_rules;

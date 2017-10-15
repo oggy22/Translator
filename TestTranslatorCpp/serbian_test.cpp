@@ -362,6 +362,48 @@ namespace TranslatorTest
 			Assert::AreEqual<int>(6230, count);
 		}
 
+		TEST_METHOD(serbian_numbers_to_1000)
+		{
+			for (int i = 0; i < 1000; i++)
+			{
+				test_output << i << ": " << Serbian::number(i) << std::endl;
+				Assert::IsTrue(Serbian::number(i) != L"");
+			}
+		}
+
+		TEST_METHOD(serbian_numbers)
+		{
+			Assert::AreEqual(L"нула", Serbian::number(0).c_str());
+			Assert::AreEqual(L"један", Serbian::number(1).c_str());
+			Assert::AreEqual(L"два", Serbian::number(2).c_str());
+
+			//10:
+			Assert::AreEqual(L"десет", Serbian::number(10).c_str());
+			Assert::AreEqual(L"једанаест", Serbian::number(11).c_str());
+			Assert::AreEqual(L"дванаест", Serbian::number(12).c_str());
+			Assert::AreEqual(L"четрнаест", Serbian::number(14).c_str());
+
+			//20:
+			Assert::AreEqual(L"двадесет", Serbian::number(20).c_str());
+			Assert::AreEqual(L"двадесет један", Serbian::number(21).c_str());
+
+			//30:
+			Assert::AreEqual(L"тридесет", Serbian::number(30).c_str());
+			Assert::AreEqual(L"тридесет два", Serbian::number(32).c_str());
+
+			//90:
+			Assert::AreEqual(L"деведесет један", Serbian::number(91).c_str());
+
+			//100:
+			Assert::AreEqual(L"сто", Serbian::number(100).c_str());
+			Assert::AreEqual(L"сто један", Serbian::number(101).c_str());
+			Assert::AreEqual(L"сто десет", Serbian::number(110).c_str());
+			Assert::AreEqual(L"сто двадесет два", Serbian::number(122).c_str());
+
+			//999:
+			Assert::AreEqual(L"деветсто деведесет девет", Serbian::number(999).c_str());
+		}
+
 		TEST_METHOD(random_test)
 		{
 			for (int i = 0; i < 100; i++)

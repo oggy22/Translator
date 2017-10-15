@@ -86,6 +86,47 @@ namespace TranslatorTest
 			}
 		}
 
+		TEST_METHOD(english_numbers_to_1000)
+		{
+			for (int i = 0; i < 1000; i++)
+				Assert::IsTrue(English::number(i) != "");
+		}
+
+		TEST_METHOD(english_numbers)
+		{
+			Assert::AreEqual("zero", English::number(0).c_str());
+			Assert::AreEqual("one", English::number(1).c_str());
+			Assert::AreEqual("two", English::number(2).c_str());
+
+			Assert::AreEqual("ten", English::number(10).c_str());
+			Assert::AreEqual("eleven", English::number(11).c_str());
+			Assert::AreEqual("twelve", English::number(12).c_str());
+			Assert::AreEqual("thirteen", English::number(13).c_str());
+
+			Assert::AreEqual("twenty", English::number(20).c_str());
+			Assert::AreEqual("twenty-one", English::number(21).c_str());
+
+			Assert::AreEqual("thirty", English::number(30).c_str());
+			Assert::AreEqual("thirty-two", English::number(32).c_str());
+
+			Assert::AreEqual("forty", English::number(40).c_str());
+			Assert::AreEqual("fifty", English::number(50).c_str());
+			Assert::AreEqual("eighty", English::number(80).c_str());
+
+			//100:
+			Assert::AreEqual("one hundred", English::number(100).c_str());
+			Assert::AreEqual("one hundred and one", English::number(101).c_str());
+			Assert::AreEqual("one hundred and ten", English::number(110).c_str());
+			Assert::AreEqual("one hundred and twenty-two", English::number(122).c_str());
+
+			//200:
+			Assert::AreEqual("two hundred", English::number(200).c_str());
+			Assert::AreEqual("two hundred and fifty", English::number(250).c_str());
+
+			//999:
+			Assert::AreEqual("nine hundred and ninety-nine", English::number(999).c_str());
+		}
+
 		TEST_METHOD(check_some_noun_forms)
 		{
 			check<English>("women", "woman", attr_t::plur);

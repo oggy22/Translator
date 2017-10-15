@@ -177,6 +177,96 @@ const std::vector<translator::word_rule<English>> ENGLISH_BASE::word_rules
 	{ { "*" },{ "*" }, pron, { nom } },
 };
 
+std::string _number10(int n)
+{
+	if (n == 0)
+		return "";
+
+	ASSERT(n < 10);
+	switch (n)
+	{
+	case 1: return "one";
+	case 2: return "two";
+	case 3: return "three";
+	case 4: return "four";
+	case 5: return "five";
+	case 6: return "six";
+	case 7: return "seven";
+	case 8: return "eight";
+	case 9: return "nine";
+	case 10: return "ten";
+	default:
+		ASSERT(false);
+	}
+}
+
+std::string _number20(int n)
+{
+	ASSERT(n < 20);
+	if (n < 10)
+		return _number10(n);
+
+	if (n >= 16)
+		return _number10(n - 10) + "teen";
+
+	switch (n)
+	{
+	case 10: return "ten";
+	case 11: return "eleven";
+	case 12: return "twelve";
+	case 13: return "thirteen";
+	case 14: return "fourteen";
+	case 15: return "fifteen";
+	default:
+		ASSERT(false);
+	}
+}
+
+std::string _number100(int n)
+{
+	if (n < 20) return _number20(n);
+	
+	int n1 = n % 10;
+	int n10 = n / 10;
+
+	std::string ty;
+	switch (n10)
+	{
+	case 2: ty = "twenty"; break;
+	case 3: ty = "thirty"; break;
+	case 4: ty = "forty"; break;
+	case 5: ty = "fifty"; break;
+	case 8: ty = "eighty"; break;
+	default:
+		ty = _number10(n / 10) + "ty";
+	}
+	if (n1 == 0)
+		return ty;
+
+	return ty + "-" + _number10(n % 10);
+}
+
+std::string _number1000(int n)
+{
+	if (n < 100) return _number100(n);
+
+	return _number10(n / 100) + " hundred" + (n%100==0 ? "" : " and " + _number100(n % 100));
+}
+
+std::string ENGLISH_BASE::number(int n)
+{
+	if (n == 0)
+		return "zero";
+
+	return _number1000(n);
+}
+
+std::string ordinal_number(int n)
+{
+	//"*one" -> "*first";
+	return _number100(n);
+}
+
 const std::vector<translator::word_to_word_rule<English>> ENGLISH_BASE::word_to_word_rules
 {
 	{"*", "*ly", adj, adv, {} },
