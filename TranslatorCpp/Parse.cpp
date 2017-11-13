@@ -68,6 +68,7 @@ int main(int argc, char *argv[])
 		if (stLang == "SR")
 		{
 			map<int, wstring> sents;
+			setlocale(LC_ALL, "");
 			generate_random_sentences<Serbian>(sents, seed);
 			set_wide();
 			for (auto const &pair : sents)
@@ -126,4 +127,27 @@ int main(int argc, char *argv[])
 
 	cerr << "Unrecognized command" << endl;
 	return -1;
+}
+
+char translator::capitalize(char c)
+{
+	return toupper(c);
+}
+
+wchar_t translator::capitalize(wchar_t c)
+{
+	wchar_t upper = towupper(c);
+	return upper;
+}
+
+void translator::to_lower(basic_string<char>& s)
+{
+	for (basic_string<char>::iterator p = s.begin(); p != s.end(); ++p)
+		*p = tolower(*p);
+}
+
+void translator::to_lower(basic_string<wchar_t>& s)
+{
+	for (basic_string<wchar_t>::iterator p = s.begin(); p != s.end(); ++p)
+		*p = towlower(*p);
 }

@@ -5,6 +5,18 @@
 
 namespace translator
 {
+	char capitalize(char c);
+
+	wchar_t capitalize(wchar_t c);
+
+	template<typename string_t>
+	const string_t capitalize_string(const string_t& st)
+	{
+		string_t copy = st;
+		copy[0] = capitalize(copy[0]);
+		return copy;
+	}
+
 	template<typename Language>
 	const rule<Language>& get_random_rule(std::default_random_engine& device, typename Language::word_type wt = Language::Sentence)
 	{
@@ -144,23 +156,24 @@ namespace translator
 			}
 		}
 
-		string_t ToString() const
+		string_t ToString(bool first_word=false) const
 		{
 			switch (t)
 			{
 			case RNode::string:
-				return st;
+				return first_word ? capitalize_string(st) : st;
 			case RNode::word:
 			{
 				const word_form<Language>& w = p_dw->find_word_form(am);
-				return w.word;
+				return first_word || Language::should_capitalize(w) ? capitalize_string(w.word) : w.word;
 			}
 			case RNode::node:
 			{
 				string_t stSum;
 				for (auto &child : children)
 				{
-					stSum += child.ToString();
+					stSum += child.ToString(first_word);
+					first_word = false;
 					stSum += string_t::value_type(' ');
 				}
 				return stSum.substr(0, stSum.size() - 1);
@@ -184,6 +197,6 @@ namespace translator
 
 		RNode<Language> node(r, device);
 		node.consolidate_attributes(device);
-		return node.ToString();
+		return node.ToString(true);
 	}
 }

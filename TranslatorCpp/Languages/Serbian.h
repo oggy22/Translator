@@ -153,4 +153,9 @@ struct Serbian : public SERBIAN_BASE
 			wt == word_type::придев ||
 			wt == word_type::прилог;
 	}
+
+	static bool should_capitalize(const translator::word_form<Serbian> &w)
+	{
+		return false;
+	}
 };

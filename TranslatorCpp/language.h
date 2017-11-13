@@ -68,6 +68,10 @@ namespace translator
 		}
 	}
 
+	void to_lower(basic_string<char>& s);
+
+	void to_lower(basic_string<wchar_t>& s);
+
 	template <typename Language, typename letter = Language::letter, typename string_t = Language::string_t>
 	bool parse(typename Language::string_t s)
 	{
@@ -80,6 +84,10 @@ namespace translator
 		std::vector<string_t> vs(it, end);
 
 		parsing_triangle<std::vector<parsing_node<Language>>> pt(vs.size());
+
+		// Lowercase all the words
+		for (auto &word : vs)
+			to_lower(word);
 
 		// Lexical analysis
 		for (unsigned int i = 0; i < vs.size(); i++)

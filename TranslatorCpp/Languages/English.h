@@ -110,4 +110,12 @@ struct English : public ENGLISH_BASE
 			wt == word_type::pronoun ||
 			wt == verb;
 	}
+
+	static bool should_capitalize(const translator::word_form<English> &w)
+	{
+		if (w.p_dw->wordtype == word_type::pronoun && w.word == "i")
+			return true;
+
+		return false;
+	}
 };
