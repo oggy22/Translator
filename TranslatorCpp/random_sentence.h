@@ -5,6 +5,9 @@
 
 namespace translator
 {
+	template<typename Language>
+	bool probability_accept(const dictionary_word<Language>&, std::default_random_engine&);
+
 	char capitalize(char c);
 
 	wchar_t capitalize(wchar_t c);
@@ -59,7 +62,7 @@ namespace translator
 			do
 			{
 				pos = uniform_dist(device);
-			} while (Language::dictWords()[pos].wordtype != wt);
+			} while (Language::dictWords()[pos].wordtype != wt || !probability_accept(Language::dictWords()[pos], device));
 		
 			const dictionary_word<Language>& dw = Language::dictWords()[pos];
 			if (dw.can_accept(am))
@@ -103,7 +106,7 @@ namespace translator
 				}
 				else if (Language::is_word_type(child.wordtype))
 				{
-					const auto& dw = get_dictionary_word<Language>(device, child.wordtype, child.am);
+					const auto& dw = get_dictionary_word<Language>(device, child.wordtype, child.am);					
 					children.emplace_back(dw, device, child.am);
 				}
 				else

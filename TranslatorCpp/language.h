@@ -264,11 +264,16 @@ namespace translator
 					if (word.empty())
 						continue;
 
+					// Union of rule->attrs and rule->attrs_added
+					set<typename Lang::attributes> new_attrs(rule->attrs);
+					for (auto& a : rule->attrs_added)
+						new_attrs.insert(a);
+
 					derived_words.emplace_back(dictionary_word<Lang>
 					{
 						word,
 							rule->wt_destination,
-							rule->attrs
+							new_attrs
 					});
 				}
 			}

@@ -151,3 +151,23 @@ void translator::to_lower(basic_string<wchar_t>& s)
 	for (basic_string<wchar_t>::iterator p = s.begin(); p != s.end(); ++p)
 		*p = towlower(*p);
 }
+
+template<>
+bool translator::probability_accept(const dictionary_word<Serbian>& dw, std::default_random_engine& device)
+{
+	std::uniform_real_distribution<double> probability_dist(0.0, 1.0);
+
+	if (dw.attrs.find(Serbian::attributes::деминутив) != dw.attrs.end())
+		return probability_dist(device) < 0.4;
+
+	if (dw.attrs.find(Serbian::attributes::аугментатив) != dw.attrs.end())
+		return probability_dist(device) < 0.3;
+
+	return true;
+}
+
+template<>
+bool translator::probability_accept(const dictionary_word<English>& dw, std::default_random_engine& device)
+{
+	return true;
+}
