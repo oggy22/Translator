@@ -229,6 +229,10 @@ namespace TranslatorTest
 			CHECK(L"семеном", L"семе", attr_t::једнина, attr_t::инструментал);
 			CHECK(L"племена", L"племе", attr_t::множина, attr_t::номинатив);
 			CHECK(L"семенима", L"семе", attr_t::множина, attr_t::инструментал);
+
+			// Glagolske imenice
+			CHECK(L"учења", L"учење", attr_t::једнина, attr_t::генитив);
+			CHECK(L"учењу", L"учење", attr_t::једнина, attr_t::локатив);
 		}
 
 		TEST_METHOD(check_some_verb_forms)
@@ -245,8 +249,9 @@ namespace TranslatorTest
 
 		TEST_METHOD(check_some_adjective_forms)
 		{
-			CHECK(L"моје", L"мој", attr_t::средњи, attr_t::једнина, attr_t::номинатив);
+			//CHECK(L"гледана", L"гледан", attr_t::женски, attr_t::једнина, attr_t::номинатив);
 			CHECK(L"лошег", L"лош", attr_t::мушки, attr_t::једнина, attr_t::генитив);
+			CHECK(L"моје", L"мој", attr_t::средњи, attr_t::једнина, attr_t::номинатив);
 			CHECK(L"стара", L"стар", attr_t::женски, attr_t::једнина, attr_t::номинатив);
 		}
 
@@ -343,7 +348,7 @@ namespace TranslatorTest
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<int>(266, Serbian::dictWords().size());
+			Assert::AreEqual<int>(268, Serbian::dictWords().size());
 		}
 
 		// This test helps keeping awereness of the number of word forms.
@@ -359,7 +364,7 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(6230, count);
+			Assert::AreEqual<int>(6293, count);
 		}
 
 		TEST_METHOD(serbian_numbers_to_1000)

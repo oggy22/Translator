@@ -152,6 +152,13 @@ void translator::to_lower(basic_string<wchar_t>& s)
 		*p = towlower(*p);
 }
 
+template<typename Char>
+bool ends_with(const std::basic_string<Char>& value, const std::basic_string<Char>& ending)
+{
+	if (ending.size() > value.size()) return false;
+	return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
+}
+
 template<>
 bool translator::probability_accept(const dictionary_word<Serbian>& dw, std::default_random_engine& device)
 {
@@ -161,6 +168,9 @@ bool translator::probability_accept(const dictionary_word<Serbian>& dw, std::def
 		return probability_dist(device) < 0.4;
 
 	if (dw.attrs.find(Serbian::attributes::аугментатив) != dw.attrs.end())
+		return probability_dist(device) < 0.3;
+
+	if (dw.wordtype == Serbian::word_type::именица && ends_with<wchar_t>(dw.word, L"ње"))
 		return probability_dist(device) < 0.3;
 
 	return true;
