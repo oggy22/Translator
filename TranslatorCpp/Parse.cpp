@@ -10,11 +10,23 @@
 #include "Languages\English.h"
 #include "Languages\Serbian.h"
 #include "random_sentence.h"
+#undef map
+#include "palindrome.h"
 
 void set_wide()
 {
 	_setmode(_fileno(stdout), _O_U16TEXT);
 	_setmode(_fileno(stdin), _O_U16TEXT);
+}
+
+template <typename string_t>
+void remove(std::vector<string_t>& words, string_t word)
+{
+	auto it = std::lower_bound(words.begin(), words.end(), word);
+	if ((*it) == word)
+	{
+		words.erase(it);
+	}
 }
 
 using namespace std;
@@ -120,6 +132,53 @@ int main(int argc, char *argv[])
 		{
 			cerr << "Unrecognized language: " << stLang << endl;
 			return -1;
+		}
+
+		return 0;
+	}
+
+	if (starts_with<string>(argv[1], "-palindrome:"))
+	{
+		string stLang = argv[1] + strlen("-palindrome:");
+		if (stLang == "SR")
+		{
+			std::vector<wstring> words;
+			for (const auto& word : Serbian::dictWords())
+			{
+				for (const auto& form : word.words)
+					words.push_back(form.word);
+			}
+
+			std::sort(words.begin(), words.end());
+			words.erase(unique(words.begin(), words.end()), words.end());
+
+			remove<wstring>(words, L"бен");
+			remove<wstring>(words, L"бена");
+			remove<wstring>(words, L"бене");
+			remove<wstring>(words, L"бени");
+			remove<wstring>(words, L"бено");
+			remove<wstring>(words, L"беној");
+			remove<wstring>(words, L"бену");
+			remove<wstring>(words, L"мојоме");
+			remove<wstring>(words, L"окое");
+			remove<wstring>(words, L"пила");
+			remove<wstring>(words, L"чуна");
+			remove<wstring>(words, L"чуне");
+			remove<wstring>(words, L"чуни");
+			remove<wstring>(words, L"чуну");
+			
+
+			auto results = find_palindromes<wchar_t>(words, 10);
+			std::sort(results.begin(), results.end(),
+				[](const wstring & a, const wstring & b) -> bool
+			{
+				return a.size() < b.size();
+			});
+
+			set_wide();
+			for (auto word : results)
+				wcout << word << endl;
+			wcout << results.size() << " results" << endl;
 		}
 
 		return 0;

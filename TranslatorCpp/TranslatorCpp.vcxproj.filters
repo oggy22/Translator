@@ -39,6 +39,7 @@
     <ClInclude Include="Words.h" />
     <ClInclude Include="Rules.h" />
     <ClInclude Include="random_sentence.h" />
+    <ClInclude Include="palindrome.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Languages">

@@ -13,6 +13,7 @@
 // TODO: reference additional headers your program requires here
 #include <fstream>
 #include <codecvt>
+#include "../TranslatorCpp/palindrome.h"
 #include "../TranslatorCpp/language.h"
 #include "../TranslatorCpp/random_sentence.h"
 #include "common.h"

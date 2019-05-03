@@ -6,7 +6,7 @@ struct Serbian : public SERBIAN_BASE
 	using letter = wchar_t;
 
 	enum class word_type {
-		именица, заменица, глагол, придев, прилог,
+		именица, заменица, глагол, придев, прилог, остало,
 		РЕЧЕНИЦА,
 		ИменичкаСинтагма,
 		ГлаголскаСинтагма,
@@ -18,6 +18,7 @@ struct Serbian : public SERBIAN_BASE
 #define глаг Serbian::word_type::глагол
 #define прид Serbian::word_type::придев
 #define прил Serbian::word_type::прилог
+#define остл Serbian::word_type::остало
 #define РЕЧН Serbian::word_type::РЕЧЕНИЦА
 #define ИС Serbian::word_type::ИменичкаСинтагма
 #define ГС Serbian::word_type::ГлаголскаСинтагма
@@ -114,6 +115,8 @@ struct Serbian : public SERBIAN_BASE
 			return L"придев";
 		case word_type::прилог:
 			return L"прилог";
+		case word_type::остало:
+			return L"остало";
 		case word_type::РЕЧЕНИЦА:
 			return L"РЕЧЕНИЦА";
 		case word_type::ИменичкаСинтагма:
