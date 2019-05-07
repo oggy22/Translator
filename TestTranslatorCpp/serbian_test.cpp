@@ -221,6 +221,7 @@ namespace TranslatorTest
 
 			// Accusative male
 			CHECK(L"човека", L"човек", attr_t::једнина, attr_t::акузатив);
+			CHECK(L"милована", L"милован", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"кромпир", L"кромпир", attr_t::једнина, attr_t::акузатив);
 
 			// време, племе, семе
@@ -335,6 +336,10 @@ namespace TranslatorTest
 			test(L"у школа", false);
 
 			// Реченице
+			test(L"ана воли милована");
+			test(L"ана воли милован", false);
+			test(L"ања воли миловања");
+			test(L"ања воли миловање");
 			test(L"ја идем у школу");
 			test(L"ја идем у школа", false);	// wrong case
 			test(L"ја иде у школу", false);		// wrong verb declination
