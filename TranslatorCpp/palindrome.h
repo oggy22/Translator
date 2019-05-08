@@ -229,3 +229,48 @@ void recurse_tries(trie_walker<char_t>& tw, trie_walker<char_t>& twi, std::vecto
 		twi.move_back(pi);
 	}
 }
+
+template <typename char_t, typename string_t = std::basic_string<char_t>>
+class palindrome
+{
+	string_t pal;
+	int spaces = 0;
+
+public:
+	palindrome(const string_t& s) : pal(s)
+	{
+		ASSERT(s.front() != ' ');
+		ASSERT(s.back() != ' ');
+		for (unsigned i = 1; i < s.size(); i++)
+		{
+			ASSERT(s[i] != ' ' || s[i - 1] != ' ');
+			if (s[i] == ' ')
+				spaces++;
+		}
+	}
+
+	const string_t& word() const
+	{
+		return pal;
+	}
+
+	int number_of_words() const
+	{
+		return spaces + 1;
+	}
+
+	int number_of_letters() const
+	{
+		return pal.size() - spaces + 1;
+	}
+
+	int number_of_chars() const
+	{
+		return pal.size();
+	}
+
+	float average_word_length() const
+	{
+		return float(number_of_letters()) / number_of_words();
+	}
+};
