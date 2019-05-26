@@ -10,8 +10,8 @@ namespace translator
 		using attr_t = typename Language::attributes;
 		using cat_t = typename Language::attribute_categories;
 		map<cat_t, attr_t> mapping;
-		set<cat_t> free_cat;
-		set<attr_t> free_attr;
+		myset<cat_t> free_cat;
+		myset<attr_t> free_attr;
 	
 		inline void check_consistency()
 		{
@@ -45,7 +45,7 @@ namespace translator
 		}
 
 		template <typename... Args>
-		attribute_manager(const set<attr_t>& attrs, Args... args) : attribute_manager(args...)
+		attribute_manager(const myset<attr_t>& attrs, Args... args) : attribute_manager(args...)
 		{
 			for (attr_t a : attrs)
 			{

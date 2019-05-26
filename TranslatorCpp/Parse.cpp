@@ -168,6 +168,11 @@ int main(int argc, char *argv[])
 			remove<wstring>(words, L"чуну");
 
 			auto results = find_palindromes<wchar_t>(words, 10);
+			//std::sort(results.begin(), results.end(),
+			//	[](const wstring & a, const wstring & b) -> bool
+			//{
+			//	return a < b;
+			//});
 
 			std::vector<palindrome<wchar_t>> palindromes(results.begin(), results.end());
 
@@ -178,6 +183,7 @@ int main(int argc, char *argv[])
 			});
 
 			set_wide();
+			wcout << "palindrome, chars, letters, words, avg. word, stddev. word" << endl;
 			for (auto palin : palindromes)
 			{
 				wcout << palin.word();
@@ -185,6 +191,7 @@ int main(int argc, char *argv[])
 				wcout << ',' << palin.number_of_letters();
 				wcout << ',' << palin.number_of_words();
 				wcout << ',' << palin.average_word_length();
+				wcout << ',' << palin.stddev_word_legth();
 				wcout << endl;
 			}
 			wcout << results.size() << " results" << endl;

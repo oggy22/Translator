@@ -104,13 +104,13 @@ namespace TranslatorTest
 
 		using attr_t = Serbian::attributes;
 
-		void test_word_forms(const translator::dictionary_word<Serbian> &word, set<attr_t> set1)
+		void test_word_forms(const translator::dictionary_word<Serbian> &word, myset<attr_t> set1)
 		{
 			for (attr_t a : set1)
 				Assert::IsTrue(word(a), L"Missing wordform");
 		}
 
-		void test_word_forms(const translator::dictionary_word<Serbian> &word, set<attr_t> set1, set<attr_t> set2)
+		void test_word_forms(const translator::dictionary_word<Serbian> &word, myset<attr_t> set1, myset<attr_t> set2)
 		{
 			for (attr_t a1 : set1)
 				for (attr_t a2 : set2)
@@ -118,7 +118,7 @@ namespace TranslatorTest
 						(word.word + std::wstring(L"Missing wordform 2 attrs")).c_str());
 		}
 
-		void test_word_forms(const translator::dictionary_word<Serbian> &word, set<attr_t> set1, set<attr_t> set2, set<attr_t> set3)
+		void test_word_forms(const translator::dictionary_word<Serbian> &word, myset<attr_t> set1, myset<attr_t> set2, myset<attr_t> set3)
 		{
 			for (attr_t a1 : set1)
 				for (attr_t a2 : set2)
@@ -355,7 +355,7 @@ namespace TranslatorTest
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<int>(425, Serbian::dictWords().size());
+			Assert::AreEqual<int>(444, Serbian::dictWords().size());
 		}
 
 		// This test helps keeping awereness of the number of word forms.
@@ -371,7 +371,7 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(9563, count);
+			Assert::AreEqual<int>(9850, count);
 		}
 
 		TEST_METHOD(serbian_numbers_to_1000)
@@ -418,7 +418,7 @@ namespace TranslatorTest
 
 		TEST_METHOD(random_test)
 		{
-			for (int i = 0; i < 100; i++)
+			for (int i = 0; i < 50; i++)
 			{
 				std::wstring str = translator::random_sentence<Serbian>(i);
 				Logger::WriteMessage(str.c_str());

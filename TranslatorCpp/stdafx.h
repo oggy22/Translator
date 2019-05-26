@@ -10,12 +10,12 @@
 #ifdef _DEBUG
 #include <set>
 #include <map>
-#define set std::set
+#define myset std::set
 #define map std::map
 #else
 #include <unordered_set>
 #include <unordered_map>
-#define set std::unordered_set
+#define myset std::unordered_set
 #define map std::unordered_map
 #endif
 

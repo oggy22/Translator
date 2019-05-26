@@ -234,7 +234,7 @@ namespace translator
 			for (auto& w : Lang::dictWords())
 			{
 				// All the applicable rules for the given word, mapped by derived word type
-				set<const word_to_word_rule<Lang>*> applicable_rules;
+				myset<const word_to_word_rule<Lang>*> applicable_rules;
 
 				for (auto& rule : Lang::word_to_word_rules)
 				{
@@ -265,7 +265,7 @@ namespace translator
 						continue;
 
 					// Union of rule->attrs and rule->attrs_added
-					set<typename Lang::attributes> new_attrs(rule->attrs);
+					myset<typename Lang::attributes> new_attrs(rule->attrs);
 					for (auto& a : rule->attrs_added)
 						new_attrs.insert(a);
 

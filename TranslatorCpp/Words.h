@@ -14,10 +14,10 @@ namespace translator
 		using attr_t = typename Language::attributes;
 		const typename Language::string_t word;
 		const typename Language::word_type wordtype;
-		const set<typename Language::attributes> attrs;
+		const myset<typename Language::attributes> attrs;
 		mutable vector<word_form<Language>> words;	//todo: this is a hack
 
-		const word_form<Language>& find_word_form(const set<attr_t>& attrs) const
+		const word_form<Language>& find_word_form(const myset<attr_t>& attrs) const
 		{
 			for (const auto& w : words)
 				if (w.attrs == attrs)
@@ -76,7 +76,7 @@ namespace translator
 			ASSERT(false);
 		}
 
-		const word_form<Language>& operator[](const set<attr_t>& attrs) const
+		const word_form<Language>& operator[](const myset<attr_t>& attrs) const
 		{
 			for (const auto& w : words)
 			{
@@ -118,7 +118,7 @@ namespace translator
 	{
 		using string_t = typename Language::string_t;
 		string_t word;
-		set<typename Language::attributes> attrs;
+		myset<typename Language::attributes> attrs;
 		const dictionary_word<Language> *p_dw;
 
 		bool contains(typename Language::attributes a) const
@@ -169,7 +169,7 @@ namespace translator
 		pattern<typename Language::letter> destination;
 		typename Language::word_type wt;
 		using char_t = typename Language::letter;
-		set<typename Language::attributes> attrs;
+		myset<typename Language::attributes> attrs;
 		nullable<typename Language::attributes> f;
 #ifdef _DEBUG
 		mutable bool used;
@@ -187,8 +187,8 @@ namespace translator
 		pattern<typename Language::letter> destination;
 		typename Language::word_type wt_source;
 		typename Language::word_type wt_destination;
-		set<typename Language::attributes> attrs;
-		set<typename Language::attributes> attrs_added;	//e.g. deminutive
+		myset<typename Language::attributes> attrs;
+		myset<typename Language::attributes> attrs_added;	//e.g. deminutive
 
 #ifdef _DEBUG
 		mutable bool used;

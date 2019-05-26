@@ -9,7 +9,7 @@ namespace translator
 	{
 		const dictionary_word<Lang> word;
 		const nullable<typename Lang::word_type> wt;
-		set<attr_t> attrs;
+		myset<attr_t> attrs;
 
 		void create_attrs()
 		{

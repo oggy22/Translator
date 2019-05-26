@@ -12,7 +12,7 @@ namespace TranslatorTest
 		TEST_METHOD(ana_voli_milovana)
 		{
 			std::vector<std::wstring> words = { L"ана", L"воли", L"милована" };
-			auto results = find_palindromes<wchar_t>(words, 30);
+			auto results = find_palindromes<wchar_t>(words, 8);
 			
 			Assert::AreEqual<const std::wstring&>(
 				L"ана воли милована",
@@ -21,10 +21,15 @@ namespace TranslatorTest
 
 		TEST_METHOD(trie_test)
 		{
-			std::vector<std::string> words = { "ab", "abb", "abc", "xyz" };
+			std::vector<std::string> words = { "ab", "abb", "abc", "x", "xyz" };
 			trie_node<char> root(words);
+			Assert::IsTrue(!root.is_wordend());
 			for (auto word : words)
-				Assert::IsNotNull(root.traverse(word));
+			{
+				trie_node<char> *p = root.traverse(word);
+				Assert::IsNotNull(p);
+				Assert::IsTrue(p->is_wordend());
+			}
 		}
 
 		TEST_METHOD(serbian_palindromes)
@@ -38,12 +43,31 @@ namespace TranslatorTest
 
 			std::sort(words.begin(), words.end());
 			words.erase(unique(words.begin(), words.end()), words.end());
-			auto results = find_palindromes<wchar_t>(words, 10);
-			std::sort(results.begin(), results.end());
+			auto results = find_palindromes<wchar_t>(words,
+#if NDEBUG
+				10
+#else
+				7
+#endif
+				);
 
-			Assert::IsTrue(contains(results, L"ана"));
-			Assert::IsTrue(contains(results, L"могу дугом"));
-			//Assert::IsTrue(contains(results, L"ана волимилована"));
+			Assert::IsTrue(results.count(L"ана"));
+			Assert::IsTrue(results.count(L"ана воли милована"));
+			Assert::IsTrue(results.count(L"ане жена"));
+			Assert::IsTrue(results.count(L"мамин и татин имам"));
+			Assert::IsTrue(results.count(L"мењате шетањем"));
+			Assert::IsTrue(results.count(L"могу деде дугом"));
+			Assert::IsTrue(results.count(L"могу дугом"));
+			Assert::IsTrue(results.count(L"оне жене мене жено"));
+			
+			// Too long for Debug
+#if NDEBUG
+			Assert::IsTrue(results.count(L"ања волимо и ми о миловања"));
+			Assert::IsTrue(results.count(L"мењати пса васпитањем"));
+			
+			// Bug:
+			//Assert::IsTrue(results.count(L"миша види вашим"));
+#endif
 		}
 
 		bool contains(const std::vector<std::wstring>& container, const std::wstring& v)
