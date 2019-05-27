@@ -151,7 +151,7 @@ public:
 		return iter->second->traverse(p_str + 1);
 	}
 };
-#undef set
+//#undef set
 
 template <typename char_t, typename string_t = std::basic_string<char_t>>
 std::set<string_t> find_palindromes(std::vector<string_t>& words, int max_length)

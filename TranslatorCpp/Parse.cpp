@@ -168,11 +168,22 @@ int main(int argc, char *argv[])
 			remove<wstring>(words, L"чуну");
 
 			auto results = find_palindromes<wchar_t>(words, 10);
-			//std::sort(results.begin(), results.end(),
-			//	[](const wstring & a, const wstring & b) -> bool
-			//{
-			//	return a < b;
-			//});
+
+			// Trim those of form "A palindrome A"
+			for (auto it = results.begin(); it != results.end();)
+			{
+				wstring pal = *it;
+				int first = pal.find_first_of(L' ');
+				int last = pal.find_last_of(L' ');
+				if (first == pal.length() - last - 1)
+				{
+					results.erase(it++);
+				}
+				else
+				{
+					it++;
+				}
+			}
 
 			std::vector<palindrome<wchar_t>> palindromes(results.begin(), results.end());
 

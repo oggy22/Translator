@@ -45,7 +45,7 @@ namespace TranslatorTest
 			words.erase(unique(words.begin(), words.end()), words.end());
 			auto results = find_palindromes<wchar_t>(words,
 #if NDEBUG
-				10
+				9
 #else
 				7
 #endif
@@ -56,13 +56,14 @@ namespace TranslatorTest
 			Assert::IsTrue(results.count(L"ане жена"));
 			Assert::IsTrue(results.count(L"мамин и татин имам"));
 			Assert::IsTrue(results.count(L"мењате шетањем"));
+			Assert::IsTrue(results.count(L"миловање мења волим"));
+			Assert::IsTrue(results.count(L"миловања сања волим"));
 			Assert::IsTrue(results.count(L"могу деде дугом"));
 			Assert::IsTrue(results.count(L"могу дугом"));
 			Assert::IsTrue(results.count(L"оне жене мене жено"));
 			
 			// Too long for Debug
 #if NDEBUG
-			Assert::IsTrue(results.count(L"ања волимо и ми о миловања"));
 			Assert::IsTrue(results.count(L"мењати пса васпитањем"));
 			
 			// Bug:
