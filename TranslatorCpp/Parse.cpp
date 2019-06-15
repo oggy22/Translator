@@ -59,12 +59,13 @@ int main(int argc, char *argv[])
 		cout << "TranslatorCpp.exe -[COMMAND]" << endl;
 		cout << "TranslatorCpp.exe -[COMMAND]:[LANG1]" << endl;
 		cout << "TranslatorCpp.exe -[COMMAND]:[LANG1]:[LANG2]" << endl;
-		cout << "[COMMAND] me be:" << endl;
+		cout << "[COMMAND] can be:" << endl;
 		cout << "list - print out all the words form the language" << endl;
 		cout << "random - generate a random sentence" << endl;
 		cout << "translate - generate a random sentence" << endl;
-		cout << "help- generate a random sentence" << endl;
-		cout << "[LANG] me be SR or EN" << endl;
+		cout << "palindrome - generate a random sentence" << endl;
+		cout << "help - prints this info" << endl;
+		cout << "[LANG] can be SR or EN" << endl;
 		return 0;
 	}
 
