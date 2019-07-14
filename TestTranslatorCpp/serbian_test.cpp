@@ -218,6 +218,7 @@ namespace TranslatorTest
 			CHECK(L"времена", L"време", attr_t::једнина, attr_t::генитив);
 			CHECK(L"племену", L"племе", attr_t::једнина, attr_t::датив);
 			CHECK(L"мушкарци", L"мушкарац", attr_t::множина, attr_t::номинатив);
+			CHECK(L"имена", L"име", attr_t::једнина, attr_t::генитив);
 
 			// Accusative male
 			CHECK(L"човека", L"човек", attr_t::једнина, attr_t::акузатив);
@@ -355,7 +356,7 @@ namespace TranslatorTest
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<int>(611, Serbian::dictWords().size());
+			Assert::AreEqual<int>(620, Serbian::dictWords().size());
 		}
 
 		// This test helps keeping awereness of the number of word forms.
@@ -371,7 +372,7 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(13887, count);
+			Assert::AreEqual<int>(14144, count);
 		}
 
 		TEST_METHOD(serbian_numbers_to_1000)
@@ -418,7 +419,7 @@ namespace TranslatorTest
 
 		TEST_METHOD(random_test)
 		{
-			for (int i = 0; i < 50; i++)
+			for (int i = 0; i < 10; i++)
 			{
 				std::wstring str = translator::random_sentence<Serbian>(i);
 				Logger::WriteMessage(str.c_str());
