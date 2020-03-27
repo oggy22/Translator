@@ -168,7 +168,7 @@ int main(int argc, char *argv[])
 			remove<wstring>(words, L"чуни");
 			remove<wstring>(words, L"чуну");
 
-			auto results = find_palindromes<wchar_t>(words, 10);
+			auto results = find_palindromes<wchar_t>(words, 8);
 
 			// Trim those of form "A palindrome A"
 			for (auto it = results.begin(); it != results.end();)
