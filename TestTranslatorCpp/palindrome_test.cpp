@@ -45,27 +45,27 @@ namespace TranslatorTest
 			words.erase(unique(words.begin(), words.end()), words.end());
 			auto results = find_palindromes<wchar_t>(words,
 #if NDEBUG
-				9
+				8
 #else
-				7
+				6
 #endif
 				);
 
 			Assert::IsTrue(results.count(L"ана"));
-			Assert::IsTrue(results.count(L"ана воли милована"));
 			Assert::IsTrue(results.count(L"ане жена"));
-			Assert::IsTrue(results.count(L"мамин и татин имам"));
 			Assert::IsTrue(results.count(L"мењате шетањем"));
-			Assert::IsTrue(results.count(L"миловање мења волим"));
-			Assert::IsTrue(results.count(L"миловања сања волим"));
 			Assert::IsTrue(results.count(L"могу деде дугом"));
 			Assert::IsTrue(results.count(L"могу дугом"));
-			Assert::IsTrue(results.count(L"оне жене мене жено"));
 			
 			// Too long for Debug
 #if NDEBUG
-			Assert::IsTrue(results.count(L"мењати пса васпитањем"));
-			
+			Assert::IsTrue(results.count(L"ана воли милована"));
+			Assert::IsTrue(results.count(L"мамин и татин имам"));
+			//Assert::IsTrue(results.count(L"мењати пса васпитањем"));
+			Assert::IsTrue(results.count(L"миловање мења волим"));
+			Assert::IsTrue(results.count(L"миловања сања волим"));
+			Assert::IsTrue(results.count(L"оне жене мене жено"));
+
 			// Bug:
 			//Assert::IsTrue(results.count(L"миша види вашим"));
 #endif
