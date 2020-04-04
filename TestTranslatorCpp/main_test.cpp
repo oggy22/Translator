@@ -17,7 +17,6 @@ namespace TranslatorTest
 		}
 
 #ifdef _DEBUG
-
 		TEST_METHOD(command_help)
 		{
 			Main("-help");
