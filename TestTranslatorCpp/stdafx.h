@@ -10,7 +10,6 @@
 // Headers for CppUnitTest
 #include "CppUnitTest.h"
 
-// TODO: reference additional headers your program requires here
 #include <fstream>
 #include <codecvt>
 #include "../TranslatorCpp/palindrome.h"

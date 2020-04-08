@@ -15,8 +15,8 @@
 
 void set_wide()
 {
-	_setmode(_fileno(stdout), _O_U16TEXT);
-	_setmode(_fileno(stdin), _O_U16TEXT);
+	_setmode(_fileno(stdout), _O_WTEXT);
+	_setmode(_fileno(stdin), _O_WTEXT);
 }
 
 template <typename string_t>
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 		cout << "list - print out all the words form the language" << endl;
 		cout << "random - generate a random sentence" << endl;
 		cout << "translate - generate a random sentence" << endl;
-		cout << "palindrome - generate a random sentence" << endl;
+		cout << "palindrome [depth] - generate a random sentence" << endl;
 		cout << "help - prints this info" << endl;
 		cout << "[LANG] can be SR or EN" << endl;
 		return 0;
@@ -168,9 +168,13 @@ int main(int argc, char *argv[])
 			remove<wstring>(words, L"чуни");
 			remove<wstring>(words, L"чуну");
 
-			auto results = find_palindromes<wchar_t>(words, 8);
+			int depth = 8;
+			if (argc >= 3)
+				depth = std::stoi(argv[2]);
 
-			// Trim those of form "A palindrome A"
+			auto results = find_palindromes<wchar_t>(words, depth);
+
+			// Trim those of form "A [palindrome] A"
 			for (auto it = results.begin(); it != results.end();)
 			{
 				wstring pal = *it;

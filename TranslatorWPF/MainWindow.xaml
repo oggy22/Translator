@@ -10,19 +10,34 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
+            <RowDefinition Height="30" />
         </Grid.RowDefinitions>
         <Menu>
+            <MenuItem Header="Generate">
+                <MenuItem Header="Palindrome">
+                    <MenuItem Header="7" Click="MenuItem_Click"/>
+                    <MenuItem Header="8" Click="MenuItem_Click"/>
+                    <MenuItem Header="9" Click="MenuItem_Click"/>
+                    <MenuItem Header="10" Click="MenuItem_Click"/>
+                </MenuItem>
+            </MenuItem>
             <MenuItem Header="File"/>
             <MenuItem Header="Edit"/>
             <MenuItem Header="Help"/>
         </Menu>
-        <Grid Grid.Row="1" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <TextBox Name="TxtSrc" Text="" TextChanged="TextBox_TextChanged" />
-            <TextBox Name="TxtDst" Text="" Grid.Column="1"/>
-        </Grid>
+        <DataGrid Grid.Row="1" Name="dataPalindromes" AutoGenerateColumns="False" CanUserDeleteRows="True" Grid.ColumnSpan="2" Margin="0,0,0,0.5">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Palindrom" Binding="{Binding Path=Palindrom}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Words" Binding="{Binding Path=Words}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Letters" Binding="{Binding Path=Letters}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Chars" Binding="{Binding Path=Chars}" IsReadOnly="True" />
+                <DataGridTextColumn Header="AvgWord" Binding="{Binding Path=AvgWord}" IsReadOnly="True" />
+                <DataGridTextColumn Header="StdWord" Binding="{Binding Path=StdWord}" IsReadOnly="True" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <TextBox Name="txtSearch" Width="200" TextChanged="TextBox_TextChanged"/>
+            <Label Name="lblCount"/>
+        </StackPanel>
     </Grid>
 </Window>
