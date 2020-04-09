@@ -68,13 +68,25 @@ namespace TranslatorWPF
             string header = (sender as MenuItem).Header as string;
             int depth = int.Parse(header);
             this.Title = $"Generating palindromes (depth={depth})";
+            GeneratePalindromes(depth, false);
+        }
 
+        private void MenuItem_Click2(object sender, RoutedEventArgs e)
+        {
+            string header = (sender as MenuItem).Header as string;
+            int depth = int.Parse(header);
+            this.Title = $"Generating palindromes with parse (depth={depth})";
+            GeneratePalindromes(depth, true);
+        }
+
+        private void GeneratePalindromes(int depth, bool parse)
+        {
             var proc = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "TranslatorCpp.exe",
-                    Arguments = $"-palindrome:SR {depth}",
+                    Arguments = (parse ? $"-palindromep:SR {depth}" : $"-palindrome:SR {depth}"),
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     CreateNoWindow = true
@@ -93,7 +105,7 @@ namespace TranslatorWPF
                 if (char.IsDigit(line[0]))
                     continue;
 
-                Palindrome pal = new Palindrome(line);
+                Palindrome pal = new Palindrome(line, parse);
                 pc.Add(pal);
             }
             dataPalindromes.ItemsSource = pc;
@@ -106,7 +118,9 @@ namespace TranslatorWPF
 
     public class Palindrome : INotifyPropertyChanged
     {
-        public Palindrome(string line)
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public Palindrome(string line, bool parse)
         {
             int pos = line.IndexOf(',');
             Palindrom = line.Substring(0, pos);
@@ -115,6 +129,8 @@ namespace TranslatorWPF
             Words = GetInt(line, ref pos);
             AvgWord = GetFloat(line, ref pos);
             StdWord = GetFloat(line, ref pos);
+            if (parse)
+                Parse = GetInt(line, ref pos);
         }
 
         static int GetInt(string line, ref int pos)
@@ -149,12 +165,17 @@ namespace TranslatorWPF
         }
 
         public string Palindrom { get; set; }
+
         public int Words { get; set; }
+
         public int Letters { get; set; }
+
         public int Chars { get; set; }
+
         public float AvgWord { get; set; }
+
         public float StdWord { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public int Parse { get; set; }
     }
 }

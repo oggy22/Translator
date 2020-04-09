@@ -15,8 +15,8 @@
 
 void set_wide()
 {
-	_setmode(_fileno(stdout), _O_WTEXT);
-	_setmode(_fileno(stdin), _O_WTEXT);
+	_setmode(_fileno(stdout), _O_U16TEXT);
+	_setmode(_fileno(stdin), _O_U16TEXT);
 }
 
 template <typename string_t>
@@ -138,9 +138,10 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
-	if (starts_with<string>(argv[1], "-palindrome:"))
+	bool palindrome_parse = starts_with<string>(argv[1], "-palindromep:");
+	if (starts_with<string>(argv[1], "-palindrome:") || palindrome_parse)
 	{
-		string stLang = argv[1] + strlen("-palindrome:");
+		string stLang = strchr(argv[1], ':')+1;
 		if (stLang == "SR")
 		{
 			std::vector<wstring> words;
@@ -199,15 +200,26 @@ int main(int argc, char *argv[])
 			});
 
 			set_wide();
-			wcout << "palindrome, chars, letters, words, avg. word, stddev. word" << endl;
+			wcout
+				<< "palindrome, chars, letters, words, avg. word, stddev. word"
+				<< (palindrome_parse ? ", parsed" : "") <<  endl;
+
 			for (auto palin : palindromes)
 			{
+				if (palin.word().length() == 0)
+					continue;
+
 				wcout << palin.word();
 				wcout << ',' << palin.number_of_chars();
 				wcout << ',' << palin.number_of_letters();
 				wcout << ',' << palin.number_of_words();
 				wcout << ',' << palin.average_word_length();
 				wcout << ',' << palin.stddev_word_legth();
+				if (palindrome_parse)
+				{
+					bool grammatical = translator::parse<Serbian>(palin.word());
+					wcout << ',' << (grammatical ? 1 : 0);
+				}
 				wcout << endl;
 			}
 			wcout << results.size() << " results" << endl;
