@@ -51,7 +51,7 @@ namespace TranslatorTest
 		}
 #endif
 
-		TEST_METHOD(every_word_composed_of_serbian_letters)
+		TEST_METHOD(various_checks_for_serbian_letters)
 		{
 			std::unordered_set<wchar_t> alphabet;
 			for (unsigned int i = 0; i < Serbian::stAlphabet.length(); i++)
@@ -219,6 +219,7 @@ namespace TranslatorTest
 			CHECK(L"племену", L"племе", attr_t::једнина, attr_t::датив);
 			CHECK(L"мушкарци", L"мушкарац", attr_t::множина, attr_t::номинатив);
 			CHECK(L"имена", L"име", attr_t::једнина, attr_t::генитив);
+			CHECK(L"псом", L"пас", attr_t::једнина, attr_t::инструментал);
 
 			// Accusative male
 			CHECK(L"човека", L"човек", attr_t::једнина, attr_t::акузатив);
@@ -335,6 +336,8 @@ namespace TranslatorTest
 			//// Прилошке одредбе
 			test(L"у школу");
 			test(L"у школа", false);
+			test(L"са пас", false);
+			test(L"са псом");
 
 			// Реченице
 			test(L"ана воли милована");
