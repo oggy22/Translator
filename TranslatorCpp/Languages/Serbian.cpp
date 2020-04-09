@@ -187,8 +187,9 @@ const std::vector<translator::rule<Serbian>> SERBIAN_BASE::grammar_rules
 	{ { РЕЧН },
 	{ { Одр }, { глаг, бр, лиц } } },
 
+	// Recenice
 	{ { РЕЧН },
-	{ { имен, ном, бр }, { ГС, бр, лиц3 } } },
+	{ { имен, ном, бр, лиц }, { ГС, бр, лиц } } },
 	{ { РЕЧН },
 	{ { зам, ном, бр, лиц },{ глаг, бр, лиц } } },
 	{ { РЕЧН },
@@ -210,6 +211,7 @@ const std::vector<translator::rule<Serbian>> SERBIAN_BASE::grammar_rules
 	{ { Одр },
 	{ { L"у" },{ имен, акуз } } },
 
+	// Imenicke singtagme
 	{ { ИС, бр, пад, род },
 	{ { прид, бр, пад, род }, { имен, бр, пад, род } } },
 	{ { РЕЧН },
@@ -217,8 +219,9 @@ const std::vector<translator::rule<Serbian>> SERBIAN_BASE::grammar_rules
 	{ { ИС },
 	{ { прид, бр, пад },{ имен, бр, пад } } },
 
-	{ { ГС },
-	{ { глаг, прел }, { имен, акуз } } }
+	// Glagolske singtagme
+	{ { ГС, бр, лиц },
+	{ { глаг, бр, лиц, прел }, { имен, акуз } } }
 };
 
 bool SERBIAN_BASE::initialized = false;
