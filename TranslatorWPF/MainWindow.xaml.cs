@@ -63,7 +63,7 @@ namespace TranslatorWPF
             lblCount.Content = $"{count} palindromes shown";
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void MenuItem_Palindromes(object sender, RoutedEventArgs e)
         {
             string header = (sender as MenuItem).Header as string;
             int depth = int.Parse(header);
@@ -71,7 +71,7 @@ namespace TranslatorWPF
             GeneratePalindromes(depth, false);
         }
 
-        private void MenuItem_Click2(object sender, RoutedEventArgs e)
+        private void MenuItem_PalindromesWithParse(object sender, RoutedEventArgs e)
         {
             string header = (sender as MenuItem).Header as string;
             int depth = int.Parse(header);
@@ -81,20 +81,7 @@ namespace TranslatorWPF
 
         private void GeneratePalindromes(int depth, bool parse)
         {
-            var proc = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "TranslatorCpp.exe",
-                    Arguments = (parse ? $"-palindromep:SR {depth}" : $"-palindrome:SR {depth}"),
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true
-                }
-            };
-
-            proc.StartInfo.StandardOutputEncoding = Encoding.Unicode;
-            proc.Start();
+            var proc = RunProcess(parse ? $"-palindromep:SR {depth}" : $"-palindrome:SR {depth}", true);
             proc.StandardOutput.ReadLine();
             
             pc.Clear();
@@ -114,6 +101,42 @@ namespace TranslatorWPF
         }
 
         ObservableCollection<Palindrome> pc = new ObservableCollection<Palindrome>();
+        private Process RunProcess(string args, bool unicode)
+        {
+            var proc = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "TranslatorCpp.exe",
+                    Arguments = args,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                }
+            };
+
+            if (unicode)
+                proc.StartInfo.StandardOutputEncoding = Encoding.Unicode;
+            proc.Start();
+
+            return proc;
+        }
+
+        private void MenuItem_ListWords(object sender, RoutedEventArgs e)
+        {
+            string language = (sender as MenuItem).Header as string;
+            var proc = RunProcess($"-list:{language}", language == "SR");
+            string text = proc.StandardOutput.ReadToEnd();
+            txtWords.Text = text;
+        }
+
+        private void MenuItem_RandomSentence(object sender, RoutedEventArgs e)
+        {
+            string language = (sender as MenuItem).Header as string;
+            var proc = RunProcess($"-random:{language}", language == "SR");
+            string text = proc.StandardOutput.ReadToEnd();
+            txtWords.Text = text;
+        }
     }
 
     public class Palindrome : INotifyPropertyChanged

@@ -34,7 +34,7 @@ using namespace std;
 template <typename Language, typename string_t = Language::string_t>
 void generate_random_sentences(map<int, string_t>& sents, int seed=0)
 {
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 1000; i++)
 	{
 		string_t str = translator::random_sentence<Language>(seed++);
 		sents[str.length()] = str;

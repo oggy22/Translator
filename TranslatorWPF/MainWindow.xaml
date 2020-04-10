@@ -15,35 +15,52 @@
         <Menu>
             <MenuItem Header="Generate">
                 <MenuItem Header="Palindrome">
-                    <MenuItem Header="7" Click="MenuItem_Click"/>
-                    <MenuItem Header="8" Click="MenuItem_Click"/>
-                    <MenuItem Header="9" Click="MenuItem_Click"/>
-                    <MenuItem Header="10" Click="MenuItem_Click"/>
+                    <MenuItem Header="7" Click="MenuItem_Palindromes"/>
+                    <MenuItem Header="8" Click="MenuItem_Palindromes"/>
+                    <MenuItem Header="9" Click="MenuItem_Palindromes"/>
+                    <MenuItem Header="10" Click="MenuItem_Palindromes"/>
                 </MenuItem>
                 <MenuItem Header="Palindrome and Parse">
-                    <MenuItem Header="5" Click="MenuItem_Click2"/>
-                    <MenuItem Header="6" Click="MenuItem_Click2"/>
-                    <MenuItem Header="7" Click="MenuItem_Click2"/>
-                    <MenuItem Header="8" Click="MenuItem_Click2"/>
-                    <MenuItem Header="9" Click="MenuItem_Click2"/>
-                    <MenuItem Header="10" Click="MenuItem_Click2"/>
+                    <MenuItem Header="5" Click="MenuItem_PalindromesWithParse"/>
+                    <MenuItem Header="6" Click="MenuItem_PalindromesWithParse"/>
+                    <MenuItem Header="7" Click="MenuItem_PalindromesWithParse"/>
+                    <MenuItem Header="8" Click="MenuItem_PalindromesWithParse"/>
+                    <MenuItem Header="9" Click="MenuItem_PalindromesWithParse"/>
+                    <MenuItem Header="10" Click="MenuItem_PalindromesWithParse"/>
                 </MenuItem>
+            </MenuItem>
+            <MenuItem Header="List Words">
+                <MenuItem Header="EN" Click="MenuItem_ListWords"/>
+                <MenuItem Header="SR" Click="MenuItem_ListWords"/>
+            </MenuItem>
+            <MenuItem Header="Random Sentence">
+                <MenuItem Header="EN" Click="MenuItem_RandomSentence"/>
+                <MenuItem Header="SR" Click="MenuItem_RandomSentence"/>
             </MenuItem>
             <MenuItem Header="File"/>
             <MenuItem Header="Edit"/>
             <MenuItem Header="Help"/>
         </Menu>
-        <DataGrid Grid.Row="1" Name="dataPalindromes" AutoGenerateColumns="False" CanUserDeleteRows="True" Grid.ColumnSpan="2" Margin="0,0,0,0.5">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Palindrom" Binding="{Binding Path=Palindrom}" IsReadOnly="True" />
-                <DataGridTextColumn Header="Words" Binding="{Binding Path=Words}" IsReadOnly="True" />
-                <DataGridTextColumn Header="Letters" Binding="{Binding Path=Letters}" IsReadOnly="True" />
-                <DataGridTextColumn Header="Chars" Binding="{Binding Path=Chars}" IsReadOnly="True" />
-                <DataGridTextColumn Header="AvgWord" Binding="{Binding Path=AvgWord}" IsReadOnly="True" />
-                <DataGridTextColumn Header="StdWord" Binding="{Binding Path=StdWord}" IsReadOnly="True" />
-                <DataGridTextColumn Header="Parse" Binding="{Binding Path=Parse}" IsReadOnly="True" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <TabControl Grid.Row="1">
+            <TabItem Header="Palindromes">
+                <DataGrid Name="dataPalindromes" AutoGenerateColumns="False" CanUserDeleteRows="True" Grid.ColumnSpan="2" Margin="0,0,0,0.5">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Palindrom" Binding="{Binding Path=Palindrom}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Words" Binding="{Binding Path=Words}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Letters" Binding="{Binding Path=Letters}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Chars" Binding="{Binding Path=Chars}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="AvgWord" Binding="{Binding Path=AvgWord}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="StdWord" Binding="{Binding Path=StdWord}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Parse" Binding="{Binding Path=Parse}" IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Words">
+                <TextBox Name="txtWords"
+                           ScrollViewer.CanContentScroll="True"
+                           ScrollViewer.VerticalScrollBarVisibility="Visible" />
+            </TabItem>
+        </TabControl>
         <StackPanel Grid.Row="2" Orientation="Horizontal">
             <TextBox Name="txtSearch" Width="200" TextChanged="TextBox_TextChanged"/>
             <Label Name="lblCount"/>
