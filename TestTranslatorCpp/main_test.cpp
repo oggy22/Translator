@@ -16,7 +16,6 @@ namespace TranslatorTest
 			Assert::AreEqual(0, code);
 		}
 
-#ifdef _DEBUG
 		TEST_METHOD(command_help)
 		{
 			Main("-help");
@@ -27,11 +26,13 @@ namespace TranslatorTest
 			Main("-list:EN");
 		}
 
+		BEGIN_TEST_METHOD_ATTRIBUTE(command_translate)
+			TEST_IGNORE()
+		END_TEST_METHOD_ATTRIBUTE()
 		TEST_METHOD(command_translate)
 		{
 			Main("-translate:EN-SR");
 		}
-#endif
 
 		TEST_METHOD(command_random)
 		{
