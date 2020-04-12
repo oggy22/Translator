@@ -152,29 +152,29 @@ const std::vector<translator::word_rule<English>> ENGLISH_BASE::word_rules
 	{ { "*"}, {"*"}, det },
 
 	// Nouns
-	{ { "*" },{ "*" }, noun,{ sing } },
-	{ { "*" },{ "*s" }, noun,{ plur } },
-	{ { "*y" },{ "*ies" }, noun,{ plur } },
-	{ { "*o" },{ "*oes" }, noun,{ plur } },
-	{ { "*s" },{ "*ses" }, noun,{ plur } },
-	{ { "*sis" },{ "*ses" }, noun,{ plur } },	// basis, crisis, diagnosis
-	{ { "*man" },{ "*men" }, noun,{ plur } },	// man, woman, policeman
+	{ { "*" },{ "*" }, noun, { }, { sing } },
+	{ { "*" },{ "*s" }, noun, { }, { plur } },
+	{ { "*y" },{ "*ies" }, noun, { }, { plur } },
+	{ { "*o" },{ "*oes" }, noun, { }, { plur } },
+	{ { "*s" },{ "*ses" }, noun, { }, { plur } },
+	{ { "*sis" },{ "*ses" }, noun, { }, { plur } },	// basis, crisis, diagnosis
+	{ { "*man" },{ "*men" }, noun, { }, { plur } },	// man, woman, policeman
 
 	//// Verbs
-	{ { "*" },{ "*" }, verb,{ pres, sing, per1 } },
-	{ { "*" },{ "*" }, verb,{ pres, sing, per2 } },
-	{ { "*" },{ "*s" }, verb,{ pres, sing, per3 } },
-	{ { "*o" },{ "*oes" }, verb,{ pres, sing, per3 } },	//goes, does
+	{ { "*" },{ "*" }, verb, { }, { pres, sing, per1 } },
+	{ { "*" },{ "*" }, verb, { }, { pres, sing, per2 } },
+	{ { "*" },{ "*s" }, verb, { }, { pres, sing, per3 } },
+	{ { "*o" },{ "*oes" }, verb, { }, { pres, sing, per3 } },	//goes, does
 
-	{ { "*" },{ "*" }, verb,{ plur } },
+	{ { "*" },{ "*" }, verb, { }, { plur } },
 
-	{ { "*" },{ "*ed" }, verb,{ past } },
-	{ { "*e" },{ "*ed" }, verb,{ past } },
-	{ { "*" },{ "*ed" }, verb,{ perf } },
-	{ { "*e" },{ "*ed" }, verb,{ perf } },
+	{ { "*" }, { "*ed" }, verb, { }, { past } },
+	{ { "*e" },{ "*ed" }, verb, { }, { past } },
+	{ { "*" }, { "*ed" }, verb, { }, { perf } },
+	{ { "*e" },{ "*ed" }, verb, { }, { perf } },
 
 	//// Pronouns
-	{ { "*" },{ "*" }, pron, { nom } },
+	{ { "*" },{ "*" }, pron, { }, { nom } },
 };
 
 std::string _number10(int n)

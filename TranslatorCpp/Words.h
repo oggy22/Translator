@@ -2,7 +2,6 @@
 
 #include "pattern.h"
 
-
 namespace translator
 {
 	template <class Language>
@@ -168,6 +167,7 @@ namespace translator
 		pattern<typename Language::letter> source;
 		pattern<typename Language::letter> destination;
 		typename Language::word_type wt;
+		myset<typename Language::attributes> req_attrs;
 		using char_t = typename Language::letter;
 		myset<typename Language::attributes> attrs;
 		nullable<typename Language::attributes> f;

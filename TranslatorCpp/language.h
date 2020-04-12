@@ -18,42 +18,52 @@ namespace translator
 		{
 			using namespace std;
 
+			// Traverse the rules backwards, so the most specific rules are encountered first
 			for (auto p_r = Language::word_rules.crbegin(); p_r != Language::word_rules.crend(); p_r++)
 			{
-				auto& r = *p_r;
+				auto& rule = *p_r;
 				// Word type matches?
-				if (r.wt != w.wordtype)
+				if (rule.wt != w.wordtype)
 					continue;
+
+				if (any_of(
+					rule.req_attrs.begin(),
+					rule.req_attrs.end(),
+					[&](const auto& attr) { return w.attrs.find(attr) == w.attrs.end(); }))
+					continue;
+
+				//Language::attributes a;
+				//if (w.attrs.find(a) == w.attrs.end()) { }
 
 				// Attribute combination exists already?
 				if (any_of(w.words.begin(), w.words.end(), [&](const word_form<Language>& wf)
-				{	return r.attrs == wf.attrs;	}))
+				{	return rule.attrs == wf.attrs;	}))
 					continue;
 
 				string_t stBase = w.word;
-				if (r.is_set())
+				if (rule.is_set())
 				{
 					// The extra attribute denotes either a word form, or if not,
 					// the attribute is required to be present in the dictionary word
-					if (w(r.f.get()))
-						stBase = w[r.f.get()].word;
+					if (w(rule.f.get()))
+						stBase = w[rule.f.get()].word;
 					else
-						if (w.attrs.count(r.f.get()) == 0)
+						if (w.attrs.count(rule.f.get()) == 0)
 							continue;
 				}
 
 				// Rule matches the source?
-				if (!r.source.match(stBase))
+				if (!rule.source.match(stBase))
 					continue;
 
 #ifdef _DEBUG
-				r.used = true;
+				rule.used = true;
 #endif
 
 				// New word form to insert
-				string_t word = r.source.match_and_transform(stBase, r.destination);
+				string_t word = rule.source.match_and_transform(stBase, rule.destination);
 
-				w.words.emplace_back(word_form<Language> { word, r.attrs});
+				w.words.emplace_back(word_form<Language> { word, rule.attrs});
 			}
 			std::for_each(w.words.begin(), w.words.end(), [&](word_form<Language>& dw)
 			{

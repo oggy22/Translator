@@ -133,7 +133,9 @@ namespace TranslatorTest
 			{
 				if (word.wordtype == Serbian::word_type::именица)
 				{
-					Assert::IsTrue(7 * 2 <= word.words.size(), (word.word + L" has less than 14 forms").c_str());
+					std::wstringstream ss;
+					ss << word.word << L" has less than 14 forms: " << word.words.size();
+					Assert::IsTrue(7 * 2 <= word.words.size(), ss.str().c_str());
 					test_word_forms(word,
 					{ attr_t::номинатив, attr_t::генитив, attr_t::датив, attr_t::акузатив, attr_t::вокатив, attr_t::инструментал, attr_t::локатив },
 					{ attr_t::једнина, attr_t::множина });
@@ -220,6 +222,8 @@ namespace TranslatorTest
 			CHECK(L"мушкарци", L"мушкарац", attr_t::множина, attr_t::номинатив);
 			CHECK(L"имена", L"име", attr_t::једнина, attr_t::генитив);
 			CHECK(L"псом", L"пас", attr_t::једнина, attr_t::инструментал);
+			CHECK(L"благом", L"благо", attr_t::једнина, attr_t::инструментал);
+			CHECK(L"блага", L"благо", attr_t::множина, attr_t::номинатив);
 
 			// Accusative male
 			CHECK(L"човека", L"човек", attr_t::једнина, attr_t::акузатив);

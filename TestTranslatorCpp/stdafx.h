@@ -12,6 +12,9 @@
 
 #include <fstream>
 #include <codecvt>
+#include <string>
+#include <iostream>
+#include <sstream>
 #include "../TranslatorCpp/palindrome.h"
 #include "../TranslatorCpp/language.h"
 #include "../TranslatorCpp/random_sentence.h"
