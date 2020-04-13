@@ -208,6 +208,7 @@ namespace TranslatorTest
 			CHECK(L"благом", L"благо", attr_t::једнина, attr_t::инструментал);
 			CHECK(L"блага", L"благо", attr_t::множина, attr_t::номинатив);
 			CHECK(L"времена", L"време", attr_t::једнина, attr_t::генитив);
+			CHECK(L"вуче", L"вук", attr_t::једнина, attr_t::вокатив);
 			CHECK(L"дрвету", L"дрво", attr_t::једнина, attr_t::датив);
 			CHECK(L"жену", L"жена", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"зече", L"зец", attr_t::једнина, attr_t::вокатив);
