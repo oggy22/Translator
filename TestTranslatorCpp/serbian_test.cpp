@@ -213,10 +213,13 @@ namespace TranslatorTest
 			CHECK(L"жену", L"жена", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"зече", L"зец", attr_t::једнина, attr_t::вокатив);
 			CHECK(L"имена", L"име", attr_t::једнина, attr_t::генитив);
+			CHECK(L"јајетом", L"јаје", attr_t::једнина, attr_t::инструментал);
 			CHECK(L"коња", L"коњ", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"људи", L"човек", attr_t::множина, attr_t::номинатив);
 			CHECK(L"љубави", L"љубав", attr_t::множина, attr_t::генитив);
 			CHECK(L"мишеви", L"миш", attr_t::множина, attr_t::номинатив);
+			//CHECK(L"мисли", L"мисао", attr_t::једнина, attr_t::генитив);
+			//CHECK(L"мисли", L"мисао", attr_t::множина, attr_t::номинатив);
 			CHECK(L"мушкарци", L"мушкарац", attr_t::множина, attr_t::номинатив);
 			CHECK(L"очи", L"око", attr_t::множина, attr_t::номинатив);
 			CHECK(L"орах", L"орах", attr_t::једнина, attr_t::акузатив);
