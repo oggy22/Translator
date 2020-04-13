@@ -38,7 +38,7 @@ struct Serbian : public SERBIAN_BASE
 		мушки, женски, средњи,
 		позитив, компаратив, суперлатив,
 		инфинитив,
-		живо,
+		живо, мисаона_именица,
 		дужи_облик,
 		прелазни,
 		аугментатив, деминутив,
@@ -74,6 +74,7 @@ struct Serbian : public SERBIAN_BASE
 #define суп	attrs::суперлатив
 
 #define жив attrs::живо
+#define мис attrs::мисаона_именица
 #define инф attrs::инфинитив
 #define д_о attrs::дужи_облик
 #define прел attrs::прелазни

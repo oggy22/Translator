@@ -205,25 +205,32 @@ namespace TranslatorTest
 
 		TEST_METHOD(check_some_noun_forms)
 		{
-			CHECK(L"синови", L"син", attr_t::множина, attr_t::номинатив);
-			CHECK(L"унуци", L"унук", attr_t::множина, attr_t::номинатив);
+			CHECK(L"благом", L"благо", attr_t::једнина, attr_t::инструментал);
+			CHECK(L"блага", L"благо", attr_t::множина, attr_t::номинатив);
+			CHECK(L"времена", L"време", attr_t::једнина, attr_t::генитив);
+			CHECK(L"дрвету", L"дрво", attr_t::једнина, attr_t::датив);
 			CHECK(L"жену", L"жена", attr_t::једнина, attr_t::акузатив);
+			CHECK(L"зече", L"зец", attr_t::једнина, attr_t::вокатив);
+			CHECK(L"имена", L"име", attr_t::једнина, attr_t::генитив);
 			CHECK(L"коња", L"коњ", attr_t::једнина, attr_t::акузатив);
+			CHECK(L"људи", L"човек", attr_t::множина, attr_t::номинатив);
+			CHECK(L"љубави", L"љубав", attr_t::множина, attr_t::генитив);
 			CHECK(L"мишеви", L"миш", attr_t::множина, attr_t::номинатив);
+			CHECK(L"мушкарци", L"мушкарац", attr_t::множина, attr_t::номинатив);
 			CHECK(L"очи", L"око", attr_t::множина, attr_t::номинатив);
 			CHECK(L"орах", L"орах", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"ораси", L"орах", attr_t::множина, attr_t::номинатив);
 			CHECK(L"орахе", L"орах", attr_t::множина, attr_t::акузатив);
-			CHECK(L"човече", L"човек", attr_t::једнина, attr_t::вокатив);
-			CHECK(L"људи", L"човек", attr_t::множина, attr_t::номинатив);
-			CHECK(L"сунца", L"сунце", attr_t::једнина, attr_t::генитив);
-			CHECK(L"времена", L"време", attr_t::једнина, attr_t::генитив);
-			CHECK(L"племену", L"племе", attr_t::једнина, attr_t::датив);
-			CHECK(L"мушкарци", L"мушкарац", attr_t::множина, attr_t::номинатив);
-			CHECK(L"имена", L"име", attr_t::једнина, attr_t::генитив);
+			CHECK(L"орлу", L"орао", attr_t::једнина, attr_t::датив);
 			CHECK(L"псом", L"пас", attr_t::једнина, attr_t::инструментал);
-			CHECK(L"благом", L"благо", attr_t::једнина, attr_t::инструментал);
-			CHECK(L"блага", L"благо", attr_t::множина, attr_t::номинатив);
+			CHECK(L"петлу", L"петао", attr_t::једнина, attr_t::датив);
+			CHECK(L"пиву", L"пиво", attr_t::једнина, attr_t::датив);
+			CHECK(L"пилету", L"пиле", attr_t::једнина, attr_t::датив);
+			CHECK(L"племену", L"племе", attr_t::једнина, attr_t::датив);
+			CHECK(L"синови", L"син", attr_t::множина, attr_t::номинатив);
+			CHECK(L"сунца", L"сунце", attr_t::једнина, attr_t::генитив);
+			CHECK(L"човече", L"човек", attr_t::једнина, attr_t::вокатив);
+			CHECK(L"унуци", L"унук", attr_t::множина, attr_t::номинатив);
 
 			// Accusative male
 			CHECK(L"човека", L"човек", attr_t::једнина, attr_t::акузатив);
@@ -349,6 +356,7 @@ namespace TranslatorTest
 			test(L"ана воли милован", false);
 			test(L"ања воли миловања");
 			test(L"ања воли миловање");
+			//test(L"аца питам плема");
 			test(L"ја идем у школу");
 			test(L"ја идем у школа", false);	// wrong case
 			test(L"ја иде у школу", false);		// wrong verb declination
@@ -364,7 +372,7 @@ namespace TranslatorTest
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<int>(742, Serbian::dictWords().size());
+			Assert::AreEqual<int>(760, Serbian::dictWords().size());
 		}
 
 		// This test helps keeping awereness of the number of word forms.
@@ -380,7 +388,7 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(17035, count);
+			Assert::AreEqual<int>(17525, count);
 		}
 
 		TEST_METHOD(serbian_numbers_to_1000)
