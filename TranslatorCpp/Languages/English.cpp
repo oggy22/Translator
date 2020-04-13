@@ -119,12 +119,21 @@ std::vector<translator::dictionary_word<English>> ENGLISH_BASE::_dictWords
 	{ "body", noun },
 	{ "bus", noun },
 	{ "crisis", noun },
+	{ "day", noun },
+	{ "hand", noun },
 	{ "house", noun },
+	{ "life", noun },
 	{ "man", noun },
+	{ "person", noun },
 	{ "policeman", noun },
 	{ "potato", noun },
+	{ "thing", noun },
+	{ "time", noun },
 	{ "wife", noun },
+	{ "way", noun },
 	{ "woman", noun },
+	{ "world", noun },
+	{ "year", noun },
 #pragma endregion
 
 #pragma region Adjectives
