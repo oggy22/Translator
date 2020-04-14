@@ -7,6 +7,7 @@
 #include <cstdio>
 #include <vector>
 #include <string>
+#include <execution>
 #include "Languages\English.h"
 #include "Languages\Serbian.h"
 #include "random_sentence.h"
@@ -204,6 +205,13 @@ int main(int argc, char *argv[])
 				<< "palindrome, chars, letters, words, avg. word, stddev. word"
 				<< (palindrome_parse ? ", parsed" : "") <<  endl;
 
+			if (palindrome_parse)
+				std::for_each(std::execution::par, std::begin(palindromes), std::end(palindromes),
+					[&](palindrome<wchar_t>& pal)
+					{
+						pal.parsed = translator::parse<Serbian>(pal.word());
+					});
+
 			for (auto palin : palindromes)
 			{
 				if (palin.word().length() == 0)
@@ -216,10 +224,7 @@ int main(int argc, char *argv[])
 				wcout << ',' << palin.average_word_length();
 				wcout << ',' << palin.stddev_word_legth();
 				if (palindrome_parse)
-				{
-					bool grammatical = translator::parse<Serbian>(palin.word());
-					wcout << ',' << (grammatical ? 1 : 0);
-				}
+					wcout << ',' << (palin.parsed ? 1 : 0);
 				wcout << endl;
 			}
 			wcout << results.size() << " results" << endl;

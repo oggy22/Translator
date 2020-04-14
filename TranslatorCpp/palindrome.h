@@ -172,6 +172,11 @@ std::set<string_t> find_palindromes(std::vector<string_t>& words, int max_length
 	std::set<string_t> results;
 	trie_walker<char_t> tw(&root), twi(&rooti);
 	recurse_tries(tw, twi, results, max_length);
+
+	// Remove empty string
+	string_t empty;
+	results.erase(empty);
+
 	return results;
 }
 
@@ -279,6 +284,9 @@ class palindrome
 	int spaces = 0;
 
 public:
+
+	bool parsed = false;
+
 	palindrome(const string_t& s) : pal(s)
 	{
 		if (s.size() == 0)

@@ -1,8 +1,10 @@
 ﻿
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -63,37 +65,57 @@ namespace TranslatorWPF
             lblCount.Content = $"{count} palindromes shown";
         }
 
-        private void MenuItem_Palindromes(object sender, RoutedEventArgs e)
+        private async void MenuItem_Palindromes(object sender, RoutedEventArgs e)
         {
             string header = (sender as MenuItem).Header as string;
             int depth = int.Parse(header);
-            this.Title = $"Generating palindromes (depth={depth})";
-            GeneratePalindromes(depth, false);
+            Application.Current.Dispatcher.Invoke(new Action(() =>
+            {
+                this.Title = $"Generating palindromes (depth={depth})";
+            }));
+            await GeneratePalindromes(depth, false);
         }
 
-        private void MenuItem_PalindromesWithParse(object sender, RoutedEventArgs e)
+        private async void MenuItem_PalindromesWithParse(object sender, RoutedEventArgs e)
         {
             string header = (sender as MenuItem).Header as string;
             int depth = int.Parse(header);
-            this.Title = $"Generating palindromes with parse (depth={depth})";
-            GeneratePalindromes(depth, true);
+            Application.Current.Dispatcher.Invoke(new Action(() =>
+            {
+                this.Title = $"Generating palindromes with parse (depth={depth})";
+            }));
+            await GeneratePalindromes(depth, true);
         }
 
-        private void GeneratePalindromes(int depth, bool parse)
+        private async Task GeneratePalindromes(int depth, bool parse)
         {
             var proc = RunProcess(parse ? $"-palindromep:SR {depth}" : $"-palindrome:SR {depth}", true);
-            proc.StandardOutput.ReadLine();
+            await proc.StandardOutput.ReadLineAsync();
+
+            this.dataPalindromes.ItemsSource = null;
             
             pc.Clear();
+            Application.Current.Dispatcher.Invoke(new Action(() =>
+            {
+                this.Title = $"Parsing palindromes (depth={depth})";
+            }));
+            int count = 0;
             while (!proc.StandardOutput.EndOfStream)
             {
                 string line = proc.StandardOutput.ReadLine();
-                
+
                 if (char.IsDigit(line[0]))
                     continue;
 
                 Palindrome pal = new Palindrome(line, parse);
                 pc.Add(pal);
+
+                count++;
+                if (count % 1000 == 0)
+                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                    {
+                        this.Title = $"Received {count} palindromes (depth={depth})";
+                    }));
             }
             dataPalindromes.ItemsSource = pc;
             this.Title = $"{pc.Count} palindromes loaded (depth={depth})";
