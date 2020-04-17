@@ -13,10 +13,34 @@ namespace TranslatorTest
 		{
 			std::vector<std::wstring> words = { L"ана", L"воли", L"милована" };
 			auto results = find_palindromes<wchar_t>(words, 8);
-			
+
 			Assert::AreEqual<const std::wstring&>(
 				L"ана воли милована",
 				*std::lower_bound(results.begin(), results.end(), L"ана воли милована"));
+		}
+
+		BEGIN_TEST_METHOD_ATTRIBUTE(misa_vidi_vasim)
+			TEST_IGNORE()
+		END_TEST_METHOD_ATTRIBUTE()
+		TEST_METHOD(misa_vidi_vasim)
+		{
+			std::vector<std::wstring> words;
+			for (const auto& word : Serbian::dictWords())
+			{
+				for (const auto& form : word.words)
+					words.push_back(form.word);
+			}
+
+			std::sort(words.begin(), words.end());
+			words.erase(unique(words.begin(), words.end()), words.end());
+			auto results = find_palindromes<wchar_t>(words, 8);
+
+			// If vector of was initialized this way, the test would pass:
+			//std::vector<std::wstring> words = { L"миша", L"види", L"вашим" };
+			//auto results = find_palindromes<wchar_t>(words, 8);
+
+			// Bug:
+			Assert::IsTrue(results.count(L"миша види вашим"));
 		}
 
 		TEST_METHOD(trie_test)
@@ -45,29 +69,26 @@ namespace TranslatorTest
 			words.erase(unique(words.begin(), words.end()), words.end());
 			auto results = find_palindromes<wchar_t>(words,
 #if NDEBUG
-				8
+				7
 #else
-				6
+				4
 #endif
 				);
 
 			Assert::IsTrue(results.count(L"ана"));
 			Assert::IsTrue(results.count(L"ане жена"));
-			Assert::IsTrue(results.count(L"мењате шетањем"));
-			Assert::IsTrue(results.count(L"могу деде дугом"));
 			Assert::IsTrue(results.count(L"могу дугом"));
 			
 			// Too long for Debug
 #if NDEBUG
 			Assert::IsTrue(results.count(L"ана воли милована"));
 			Assert::IsTrue(results.count(L"мамин и татин имам"));
+			Assert::IsTrue(results.count(L"мењате шетањем"));
 			//Assert::IsTrue(results.count(L"мењати пса васпитањем"));
 			Assert::IsTrue(results.count(L"миловање мења волим"));
 			Assert::IsTrue(results.count(L"миловања сања волим"));
+			Assert::IsTrue(results.count(L"могу деде дугом"));
 			Assert::IsTrue(results.count(L"оне жене мене жено"));
-
-			// Bug:
-			//Assert::IsTrue(results.count(L"миша види вашим"));
 #endif
 		}
 
