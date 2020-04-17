@@ -90,6 +90,7 @@ namespace TranslatorWPF
         private async Task GeneratePalindromes(int depth, bool parse)
         {
             var proc = RunProcess(parse ? $"-palindromep:SR {depth}" : $"-palindrome:SR {depth}", true);
+            DateTime start = DateTime.Now;
             await proc.StandardOutput.ReadLineAsync();
 
             this.dataPalindromes.ItemsSource = null;
@@ -118,7 +119,8 @@ namespace TranslatorWPF
                     }));
             }
             dataPalindromes.ItemsSource = pc;
-            this.Title = $"{pc.Count} palindromes loaded (depth={depth})";
+            TimeSpan time = DateTime.Now - start;
+            this.Title = $"{pc.Count} palindromes loaded (depth={depth}) {(int)time.TotalSeconds}sec";
             proc.WaitForExit();
         }
 
