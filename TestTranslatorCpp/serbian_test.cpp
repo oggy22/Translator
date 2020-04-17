@@ -214,6 +214,7 @@ namespace TranslatorTest
 			CHECK(L"зече", L"зец", attr_t::једнина, attr_t::вокатив);
 			CHECK(L"имена", L"име", attr_t::једнина, attr_t::генитив);
 			CHECK(L"јајетом", L"јаје", attr_t::једнина, attr_t::инструментал);
+			CHECK(L"јабуци", L"јабука", attr_t::једнина, attr_t::локатив);
 			CHECK(L"коња", L"коњ", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"лажи", L"лаж", attr_t::множина, attr_t::номинатив);
 			CHECK(L"људи", L"човек", attr_t::множина, attr_t::номинатив);
@@ -234,6 +235,7 @@ namespace TranslatorTest
 			CHECK(L"пилету", L"пиле", attr_t::једнина, attr_t::датив);
 			CHECK(L"племену", L"племе", attr_t::једнина, attr_t::датив);
 			CHECK(L"синови", L"син", attr_t::множина, attr_t::номинатив);
+			CHECK(L"снази", L"снага", attr_t::једнина, attr_t::датив);
 			CHECK(L"сунца", L"сунце", attr_t::једнина, attr_t::генитив);
 			CHECK(L"човече", L"човек", attr_t::једнина, attr_t::вокатив);
 			CHECK(L"унуци", L"унук", attr_t::множина, attr_t::номинатив);
@@ -355,6 +357,8 @@ namespace TranslatorTest
 			// Именичке синтагме
 			test(L"лепа жена");
 			test(L"леп кућа", false);
+			test(L"огњен и максим");
+			test(L"огњен и максима", false);
 
 			//// Прилошке одредбе
 			test(L"у школу");
@@ -378,12 +382,15 @@ namespace TranslatorTest
 			test(L"гледати кућу");
 			test(L"ићи школу", false);
 			test(L"играти кућу", false);
+
+			// Глаголске синтагме
+			test(L"гледам лепу жену");
 		}
 
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<int>(803, Serbian::dictWords().size());
+			Assert::AreEqual<int>(807, Serbian::dictWords().size());
 		}
 
 		// This test helps keeping awereness of the number of word forms.
@@ -399,7 +406,7 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(18593, count);
+			Assert::AreEqual<int>(18683, count);
 		}
 
 		TEST_METHOD(serbian_numbers_to_1000)
