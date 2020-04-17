@@ -227,6 +227,7 @@ namespace TranslatorTest
 			CHECK(L"ораси", L"орах", attr_t::множина, attr_t::номинатив);
 			CHECK(L"орахе", L"орах", attr_t::множина, attr_t::акузатив);
 			CHECK(L"орлу", L"орао", attr_t::једнина, attr_t::датив);
+			CHECK(L"орловима", L"орао", attr_t::множина, attr_t::локатив);
 			CHECK(L"псом", L"пас", attr_t::једнина, attr_t::инструментал);
 			CHECK(L"петлу", L"петао", attr_t::једнина, attr_t::датив);
 			CHECK(L"пиву", L"пиво", attr_t::једнина, attr_t::датив);
