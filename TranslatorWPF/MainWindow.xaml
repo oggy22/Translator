@@ -42,7 +42,7 @@
             <MenuItem Header="Help"/>
         </Menu>
         <TabControl Grid.Row="1">
-            <TabItem Header="Palindromes">
+            <TabItem Name="tabPalindromes" Header="Palindromes">
                 <DataGrid Name="dataPalindromes" AutoGenerateColumns="False" CanUserDeleteRows="True" Grid.ColumnSpan="2" Margin="0,0,0,0.5">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Palindrom" Binding="{Binding Path=Palindrom}" IsReadOnly="True" />
@@ -55,8 +55,10 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
-            <TabItem Header="Words">
+            <TabItem Name="tabWords" Header="Words">
                 <TextBox Name="txtWords"
+                           SelectionBrush="Blue"
+                           IsInactiveSelectionHighlightEnabled="True"
                            ScrollViewer.CanContentScroll="True"
                            ScrollViewer.VerticalScrollBarVisibility="Visible" />
             </TabItem>

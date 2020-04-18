@@ -57,12 +57,35 @@ namespace TranslatorWPF
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            CollectionViewSource.GetDefaultView(pc).Filter = obj =>
+            string key = txtSearch.Text;
+
+            if (tabPalindromes.IsSelected)
             {
-                return (obj as Palindrome).Palindrom.Contains(txtSearch.Text);
-            };
-            int count = dataPalindromes.Items.Count;
-            lblCount.Content = $"{count} palindromes shown";
+                CollectionViewSource.GetDefaultView(pc).Filter = obj =>
+                {
+                    return (obj as Palindrome).Palindrom.Contains(key);
+                };
+                int count = dataPalindromes.Items.Count;
+                lblCount.Content = $"{count} palindromes shown";
+            }
+            else if (tabWords.IsSelected)
+            {
+                if (txtSearch.Text == "")
+                {
+                    txtWords.Select(txtWords.SelectionStart, 0);
+                }
+                else
+                {
+                    int pos = txtWords.Text.IndexOf(key);
+                    if (pos >= 0)
+                    {
+                        txtWords.Focus();
+                        txtWords.Select(pos, key.Length);
+                        txtWords.ScrollToLine(txtWords.GetLineIndexFromCharacterIndex(pos));
+                        txtSearch.Focus();
+                    }
+                }
+            }
         }
 
         private async void MenuItem_Palindromes(object sender, RoutedEventArgs e)
