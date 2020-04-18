@@ -376,21 +376,24 @@ namespace TranslatorTest
 			test(L"ја идем у школа", false);	// wrong case
 			test(L"ја иде у школу", false);		// wrong verb declination
 			//test(L"малу школу ради", false);	// non-nominative predicate
+			//test(L"коња и хотел ради", false);
 
 			// Прелазни глаголи
 			test(L"видети школу");
 			test(L"гледати кућу");
 			test(L"ићи школу", false);
-			test(L"играти кућу", false);
+			test(L"играти игру");
 
 			// Глаголске синтагме
 			test(L"гледам лепу жену");
+			test(L"хоћу да видим кућу");
+			test(L"могу да гледам ружну жену");
 		}
 
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<int>(807, Serbian::dictWords().size());
+			Assert::AreEqual<int>(815, Serbian::dictWords().size());
 		}
 
 		// This test helps keeping awereness of the number of word forms.
@@ -406,7 +409,7 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(18683, count);
+			Assert::AreEqual<int>(18863, count);
 		}
 
 		TEST_METHOD(serbian_numbers_to_1000)

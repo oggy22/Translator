@@ -38,9 +38,9 @@ struct Serbian : public SERBIAN_BASE
 		мушки, женски, средњи,
 		позитив, компаратив, суперлатив,
 		инфинитив,
+		прелазни, непрелазни, повратни, модални, модални2,
 		живо, мисаона_именица,
 		дужи_облик,
-		прелазни,
 		аугментатив, деминутив,
 
 		//not real attributes as they are used for basis
@@ -78,6 +78,10 @@ struct Serbian : public SERBIAN_BASE
 #define инф attrs::инфинитив
 #define д_о attrs::дужи_облик
 #define прел attrs::прелазни
+#define непрел attrs::непрелазни
+#define повр attrs::повратни
+#define мод attrs::модални
+#define мод2 attrs::модални2
 
 #define ауг attrs::аугментатив
 #define дем attrs::деминутив
