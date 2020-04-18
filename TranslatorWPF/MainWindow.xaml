@@ -57,6 +57,7 @@
             </TabItem>
             <TabItem Name="tabWords" Header="Words">
                 <TextBox Name="txtWords"
+                           AcceptsReturn="True"
                            SelectionBrush="Blue"
                            IsInactiveSelectionHighlightEnabled="True"
                            ScrollViewer.CanContentScroll="True"
