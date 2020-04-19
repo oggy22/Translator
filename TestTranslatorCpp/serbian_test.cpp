@@ -488,7 +488,7 @@ namespace TranslatorTest
 
 		TEST_METHOD(random_test)
 		{
-			for (int i = 0; i < 100; i++)
+			for (int i = 0; i < DebugRelease(50, 100); i++)
 			{
 				std::wstring str = translator::random_sentence<Serbian>(i);
 				Logger::WriteMessage(str.c_str());

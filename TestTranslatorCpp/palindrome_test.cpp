@@ -67,13 +67,7 @@ namespace TranslatorTest
 
 			std::sort(words.begin(), words.end());
 			words.erase(unique(words.begin(), words.end()), words.end());
-			auto results = find_palindromes<wchar_t>(words,
-#if NDEBUG
-				7
-#else
-				4
-#endif
-				);
+			auto results = find_palindromes<wchar_t>(words, DebugRelease(4, 7));
 
 			Assert::IsTrue(results.count(L"ана"));
 			Assert::IsTrue(results.count(L"ане жена"));

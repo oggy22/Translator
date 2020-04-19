@@ -19,3 +19,9 @@
 #include "../TranslatorCpp/language.h"
 #include "../TranslatorCpp/random_sentence.h"
 #include "common.h"
+
+#ifdef _DEBUG
+#define DebugRelease(x,y) x
+#else
+#define DebugRelease(x,y) y
+#endif
