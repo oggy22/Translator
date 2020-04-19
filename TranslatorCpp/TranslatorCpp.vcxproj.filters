@@ -43,6 +43,9 @@
     <ClInclude Include="Languages\Serbian_word_to_word_rules.h">
       <Filter>Languages</Filter>
     </ClInclude>
+    <ClInclude Include="Languages\Serbian_grammar.h">
+      <Filter>Languages</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Languages">

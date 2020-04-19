@@ -186,6 +186,7 @@
     <ClInclude Include="language.h" />
     <ClInclude Include="Languages\English.h" />
     <ClInclude Include="Languages\Serbian.h" />
+    <ClInclude Include="Languages\Serbian_grammar.h" />
     <ClInclude Include="Languages\Serbian_word_rules.h" />
     <ClInclude Include="Languages\Serbian_words.h" />
     <ClInclude Include="Languages\Serbian_word_rules_adjectives.h" />
