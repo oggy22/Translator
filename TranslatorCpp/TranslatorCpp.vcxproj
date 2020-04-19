@@ -189,6 +189,7 @@
     <ClInclude Include="Languages\Serbian_word_rules.h" />
     <ClInclude Include="Languages\Serbian_words.h" />
     <ClInclude Include="Languages\Serbian_word_rules_adjectives.h" />
+    <ClInclude Include="Languages\Serbian_word_to_word_rules.h" />
     <ClInclude Include="palindrome.h" />
     <ClInclude Include="parsing_triangle.h" />
     <ClInclude Include="pattern.h" />

@@ -258,8 +258,16 @@ namespace translator
 								p->wt_destination == rule.wt_destination;
 						});
 
+						// Remove if found
 						if (p_rule != applicable_rules.end())
 							applicable_rules.erase(p_rule);
+
+						// Word contains required attributes?
+						if (!std::includes(
+							w.attrs.begin(), w.attrs.end(),
+							rule.req_attrs.cbegin(), rule.req_attrs.cend()
+							))
+							continue;
 
 						applicable_rules.insert(&rule);
 					}
@@ -274,16 +282,11 @@ namespace translator
 					if (word.empty())
 						continue;
 
-					// Union of rule->attrs and rule->attrs_added
-					myset<typename Lang::attributes> new_attrs(rule->attrs);
-					for (auto& a : rule->attrs_added)
-						new_attrs.insert(a);
-
 					derived_words.emplace_back(dictionary_word<Lang>
 					{
 						word,
 							rule->wt_destination,
-							new_attrs
+							rule->attrs_added
 					});
 				}
 			}

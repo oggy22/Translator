@@ -40,6 +40,9 @@
     <ClInclude Include="Rules.h" />
     <ClInclude Include="random_sentence.h" />
     <ClInclude Include="palindrome.h" />
+    <ClInclude Include="Languages\Serbian_word_to_word_rules.h">
+      <Filter>Languages</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Languages">

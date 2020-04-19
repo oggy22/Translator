@@ -37,7 +37,7 @@ namespace TranslatorTest
 	public:
 
 #ifdef _DEBUG
-		TEST_METHOD(every_rule_used)
+		TEST_METHOD(every_word_form_rule_used)
 		{
 			for (auto& rule : Serbian::word_rules)
 			{
@@ -46,6 +46,17 @@ namespace TranslatorTest
 					std::wstringstream wss;
 					wss << rule << L" not used";
 					Assert::Fail(wss.str().c_str());
+				}
+			}
+		}
+
+		TEST_METHOD(every_word_to_word_rule_used)
+		{
+			for (auto& rule : Serbian::word_to_word_rules)
+			{
+				if (!rule.used)
+				{
+					Assert::Fail();
 				}
 			}
 		}
@@ -97,7 +108,28 @@ namespace TranslatorTest
 					Assert::IsTrue(
 						word.attrs.count(Serbian::attributes::мушки) ||
 						word.attrs.count(Serbian::attributes::женски) ||
-						word.attrs.count(Serbian::attributes::средњи));
+						word.attrs.count(Serbian::attributes::средњи),
+						word.word.c_str()
+						);
+				}
+			}
+		}
+
+		TEST_METHOD(other_words_dont_have_genders)
+		{
+			for (const auto& word : Serbian::dictWords())
+			{
+				if (word.wordtype == Serbian::word_type::глагол ||
+					word.wordtype == Serbian::word_type::остало ||
+					word.wordtype == Serbian::word_type::придев ||
+					word.wordtype == Serbian::word_type::прилог
+					)
+				{
+					Assert::IsTrue(
+						word.attrs.count(Serbian::attributes::мушки) == 0 &&
+						word.attrs.count(Serbian::attributes::женски) == 0 &&
+						word.attrs.count(Serbian::attributes::средњи) == 0,
+						word.word.c_str());
 				}
 			}
 		}
@@ -393,7 +425,7 @@ namespace TranslatorTest
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<int>(815, Serbian::dictWords().size());
+			Assert::AreEqual<int>(794, Serbian::dictWords().size());
 		}
 
 		// This test helps keeping awereness of the number of word forms.
@@ -409,7 +441,7 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(18863, count);
+			Assert::AreEqual<int>(18053, count);
 		}
 
 		TEST_METHOD(serbian_numbers_to_1000)

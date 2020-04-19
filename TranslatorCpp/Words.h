@@ -172,7 +172,7 @@ namespace translator
 		myset<typename Language::attributes> attrs;
 		nullable<typename Language::attributes> f;
 #ifdef _DEBUG
-		mutable bool used;
+		mutable bool used = false;
 #endif
 		bool is_set() const
 		{
@@ -187,11 +187,11 @@ namespace translator
 		pattern<typename Language::letter> destination;
 		typename Language::word_type wt_source;
 		typename Language::word_type wt_destination;
-		myset<typename Language::attributes> attrs;
+		myset<typename Language::attributes> req_attrs;
 		myset<typename Language::attributes> attrs_added;	//e.g. deminutive
 
 #ifdef _DEBUG
-		mutable bool used;
+		mutable bool used = false;
 #endif
 	};
 }
