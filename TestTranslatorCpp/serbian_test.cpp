@@ -242,6 +242,7 @@ namespace TranslatorTest
 			CHECK(L"времена", L"време", attr_t::једнина, attr_t::генитив);
 			CHECK(L"вуче", L"вук", attr_t::једнина, attr_t::вокатив);
 			CHECK(L"дрвету", L"дрво", attr_t::једнина, attr_t::датив);
+			CHECK(L"ђаци", L"ђак", attr_t::множина, attr_t::номинатив);
 			CHECK(L"жену", L"жена", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"зече", L"зец", attr_t::једнина, attr_t::вокатив);
 			CHECK(L"имена", L"име", attr_t::једнина, attr_t::генитив);
@@ -427,7 +428,7 @@ namespace TranslatorTest
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<int>(919, Serbian::dictWords().size());
+			Assert::AreEqual<int>(977, Serbian::dictWords().size());
 		}
 
 		// This test helps keeping awereness of the number of word forms.
@@ -443,7 +444,7 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(21041, count);
+			Assert::AreEqual<int>(22465, count);
 		}
 
 		TEST_METHOD(serbian_numbers_to_1000)
