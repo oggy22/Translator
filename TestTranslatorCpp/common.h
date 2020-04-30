@@ -27,3 +27,34 @@ void check(const typename Language::string_t& stExpected, const typename Languag
 {
 	Assert::AreEqual<const typename Language::string_t&>(stExpected, get_dictionary_word<Language>(stDicWord, attributes...));
 }
+
+template <typename char_t, typename string_t = std::basic_string<char_t>>
+static bool is_palindrome(const string_t& str)
+{
+	for (int i = 0, j = str.size() - 1; i < j; i++, j--)
+	{
+		if (str[i] == char_t(' ')) i++;
+		if (str[j] == char_t(' ')) j--;
+
+		if (str[i] != str[j])
+			return false;
+	}
+
+	return true;
+}
+
+template <typename char_t, typename string_t = std::basic_string<char_t>>
+static void each_word_exists(const string_t& result, const std::vector<string_t>& words)
+{
+	std::basic_stringstream<char_t> stream(result);
+	while (!stream.eof())
+	{
+		string_t word;
+		stream >> word;
+		std::reverse(word.begin(), word.end());
+
+		auto it = std::lower_bound(words.begin(), words.end(), word);
+		if (it == words.end())
+			Assert::Fail(word.c_str());
+	}
+}

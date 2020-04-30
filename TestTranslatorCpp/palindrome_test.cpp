@@ -67,22 +67,30 @@ namespace TranslatorTest
 
 			std::sort(words.begin(), words.end());
 			words.erase(unique(words.begin(), words.end()), words.end());
-			auto results = find_palindromes<wchar_t>(words, DebugRelease(4, 7));
+			auto results = find_palindromes<wchar_t>(words, DebugRelease(2, 6));
+
+			// Each result is a palindrome and consists of given words
+			for (const std::wstring& result : results)
+			{
+				Assert::IsTrue(is_palindrome<wchar_t>(result));
+
+				each_word_exists<wchar_t>(result, words);
+			}
 
 			//Assert::IsTrue(results.count(L"ана"));
 			Assert::IsTrue(results.count(L"ане жена"));
-			Assert::IsTrue(results.count(L"могу дугом"));
 			
 			// Too long for Debug
 #if NDEBUG
-			Assert::IsTrue(results.count(L"ана воли милована"));
-			Assert::IsTrue(results.count(L"мамин и татин имам"));
+			Assert::IsTrue(results.count(L"могу дугом"));
+			//Assert::IsTrue(results.count(L"ана воли милована"));
+			//Assert::IsTrue(results.count(L"мамин и татин имам"));
 			Assert::IsTrue(results.count(L"мењате шетањем"));
 			//Assert::IsTrue(results.count(L"мењати пса васпитањем"));
-			Assert::IsTrue(results.count(L"миловање мења волим"));
-			Assert::IsTrue(results.count(L"миловања сања волим"));
+			//Assert::IsTrue(results.count(L"миловање мења волим"));
+			//Assert::IsTrue(results.count(L"миловања сања волим"));
 			Assert::IsTrue(results.count(L"могу деде дугом"));
-			Assert::IsTrue(results.count(L"оне жене мене жено"));
+			//Assert::IsTrue(results.count(L"оне жене мене жено"));
 #endif
 		}
 
