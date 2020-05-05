@@ -9,38 +9,20 @@ namespace TranslatorTest
 	{
 	public:
 
+		TEST_METHOD(a_na_ana)
+		{
+			std::vector<std::wstring> words = { L"а", L"ана", L"на" };
+			auto results = find_palindromes<wchar_t>(words, 2);
+
+			Assert::IsTrue(results.count(L"ана"));
+		}
+
 		TEST_METHOD(ana_voli_milovana)
 		{
 			std::vector<std::wstring> words = { L"ана", L"воли", L"милована" };
 			auto results = find_palindromes<wchar_t>(words, 8);
 
-			Assert::AreEqual<const std::wstring&>(
-				L"ана воли милована",
-				*std::lower_bound(results.begin(), results.end(), L"ана воли милована"));
-		}
-
-		BEGIN_TEST_METHOD_ATTRIBUTE(misa_vidi_vasim)
-			TEST_IGNORE()
-		END_TEST_METHOD_ATTRIBUTE()
-		TEST_METHOD(misa_vidi_vasim)
-		{
-			std::vector<std::wstring> words;
-			for (const auto& word : Serbian::dictWords())
-			{
-				for (const auto& form : word.words)
-					words.push_back(form.word);
-			}
-
-			std::sort(words.begin(), words.end());
-			words.erase(unique(words.begin(), words.end()), words.end());
-			auto results = find_palindromes<wchar_t>(words, 8);
-
-			// If vector of was initialized this way, the test would pass:
-			//std::vector<std::wstring> words = { L"миша", L"види", L"вашим" };
-			//auto results = find_palindromes<wchar_t>(words, 8);
-
-			// Bug:
-			Assert::IsTrue(results.count(L"миша види вашим"));
+			Assert::IsTrue(results.count(L"ана воли милована"));
 		}
 
 		TEST_METHOD(trie_test)
@@ -77,7 +59,7 @@ namespace TranslatorTest
 				each_word_exists<wchar_t>(result, words);
 			}
 
-			//Assert::IsTrue(results.count(L"ана"));
+			Assert::IsTrue(results.count(L"ана"));
 			Assert::IsTrue(results.count(L"ане жена"));
 			
 			// Too long for Debug
@@ -89,6 +71,7 @@ namespace TranslatorTest
 			//Assert::IsTrue(results.count(L"мењати пса васпитањем"));
 			//Assert::IsTrue(results.count(L"миловање мења волим"));
 			//Assert::IsTrue(results.count(L"миловања сања волим"));
+			Assert::IsTrue(results.count(L"миша види вашим"));
 			Assert::IsTrue(results.count(L"могу деде дугом"));
 			//Assert::IsTrue(results.count(L"оне жене мене жено"));
 #endif

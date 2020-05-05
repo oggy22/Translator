@@ -13,6 +13,7 @@ struct trie_walker;
 template <typename char_t>
 class trie_node
 {
+	friend trie_walker;
 	std::map<char_t, trie_node*> children;
 	bool wordend;
 	
@@ -84,7 +85,7 @@ public:
 	}
 
 	static std::experimental::generator<std::tuple<char_t, trie_node*, trie_node*>>
-		double_recurse(
+		mutual_chars(
 			std::map<char_t, trie_node*> map1,
 			std::map<char_t, trie_node*> map2)
 	{
@@ -96,39 +97,31 @@ public:
 		}
 	}
 
-	static std::experimental::generator<std::tuple<char_t, trie_node*, trie_node*>>
-		double_recurse(trie_node& t1, trie_node& t2)
-	{
-		for (auto t : double_recurse(t1.children, t2.children))
-			co_yield t;
-	}
-
-
 	static std::experimental::generator<std::tuple<bool, bool, char_t, trie_node*, trie_node*>>
 		double_recurse(trie_walker<char_t>& tw1, trie_walker<char_t>& tw2)
 	{
 		if (tw1.p_node->is_wordend() && tw2.p_node->is_wordend())
 		{
-			for (auto t : double_recurse(tw1.p_root->children, tw2.p_root->children))
+			for (auto t : mutual_chars(tw1.p_root->children, tw2.p_root->children))
 				co_yield std::tuple<bool, bool, char_t, trie_node*, trie_node*>
 				(true, true, std::get<0>(t), std::get<1>(t), std::get<2>(t));
 		}
 
 		if (tw1.p_node->is_wordend())
 		{
-			for (auto t : double_recurse(tw1.p_root->children, tw2.p_node->children))
+			for (auto t : mutual_chars(tw1.p_root->children, tw2.p_node->children))
 				co_yield std::tuple<bool, bool, char_t, trie_node*, trie_node*>
 				(true, false, std::get<0>(t), std::get<1>(t), std::get<2>(t));
 		}
 
 		if (tw2.p_node->is_wordend())
 		{
-			for (auto t : double_recurse(tw1.p_node->children, tw2.p_root->children))
+			for (auto t : mutual_chars(tw1.p_node->children, tw2.p_root->children))
 				co_yield std::tuple<bool, bool, char_t, trie_node*, trie_node*>
 				(false, true, std::get<0>(t), std::get<1>(t), std::get<2>(t));
 		}
 
-		for (auto t : double_recurse(tw1.p_node->children, tw2.p_node->children))
+		for (auto t : mutual_chars(tw1.p_node->children, tw2.p_node->children))
 			co_yield std::tuple<bool, bool, char_t, trie_node*, trie_node*>
 			(false, false, std::get<0>(t), std::get<1>(t), std::get<2>(t));
 	}
@@ -191,6 +184,11 @@ struct trie_walker
 		return p_node->is_wordend();
 	}
 
+	bool has_any_children()
+	{
+		return p_node->children.size() > 0;
+	}
+
 	trie_walker(trie_node<char_t> *p_root) : p_root(p_root), p_node(p_root) { }
 
 	string_t last_word_backwads()
@@ -233,8 +231,9 @@ void recurse_tries(trie_walker<char_t>& tw, trie_walker<char_t>& twi, std::set<s
 		string_t result = tw.st + char_t(' ') + post;
 		results.insert(result);
 	}
-	// Both midword
-	else if (!tw.at_wordend() && !twi.at_wordend())
+
+	// Both have children
+	if (tw.has_any_children() && twi.has_any_children())
 	{
 		if (twi.p_node->traverse(tw.last_word_backwads()))
 		{
@@ -251,14 +250,25 @@ void recurse_tries(trie_walker<char_t>& tw, trie_walker<char_t>& twi, std::set<s
 		if (ptr != nullptr && ptr->is_wordend())
 		{
 			string_t pre = tw.st;
-			if (tw.at_wordend())
-				pre += char_t(' ');
 
 			string_t post = twi.st;
 			std::reverse(post.begin(), post.end());
 
-			string_t result = pre + c + post;
-			results.insert(result);
+			bool added = false;
+			if (tw.at_wordend())
+			{
+				results.insert(pre + char_t(' ') + c + post);
+				added = true;
+			}
+
+			if (!b)
+			{
+				results.insert(pre + c + post);
+				added = true;
+			}
+
+			// We should add at least once
+			ASSERT(added);
 		}
 	}
 
