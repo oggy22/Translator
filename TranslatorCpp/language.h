@@ -220,6 +220,16 @@ namespace translator
 			return _dictWords;
 		}
 
+		static std::experimental::generator<string_t> wordForms()
+		{
+			for (const auto& word : _dictWords)
+				for (const auto& form : word.words)
+					co_yield form.word;
+
+			for (int i = 1; i < 1000; i++)
+				co_yield number(i);
+		}
+
 		static string_t number(int n);
 
 		static const std::vector<word_to_word_rule<Lang>> word_to_word_rules;

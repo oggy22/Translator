@@ -41,11 +41,8 @@ namespace TranslatorTest
 		TEST_METHOD(serbian_palindromes)
 		{
 			std::vector<std::wstring> words;
-			for (const auto& word : Serbian::dictWords())
-			{
-				for (const auto& form : word.words)
-					words.push_back(form.word);
-			}
+			for (auto form : Serbian::wordForms())
+				words.push_back(form);
 
 			std::sort(words.begin(), words.end());
 			words.erase(unique(words.begin(), words.end()), words.end());
