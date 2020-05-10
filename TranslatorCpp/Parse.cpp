@@ -224,7 +224,7 @@ int main(int argc, char *argv[])
 				wcout << ',' << palin.average_word_length();
 				wcout << ',' << palin.stddev_word_legth();
 				if (palindrome_parse)
-					wcout << ',' << (palin.parsed ? 1 : 0);
+					wcout << ',' << palin.parsed;
 				wcout << endl;
 			}
 			wcout << results.size() << " results" << endl;

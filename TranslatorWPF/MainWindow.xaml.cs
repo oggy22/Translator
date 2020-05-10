@@ -200,7 +200,7 @@ namespace TranslatorWPF
             AvgWord = GetFloat(line, ref pos);
             StdWord = GetFloat(line, ref pos);
             if (parse)
-                Parse = GetInt(line, ref pos);
+                Parse = GetFloat(line, ref pos);
         }
 
         static int GetInt(string line, ref int pos)
@@ -246,6 +246,6 @@ namespace TranslatorWPF
 
         public float StdWord { get; set; }
 
-        public int Parse { get; set; }
+        public float Parse { get; set; }
     }
 }

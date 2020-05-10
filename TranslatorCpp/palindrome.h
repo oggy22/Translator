@@ -295,7 +295,7 @@ class palindrome
 
 public:
 
-	bool parsed = false;
+	float parsed = 0.0;
 
 	palindrome(const string_t& s) : pal(s)
 	{

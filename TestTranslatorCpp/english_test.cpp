@@ -21,7 +21,7 @@ namespace TranslatorTest
 	{
 		void test(const std::string& st, bool expected = true)
 		{
-			Assert::AreEqual(expected, translator::parse<English>(st));
+			Assert::AreEqual(expected, translator::parse<English>(st) == 1.0);
 		}
 
 	public:

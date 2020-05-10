@@ -83,7 +83,7 @@ namespace translator
 	void to_lower(basic_string<wchar_t>& s);
 
 	template <typename Language, typename letter = Language::letter, typename string_t = Language::string_t>
-	bool parse(typename Language::string_t s)
+	float parse(typename Language::string_t s)
 	{
 		// construct a stream from the string
 		std::basic_stringstream<typename Language::letter> strstr(s);
@@ -191,8 +191,19 @@ namespace translator
 		pt.to_ostream(test_output, vs);
 		test_output << "Root: " << pt(0, vs.size() - 1).size() << std::endl;
 #endif
+		if (vs.size() == 1)
+			return 0.0f;
 
-		return pt(0, vs.size() - 1).size() > 0;
+		for (int offset = vs.size() - 1; ; offset--)
+		{
+			for (int i = 0; i + offset < vs.size(); i++)
+			{
+				if (pt(i, i + offset).size() > 0)
+					return float(offset) / (vs.size() - 1);
+			}
+		}
+
+		FAIL("vs diagonal should have elements");
 	}
 
 	template<typename Language, typename Lambda>
