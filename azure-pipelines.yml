@@ -36,6 +36,7 @@ pool:
     msbuildArchitecture: 'x64'
 
 - task: CmdLine@2
+  displayName: 'Generate palindromes'
   inputs:
     script: |
       Release\TranslatorCpp.exe -palindromep:SR 5 > palindromes.csv
