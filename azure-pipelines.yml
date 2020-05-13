@@ -44,4 +44,7 @@ steps:
     configuration: release
     msbuildArchitecture: 'x64'
 
-
+- task: CmdLine@2
+  inputs:
+    script: |
+      Release\TranslatorCpp.exe
