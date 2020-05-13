@@ -188,11 +188,9 @@ namespace TranslatorWPF
 
     public class Palindrome : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged
-        {
-            add { throw new NotSupportedException(); }
-            remove { }
-        }
+#pragma warning disable 67
+        public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore 67
 
         public Palindrome(string line, bool parse)
         {
