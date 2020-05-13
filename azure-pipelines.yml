@@ -10,14 +10,6 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
-
 - task: VSBuild@1
   displayName: 'Build debug'
   inputs:
@@ -26,6 +18,23 @@ steps:
     configuration: debug
     msbuildArchitecture: 'x64'
 
+- task: VSTest@2
+  displayName: 'Run debug tests'
+  inputs:
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+      **\TestTranslatorCpp.dll
+      !**\*TestAdapter.dll
+      !**\obj\**
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+    vsTestVersion: '16.0'
+
+- task: PublishTestResults@2
+  inputs:
+    testRunner: VSTest
+    testResultsFiles: '$(Agent.TempDirectory)/**/*.trx'
+    failTaskOnFailedTests: true
+
 - task: VSBuild@1
   displayName: 'Build release'
   inputs:
@@ -33,3 +42,15 @@ steps:
     vsVersion: 'latest'
     configuration: release
     msbuildArchitecture: 'x64'
+
+- task: CmdLine@2
+  displayName: 'Generate palindromes'
+  inputs:
+    script: |
+      Release\TranslatorCpp.exe -palindromep:SR 7 > palindromes.csv
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: palindromes_SR'
+  inputs:
+    PathtoPublish: 'palindromes.csv'
+    ArtifactName: 'palindromes_SR'
