@@ -32,7 +32,7 @@ steps:
 - task: PublishTestResults@2
   inputs:
     testRunner: VSTest
-    testResultsFiles: '**/*.trx'
+    testResultsFiles: '$(Agent.TempDirectory)/**/*.trx'
     failTaskOnFailedTests: true
 
 - task: VSBuild@1
