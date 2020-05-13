@@ -19,5 +19,6 @@ steps:
   displayName: 'Run a multi-line script'
 
 - task: MSBuild@1
-    inputs:
-      solution: '**/*.sln'
+  inputs:
+    solution: '**/*.sln'
+    msbuildArchitecture: 'x64'
