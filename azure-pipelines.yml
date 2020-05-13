@@ -26,6 +26,16 @@ steps:
     configuration: debug
     msbuildArchitecture: 'x64'
 
+- task: VSTest@2
+  inputs:
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+      **\TestTranslatorCpp.dll
+      !**\*TestAdapter.dll
+      !**\obj\**
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+    vsTestVersion: '16.0'
+
 - task: VSBuild@1
   displayName: 'Build release'
   inputs:
@@ -33,3 +43,5 @@ steps:
     vsVersion: 'latest'
     configuration: release
     msbuildArchitecture: 'x64'
+
+
