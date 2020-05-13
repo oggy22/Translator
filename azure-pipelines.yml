@@ -47,4 +47,10 @@ steps:
 - task: CmdLine@2
   inputs:
     script: |
-      Release\TranslatorCpp.exe -palindromep:SR 5
+      Release\TranslatorCpp.exe -palindromep:SR 5 > palindromes.csv
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: palindromes_SR'
+  inputs:
+    PathtoPublish: 'palindromes.csv'
+    ArtifactName: 'palindromes_SR'
