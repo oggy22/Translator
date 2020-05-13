@@ -19,6 +19,7 @@ steps:
     msbuildArchitecture: 'x64'
 
 - task: VSTest@2
+  displayName: 'Run debug tests'
   inputs:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
