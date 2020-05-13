@@ -22,6 +22,14 @@ steps:
   displayName: 'Build debug'
   inputs:
     solution: '**\*.sln' 
-    vsVersion: 'latest' # Optional. Options: latest, 16.0, 15.0, 14.0, 12.0, 11.0
+    vsVersion: 'latest'
     configuration: debug
+    msbuildArchitecture: 'x64'
+
+- task: VSBuild@1
+  displayName: 'Build release'
+  inputs:
+    solution: '**\*.sln' 
+    vsVersion: 'latest'
+    configuration: release
     msbuildArchitecture: 'x64'
