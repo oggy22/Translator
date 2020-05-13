@@ -29,6 +29,12 @@ steps:
     searchFolder: '$(System.DefaultWorkingDirectory)'
     vsTestVersion: '16.0'
 
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/TEST-*.xml'
+    failTaskOnFailedTests: true
+
 - task: VSBuild@1
   displayName: 'Build release'
   inputs:
