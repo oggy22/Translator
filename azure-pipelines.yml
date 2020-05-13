@@ -19,16 +19,17 @@ steps:
   displayName: 'Run a multi-line script'
 
 - task: VSBuild@1
+  displayName: 'Build debug'
   inputs:
     solution: '**\*.sln' 
-    vsVersion: 'latest' # Optional. Options: latest, 16.0, 15.0, 14.0, 12.0, 11.0
-    #msbuildArgs: # Optional
-    #platform: # Optional
-    #configuration: # Optional
-    #clean: false # Optional
-    #maximumCpuCount: false # Optional
-    #restoreNugetPackages: false # Optional
-    #msbuildArchitecture: 'x86' # Optional. Options: x86, x64
-    #logProjectEvents: true # Optional
-    #createLogFile: false # Optional
-    #logFileVerbosity: 'normal' # Optional. Options: quiet, minimal, normal, detailed, diagnostic
+    vsVersion: 'latest'
+    configuration: debug
+    msbuildArchitecture: 'x64'
+
+- task: VSBuild@1
+  displayName: 'Build release'
+  inputs:
+    solution: '**\*.sln' 
+    vsVersion: 'latest'
+    configuration: release
+    msbuildArchitecture: 'x64'
