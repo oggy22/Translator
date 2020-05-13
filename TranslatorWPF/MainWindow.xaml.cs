@@ -1,8 +1,10 @@
 ﻿
+using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -128,6 +130,7 @@ namespace TranslatorWPF
             {
                 string line = proc.StandardOutput.ReadLine();
 
+                // The last line contains the number of palindrome
                 if (char.IsDigit(line[0]))
                     continue;
 
@@ -183,6 +186,60 @@ namespace TranslatorWPF
             var proc = RunProcess($"-random:{language}", language == "SR");
             string text = proc.StandardOutput.ReadToEnd();
             txtWords.Text = text;
+        }
+
+        private void MenuItem_PalindromesLoad(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Coma separated files (*.csv)|*.csv|All files (*.*)|*.*";
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                DateTime start = DateTime.Now;
+                StreamReader fileStreamRead = new StreamReader(openFileDialog.FileName, Encoding.Unicode);
+                fileStreamRead.ReadLine();
+
+                pc.Clear();
+                Application.Current.Dispatcher.Invoke(new Action(() =>
+                {
+                    this.Title = $"Loading palindromes";
+                }));
+                int count = 0;
+                bool parse = false;
+                while (!fileStreamRead.EndOfStream)
+                {
+                    string line = fileStreamRead.ReadLine();
+
+                    // The last line contains the number of palindrome
+                    if (char.IsDigit(line[0]))
+                        continue;
+
+                    if (count == 0)
+                    {
+                        int columns = line.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Length;
+                        switch (columns)
+                        {
+                            case 6: parse = false; break;
+                            case 7: parse = true; break;
+                            default:
+                                throw new InvalidDataException($"CSV file has {columns} columns, but 6 or 7 are expected");
+                        }
+                    }
+                    Palindrome pal = new Palindrome(line, parse);
+                    pc.Add(pal);
+
+                    count++;
+                    if (count % 1000 == 0)
+                        Application.Current.Dispatcher.Invoke(new Action(() =>
+                        {
+                            this.Title = $"Loaded {count} palindromes";
+                        }));
+                }
+
+                dataPalindromes.ItemsSource = pc;
+                TimeSpan time = DateTime.Now - start;
+                this.Title = $"{pc.Count} palindromes loaded {(int)time.TotalSeconds}sec";
+            }
         }
     }
 

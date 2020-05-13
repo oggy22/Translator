@@ -13,14 +13,14 @@
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
         <Menu>
-            <MenuItem Header="Generate">
-                <MenuItem Header="Palindrome">
+            <MenuItem Header="Palindromes">
+                <MenuItem Header="Generate">
                     <MenuItem Header="7" Click="MenuItem_Palindromes"/>
                     <MenuItem Header="8" Click="MenuItem_Palindromes"/>
                     <MenuItem Header="9" Click="MenuItem_Palindromes"/>
                     <MenuItem Header="10" Click="MenuItem_Palindromes"/>
                 </MenuItem>
-                <MenuItem Header="Palindrome and Parse">
+                <MenuItem Header="Generate and Parse">
                     <MenuItem Header="5" Click="MenuItem_PalindromesWithParse"/>
                     <MenuItem Header="6" Click="MenuItem_PalindromesWithParse"/>
                     <MenuItem Header="7" Click="MenuItem_PalindromesWithParse"/>
@@ -28,6 +28,7 @@
                     <MenuItem Header="9" Click="MenuItem_PalindromesWithParse"/>
                     <MenuItem Header="10" Click="MenuItem_PalindromesWithParse"/>
                 </MenuItem>
+                <MenuItem Header="Load from CSV" Click="MenuItem_PalindromesLoad"/>
             </MenuItem>
             <MenuItem Header="List Words">
                 <MenuItem Header="EN" Click="MenuItem_ListWords"/>
