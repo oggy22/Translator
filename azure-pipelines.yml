@@ -28,7 +28,7 @@ steps:
     #clean: false # Optional
     #maximumCpuCount: false # Optional
     #restoreNugetPackages: false # Optional
-    #msbuildArchitecture: 'x86' # Optional. Options: x86, x64
+    msbuildArchitecture: 'x64' # Optional. Options: x86, x64
     #logProjectEvents: true # Optional
     #createLogFile: false # Optional
     #logFileVerbosity: 'normal' # Optional. Options: quiet, minimal, normal, detailed, diagnostic
