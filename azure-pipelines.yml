@@ -9,6 +9,7 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
+steps:
 - task: VSBuild@1
   displayName: 'Build debug'
   inputs:
