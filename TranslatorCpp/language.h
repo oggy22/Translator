@@ -194,9 +194,9 @@ namespace translator
 		if (vs.size() == 1)
 			return 0.0f;
 
-		for (int offset = vs.size() - 1; ; offset--)
+		for (size_t offset = vs.size() - 1; ; offset--)
 		{
-			for (int i = 0; i + offset < vs.size(); i++)
+			for (size_t i = 0; i + offset < vs.size(); i++)
 			{
 				if (pt(i, i + offset).size() > 0)
 					return float(offset) / (vs.size() - 1);

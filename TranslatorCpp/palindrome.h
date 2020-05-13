@@ -173,7 +173,7 @@ std::set<string_t> find_palindromes(std::vector<string_t>& words, int max_length
 	return results;
 }
 
-template <typename char_t, typename string_t = std::basic_string<char_t>>
+template <typename char_t, typename string_t>
 struct trie_walker
 {
 	trie_node<char_t> *p_root, *p_node;

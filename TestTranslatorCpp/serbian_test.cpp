@@ -21,7 +21,6 @@ std::wofstream test_output("serbian_test.log");
 
 TEST_MODULE_INITIALIZE(TestModuleInitialize)
 {
-	test_output.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
 	test_output << "Serbian" << std::endl;
 }
 
