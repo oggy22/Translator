@@ -47,4 +47,4 @@ steps:
 - task: CmdLine@2
   inputs:
     script: |
-      Release\TranslatorCpp.exe
+      Release\TranslatorCpp.exe -palindromep:SR 5
