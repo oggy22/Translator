@@ -5,6 +5,9 @@ schedules:
     include:
     - master
 
+pool:
+  vmImage: 'windows-latest'
+
 steps:
 - task: VSBuild@1
   displayName: 'Build release'
