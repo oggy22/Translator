@@ -9,3 +9,8 @@ So far I have some limited success to parse some simple Serbian and English sent
 Palindromes for Serbian languages
 ==============================================
 A submodule of the program can generate palindromes in Serbian language to a certain lenght.
+
+
+GUI
+==============================================
+A Windows based (WPF) application is available supporting the features provided by the C++ application.
