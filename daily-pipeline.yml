@@ -1,0 +1,27 @@
+schedules:
+- cron: "0 0 * * *"
+  displayName: Daily midnight build
+  branches:
+    include:
+    - master
+
+steps:
+- task: VSBuild@1
+  displayName: 'Build release'
+  inputs:
+    solution: '**\*.sln' 
+    vsVersion: 'latest'
+    configuration: release
+    msbuildArchitecture: 'x64'
+
+- task: CmdLine@2
+  displayName: 'Generate palindromes'
+  inputs:
+    script: |
+      Release\TranslatorCpp.exe -palindromep:SR 8 > palindromes.csv
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: palindromes_SR_daily'
+  inputs:
+    PathtoPublish: 'palindromes.csv'
+    ArtifactName: 'palindromes_SR_daily'
