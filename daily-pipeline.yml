@@ -4,6 +4,7 @@ schedules:
   branches:
     include:
     - master
+    - daily-pipeline
 
 pool:
   vmImage: 'windows-latest'
