@@ -174,6 +174,10 @@ int main(int argc, char *argv[])
 			if (argc >= 3)
 				depth = std::stoi(argv[2]);
 
+			float min_parse = 0.0;
+			if (argc >= 4)
+				min_parse = std::stof(argv[3]);
+
 			auto results = find_palindromes<wchar_t>(words, depth);
 
 			// Trim those of form "A [palindrome] A"
@@ -214,7 +218,7 @@ int main(int argc, char *argv[])
 
 			for (auto palin : palindromes)
 			{
-				if (palin.word().length() == 0)
+				if (palin.word().length() == 0 || palin.parsed < min_parse)
 					continue;
 
 				wcout << palin.word();
