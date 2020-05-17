@@ -32,6 +32,7 @@ const map<attrs, cats> Serbian::belongs_to_category
 	{ сред, род },
 };
 
+translator::trie_node_words<Serbian, wchar_t> SERBIAN_BASE::_root;
 std::vector<translator::dictionary_word<Serbian>> SERBIAN_BASE::_dictWords
 {
 #include "Serbian_words.h"
