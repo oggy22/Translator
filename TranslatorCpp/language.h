@@ -82,6 +82,11 @@ namespace translator
 
 	void to_lower(basic_string<wchar_t>& s);
 
+
+	// Returns:
+	// 1.0 if fully parsed
+	// 0.0 if nothing longer than a word was parsed
+	// 0 < parse < 1 partially parsed
 	template <typename Language, typename letter = Language::letter, typename string_t = Language::string_t>
 	float parse(typename Language::string_t s)
 	{
@@ -104,12 +109,10 @@ namespace translator
 		{
 			pt(i, i).emplace_back(parsing_node<Language>(vs[i]));
 
-			getWords<Language>(Language::dictWords(),
-				[&](const word_form<Language>& w)
+			for (auto p : Language::list_word_forms(vs[i]))
 			{
-				if (w.word == vs[i])
-					pt(i,i).emplace_back(parsing_node<Language>(w));
-			});
+				pt(i, i).emplace_back(parsing_node<Language>(*p));
+			}
 		}
 
 		// Syntax analysis
@@ -214,9 +217,73 @@ namespace translator
 				lambda(w);
 	}
 
+	template <typename Language, typename char_t = typename Language::letter>
+	class trie_node_words
+	{
+		using string_t = typename std::basic_string<char_t>;
+		using char_tt = typename Language::letter;
+		map<char_t, trie_node_words*> children;
+
+		void add(const word_form<Language>& w, size_t pos)
+		{
+			ASSERT(pos <= w.word.length());
+			if (pos == w.word.length())
+				words_p.emplace_back(&w);
+			else
+			{
+				char_t c = w.word[pos];
+				if (children[c] == nullptr)
+				{
+					children[c] = new trie_node_words();
+				}
+				children[c]->add(w, pos + 1);
+			}
+		}
+
+		trie_node_words* find(const string_t& s, size_t pos)
+		{
+			ASSERT(pos <= s.length());
+			if (pos == s.length())
+				return this;
+			else
+			{
+				auto ptr = children[s[pos]];
+
+				if (ptr == nullptr)
+					return nullptr;
+
+				return ptr->find(s, pos + 1);
+			}
+		}
+
+	public:
+		std::vector<const word_form<Language>*> words_p;
+
+		void add(const word_form<Language>& w)
+		{
+			add(w, 0);
+		}
+
+		trie_node_words* find(const string_t& s)
+		{
+			return find(s, 0);
+		}
+	};
+
+	template <typename Language, typename char_t = typename Language::letter>
+	void words_root_init(trie_node_words<char_t>& root)
+	{
+		getWords<Language>(Language::dictWords(),
+			[&](const word_form<Language>& w)
+			{
+				root.add(w);
+			});
+	}
+
 	template <class Lang, class letter>
 	class Language
 	{
+		static trie_node_words<Lang, letter> _root;
 		static std::vector<dictionary_word<Lang>> _dictWords;
 
 	public:
@@ -326,6 +393,18 @@ namespace translator
 			}
 		}
 
+		static std::experimental::generator<const word_form<Lang>*> list_word_forms(const string_t& str)
+		{
+			auto p_node = _root.find(str);
+			if (p_node == nullptr)
+				co_return;
+
+			for (const word_form<Lang>* p : p_node->words_p)
+			{
+				co_yield p;
+			}
+		}
+
 		static const dictionary_word<Lang>& find_dictionary_word(const string_t& st)
 		{
 			for (const dictionary_word<Lang>& w : _dictWords)
@@ -373,6 +452,7 @@ private:
 			initialized = true;
 
 			check_for_duplicates();
+			words_root_init<Lang>(_root);
 		}
 	};
 }

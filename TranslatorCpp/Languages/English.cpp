@@ -12,6 +12,7 @@ const map<English::attributes, English::attribute_categories> English::belongs_t
 
 const English::string_t ENGLISH_BASE::stAlphabet("abcdefghijklmnopqrstuvwxyz");
 
+translator::trie_node_words<English, char> ENGLISH_BASE::_root;
 std::vector<translator::dictionary_word<English>> ENGLISH_BASE::_dictWords
 {
 #pragma region Determiners
