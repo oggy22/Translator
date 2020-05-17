@@ -23,12 +23,12 @@ steps:
   inputs:
     script: |
       echo $(Build.BuildId)
-      Release\TranslatorCpp.exe -palindromep:SR 2 0.4 > palindromes_SR_%date:~10,4%-%date:~4,2%-%date:~7,2%.csv
+      Release\TranslatorCpp.exe -palindromep:SR 2 0.4 > palindromes_SR_$(Build.BuildId).csv
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: palindromes_SR_daily'
   inputs:
-    PathtoPublish: 'palindromes_SR*.csv'
+    PathtoPublish: 'palindromes_SR_$(Build.BuildId).csv'
     ArtifactName: 'palindromes_SR_daily'
 
 
