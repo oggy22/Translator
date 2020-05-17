@@ -22,7 +22,7 @@ steps:
   displayName: 'Generate palindromes'
   inputs:
     script: |
-      Release\TranslatorCpp.exe -palindromep:SR 8 0.4 > palindromes.csv
+      Release\TranslatorCpp.exe -palindromep:SR 9 0.4 > palindromes.csv
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: palindromes_SR_daily'
