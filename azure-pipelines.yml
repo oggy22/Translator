@@ -16,7 +16,6 @@ steps:
     solution: '**\*.sln' 
     vsVersion: 'latest'
     configuration: debug
-    msbuildArchitecture: 'x64'
 
 - task: VSTest@2
   displayName: 'Run debug tests'
@@ -41,16 +40,3 @@ steps:
     solution: '**\*.sln' 
     vsVersion: 'latest'
     configuration: release
-    msbuildArchitecture: 'x64'
-
-- task: CmdLine@2
-  displayName: 'Generate palindromes'
-  inputs:
-    script: |
-      Release\TranslatorCpp.exe -palindromep:SR 7 > palindromes.csv
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: palindromes_SR'
-  inputs:
-    PathtoPublish: 'palindromes.csv'
-    ArtifactName: 'palindromes_SR'
