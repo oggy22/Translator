@@ -31,7 +31,7 @@ void check(const typename Language::string_t& stExpected, const typename Languag
 template <typename char_t, typename string_t = std::basic_string<char_t>>
 static bool is_palindrome(const string_t& str)
 {
-	for (int i = 0, j = str.size() - 1; i < j; i++, j--)
+	for (size_t i = 0, j = str.size() - 1; i < j; i++, j--)
 	{
 		if (str[i] == char_t(' ')) i++;
 		if (str[j] == char_t(' ')) j--;

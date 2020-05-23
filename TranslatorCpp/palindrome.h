@@ -38,7 +38,7 @@ public:
 		return w;
 	}
 
-	trie_node* create_or_root(const char_t **words, int count, trie_node* p_root)
+	trie_node* create_or_root(const char_t **words, size_t count, trie_node* p_root)
 	{
 		if (count == 1 && **words == 0)
 			return p_root;
@@ -46,12 +46,12 @@ public:
 		return new trie_node(words, count, p_root);
 	}
 
-	trie_node(const char_t **words, int count, trie_node* p_root)
+	trie_node(const char_t **words, size_t count, trie_node* p_root)
 		: wordend(false)
 	{
 		char_t c = 0;
 		int start = -1;
-		int i = 0;
+		size_t i = 0;
 
 		if (*words[0] == 0)
 		{
@@ -67,7 +67,7 @@ public:
 				if (start >= 0)
 					children[c] = new trie_node(words + start, i - start, p_root);
 
-				start = i;
+				start = int(i);
 
 				c = *words[i];
 			}
@@ -291,7 +291,7 @@ template <typename char_t, typename string_t = std::basic_string<char_t>>
 class palindrome
 {
 	string_t pal;
-	int spaces = 0;
+	size_t spaces = 0;
 
 public:
 
@@ -317,17 +317,17 @@ public:
 		return pal;
 	}
 
-	int number_of_words() const
+	size_t number_of_words() const
 	{
 		return spaces + 1;
 	}
 
-	int number_of_letters() const
+	size_t number_of_letters() const
 	{
 		return pal.size() - spaces;
 	}
 
-	int number_of_chars() const
+	size_t number_of_chars() const
 	{
 		return pal.size();
 	}

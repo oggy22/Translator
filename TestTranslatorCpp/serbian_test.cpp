@@ -430,23 +430,23 @@ namespace TranslatorTest
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<int>(1261, Serbian::dictWords().size());
+			Assert::AreEqual<size_t>(1261, Serbian::dictWords().size());
 		}
 
 		// This test helps keeping awereness of the number of word forms.
 		// It should prevent from adding more word forms unintentionally.
 		TEST_METHOD(word_forms_count)
 		{
-			int count = 0;
+			size_t count = 0;
 			for (auto& dw : Serbian::dictWords())
 			{
-				int increment = dw.words.size();
+				size_t increment = dw.words.size();
 				Assert::IsFalse(increment == 0);
 				count += increment;
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<int>(28746, count);
+			Assert::AreEqual<size_t>(28746, count);
 		}
 
 		TEST_METHOD(serbian_numbers_to_1000)

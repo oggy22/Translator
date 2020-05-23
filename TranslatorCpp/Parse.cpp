@@ -33,7 +33,7 @@ void remove(std::vector<string_t>& words, string_t word)
 using namespace std;
 
 template <typename Language, typename string_t = Language::string_t>
-void generate_random_sentences(map<int, string_t>& sents, int seed=0)
+void generate_random_sentences(map<size_t, string_t>& sents, int seed=0)
 {
 	for (int i = 0; i < 1000; i++)
 	{
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 		string stLang = argv[1] + strlen("-random:");
 		if (stLang == "SR")
 		{
-			map<int, wstring> sents;
+			map<size_t, wstring> sents;
 			setlocale(LC_ALL, "");
 			generate_random_sentences<Serbian>(sents, seed);
 			set_wide();
@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
 		}
 		else if (stLang == "EN")
 		{
-			map<int, string> sents;
+			map<size_t, string> sents;
 			generate_random_sentences<English>(sents, seed);
 			for (auto const &pair : sents)
 				std::cout << pair.second << endl;
@@ -184,8 +184,8 @@ int main(int argc, char *argv[])
 			for (auto it = results.begin(); it != results.end();)
 			{
 				wstring pal = *it;
-				int first = pal.find_first_of(L' ');
-				int last = pal.find_last_of(L' ');
+				size_t first = pal.find_first_of(L' ');
+				size_t last = pal.find_last_of(L' ');
 				if (first == pal.length() - last - 1)
 				{
 					results.erase(it++);

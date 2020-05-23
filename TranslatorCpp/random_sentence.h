@@ -23,8 +23,8 @@ namespace translator
 	template<typename Language>
 	const rule<Language>& get_random_rule(std::default_random_engine& device, typename Language::word_type wt = Language::Sentence)
 	{
-		std::uniform_int_distribution<int> uniform_dist(0, Language::grammar_rules.size() - 1);
-		int pos;
+		std::uniform_int_distribution<size_t> uniform_dist(0, Language::grammar_rules.size() - 1);
+		size_t pos;
 		do
 		{
 			pos = uniform_dist(device);
@@ -37,7 +37,7 @@ namespace translator
 	typename Language::attributes random_attr(typename Language::attribute_categories cat, std::default_random_engine& device)
 	{
 		auto size = Language::belongs_to_category.size();
-		std::uniform_int_distribution<int> uniform_dist(0, size - 1);
+		std::uniform_int_distribution<size_t> uniform_dist(0, size - 1);
 
 		while (true)
 		{
@@ -55,8 +55,8 @@ namespace translator
 		typename attribute_manager<Language>& am = attribute_manager<Language>()
 		)
 	{
-		std::uniform_int_distribution<int> uniform_dist(0, Language::dictWords().size() - 1);
-		int pos;
+		std::uniform_int_distribution<size_t> uniform_dist(0, Language::dictWords().size() - 1);
+		size_t pos;
 		do
 		{
 			do
