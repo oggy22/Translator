@@ -16,6 +16,7 @@ steps:
     solution: '**/*.sln'
     configuration: release
     msbuildArchitecture: x64
+    platform: x64
 
 - task: CmdLine@2
   displayName: 'Generate palindromes'
