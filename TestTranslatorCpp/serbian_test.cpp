@@ -393,6 +393,9 @@ namespace TranslatorTest
 			test(L"леп кућа", false);
 			test(L"огњен и максим");
 			test(L"огњен и максима", false);
+			test(L"оба човека");
+			test(L"обе жене");
+			test(L"оба жене", false);
 
 			//// Прилошке одредбе
 			test(L"у школу");
