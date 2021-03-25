@@ -433,7 +433,7 @@ namespace TranslatorTest
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<size_t>(1538, Serbian::dictWords().size());
+			Assert::AreEqual<size_t>(1577, Serbian::dictWords().size());
 		}
 
 		// This test helps keeping awereness of the number of word forms.
@@ -449,7 +449,7 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<size_t>(35096, count);
+			Assert::AreEqual<size_t>(36044, count);
 		}
 
 		TEST_METHOD(serbian_numbers_to_1000)
@@ -496,10 +496,10 @@ namespace TranslatorTest
 
 		TEST_METHOD(random_test)
 		{
-			for (int i = 0; i < DebugRelease(20, 200); i++)
+			for (int i = 0; i < DebugRelease(20, 180); i++)
 			{
 				// This one happens to be really long
-				if (i == 1)
+				if (i == 17)
 					continue;
 
 				std::wstring str = translator::random_sentence<Serbian>(i);
