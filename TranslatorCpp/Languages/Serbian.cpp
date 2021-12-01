@@ -38,6 +38,12 @@ std::vector<translator::dictionary_word<Serbian>> SERBIAN_BASE::_dictWords
 #include "Serbian_words.h"
 };
 
+const map<wchar_t, Serbian::string_t> SERBIAN_BASE::jokers
+{
+	{'#', L"бвгдђжзјклљмнњпрстћфхцчџш"},	// consonants
+	{'@', L"аеиоу"}							// vowels
+};
+
 std::wstring _number10(int n)
 {
 	switch (n)

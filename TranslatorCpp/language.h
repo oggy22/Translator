@@ -289,6 +289,8 @@ namespace translator
 	public:
 		using string_t = std::basic_string<letter>;
 
+		static const map<letter, string_t> jokers;
+
 		static const std::vector<word_rule<Lang>> word_rules;
 
 		static const string_t stAlphabet;
@@ -391,6 +393,25 @@ namespace translator
 				for (const auto& word : w.words)
 					fun(word);
 			}
+		}
+
+		static bool joker_can_replace(letter joker, letter c)
+		{
+			auto p = jokers.find(joker);
+			if (p == jokers.end())
+				return false;
+
+			string_t st = p->second;
+
+			if (st.find(c) == string_t::npos)
+				return false;
+
+			return true;
+		}
+
+		static bool is_joker(letter c)
+		{
+			return jokers.find(c) != jokers.end();
 		}
 
 		static std::experimental::generator<const word_form<Lang>*> list_word_forms(const string_t& str)

@@ -50,6 +50,8 @@ struct English : public ENGLISH_BASE
 
 	static const map<attributes, attribute_categories> belongs_to_category;
 
+	static const map<char, string_t> jokers;
+
 	static bool is_phony_attribute(attributes a)
 	{
 		return false;

@@ -1,5 +1,8 @@
 ﻿#include "stdafx.h"
 
+#include "../TranslatorCpp/Languages/Serbian.h"
+#include "../TranslatorCpp/Languages/English.h"
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace TranslatorTest
@@ -8,8 +11,8 @@ namespace TranslatorTest
 	{
 	public:
 
-		using pattern_n = translator::pattern<char>;
-		using pattern_w = translator::pattern<wchar_t>;
+		using pattern_n = translator::pattern<English>;
+		using pattern_w = translator::pattern<Serbian>;
 
 		TEST_METHOD(pattern_match_test_narrow)
 		{
@@ -47,13 +50,13 @@ namespace TranslatorTest
 
 			pattern_w lic1(L"*м");
 			pattern_w lic2(L"*те");
-			pattern_w past(L"пре*ла");
+			pattern_w perfekat(L"пре*ла");
 			Assert::AreEqual<std::wstring>(L"гледам", p1.match_and_transform(L"гледати", lic1));
 			Assert::AreEqual<std::wstring>(L"радите", p1.match_and_transform(L"радити", lic2));
-			Assert::AreEqual<std::wstring>(L"предала", p1.match_and_transform(L"дати", past));
+			Assert::AreEqual<std::wstring>(L"предала", p1.match_and_transform(L"дати", perfekat));
 		}
 
-		TEST_METHOD(pattern_no_joker)
+		TEST_METHOD(pattern_no_asterisk)
 		{
 			// Narrow strings
 			pattern_n pn("you");
@@ -70,6 +73,14 @@ namespace TranslatorTest
 			Assert::IsFalse(pw.match(L"онима"));
 			pattern_w pw2(L"њихов");
 			Assert::AreEqual<std::wstring>(L"њихов", pw.match_and_transform(L"они", pw2));
+		}
+
+		TEST_METHOD(jokers)
+		{
+			// Wide strings
+			pattern_w pw(L"*#ка");
+			Assert::IsTrue(pw.match(L"мачка"));
+			Assert::IsFalse(pw.match(L"флека"));
 		}
 	};
 }

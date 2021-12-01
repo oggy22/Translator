@@ -240,6 +240,8 @@ namespace TranslatorTest
 			CHECK(L"блага", L"благо", attr_t::множина, attr_t::номинатив);
 			CHECK(L"времена", L"време", attr_t::једнина, attr_t::генитив);
 			CHECK(L"вуче", L"вук", attr_t::једнина, attr_t::вокатив);
+			CHECK(L"гусака", L"гуска", attr_t::множина, attr_t::генитив);
+			CHECK(L"дасака", L"даска", attr_t::множина, attr_t::генитив);
 			CHECK(L"дрвету", L"дрво", attr_t::једнина, attr_t::датив);
 			CHECK(L"ђаци", L"ђак", attr_t::множина, attr_t::номинатив);
 			CHECK(L"жену", L"жена", attr_t::једнина, attr_t::акузатив);
@@ -250,8 +252,10 @@ namespace TranslatorTest
 			CHECK(L"језици", L"језик", attr_t::множина, attr_t::номинатив);
 			CHECK(L"коња", L"коњ", attr_t::једнина, attr_t::акузатив);
 			CHECK(L"лажи", L"лаж", attr_t::множина, attr_t::номинатив);
+			CHECK(L"лутака", L"лутка", attr_t::множина, attr_t::генитив);
 			CHECK(L"људи", L"човек", attr_t::множина, attr_t::номинатив);
 			CHECK(L"љубави", L"љубав", attr_t::множина, attr_t::генитив);
+			CHECK(L"мачака", L"мачка", attr_t::множина, attr_t::генитив);
 			CHECK(L"мишеви", L"миш", attr_t::множина, attr_t::номинатив);
 			//CHECK(L"мисли", L"мисао", attr_t::једнина, attr_t::генитив);
 			//CHECK(L"мисли", L"мисао", attr_t::множина, attr_t::номинатив);
@@ -263,6 +267,7 @@ namespace TranslatorTest
 			CHECK(L"орлу", L"орао", attr_t::једнина, attr_t::датив);
 			CHECK(L"орловима", L"орао", attr_t::множина, attr_t::локатив);
 			CHECK(L"псом", L"пас", attr_t::једнина, attr_t::инструментал);
+			//CHECK(L"песама", L"песма", attr_t::множина, attr_t::генитив);
 			CHECK(L"петлу", L"петао", attr_t::једнина, attr_t::датив);
 			CHECK(L"пиву", L"пиво", attr_t::једнина, attr_t::датив);
 			CHECK(L"пилету", L"пиле", attr_t::једнина, attr_t::датив);
@@ -433,7 +438,7 @@ namespace TranslatorTest
 		TEST_METHOD(dictionary_words_count)
 		{
 			// Update this number when necessary
-			Assert::AreEqual<size_t>(1577, Serbian::dictWords().size());
+			Assert::AreEqual<size_t>(1585, Serbian::dictWords().size());
 		}
 
 		// This test helps keeping awereness of the number of word forms.
@@ -449,7 +454,7 @@ namespace TranslatorTest
 			}
 
 			// Update this number when necessary
-			Assert::AreEqual<size_t>(36044, count);
+			Assert::AreEqual<size_t>(36224, count);
 		}
 
 		TEST_METHOD(serbian_numbers_to_1000)

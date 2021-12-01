@@ -164,8 +164,8 @@ namespace translator
 	template <class Language>
 	struct word_rule
 	{
-		pattern<typename Language::letter> source;
-		pattern<typename Language::letter> destination;
+		pattern<typename Language> source;
+		pattern<typename Language> destination;
 		typename Language::word_type wt;
 		myset<typename Language::attributes> req_attrs;
 		using char_t = typename Language::letter;
@@ -183,8 +183,8 @@ namespace translator
 	template <class Language>
 	struct word_to_word_rule
 	{
-		pattern<typename Language::letter> source;
-		pattern<typename Language::letter> destination;
+		pattern<typename Language> source;
+		pattern<typename Language> destination;
 		typename Language::word_type wt_source;
 		typename Language::word_type wt_destination;
 		myset<typename Language::attributes> req_attrs;

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "English.h"
 
 const map<English::attributes, English::attribute_categories> English::belongs_to_category
@@ -11,6 +11,12 @@ const map<English::attributes, English::attribute_categories> English::belongs_t
 };
 
 const English::string_t ENGLISH_BASE::stAlphabet("abcdefghijklmnopqrstuvwxyz");
+
+const map<char, English::string_t> ENGLISH_BASE::jokers
+{
+	{'#', "bcd"},
+	{'@', "aeiouy"}
+};
 
 translator::trie_node_words<English, char> ENGLISH_BASE::_root;
 std::vector<translator::dictionary_word<English>> ENGLISH_BASE::_dictWords
